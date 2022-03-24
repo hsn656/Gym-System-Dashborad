@@ -5,7 +5,14 @@
   >
     <ul class="navbar-nav">
       <li class="nav-item">
-        <sidenav-collapse navText="Dashboard" :to="{ name: 'Dashboard' }">
+        <sidenav-collapse navText="Managers " :to="{ name: 'Dashboard' }">
+          <template v-slot:icon>
+            <icon name="dashboard" />
+          </template>
+        </sidenav-collapse>
+      </li>
+       <li class="nav-item">
+        <sidenav-collapse navText="cities" :to="{ name: 'Dashboard' }">
           <template v-slot:icon>
             <icon name="dashboard" />
           </template>
