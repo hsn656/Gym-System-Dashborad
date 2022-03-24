@@ -1,7 +1,13 @@
 <template>
+
   <div class="card mb-4">
-    <div class="card-header pb-0">
-      <h6>Users table</h6>
+    <div class="d-flex justify-content-between">
+      <div class="card-header pb-0">
+        <h6>Users table</h6>
+      </div>
+      <div class="card-header pb-0">
+        <router-link :to="{ name: 'addUser' }" ><a class="btn btn-success">add user</a></router-link>
+      </div>
     </div>
     <div class="card-body px-0 pt-0 pb-2">
       <div class="table-responsive p-0">
@@ -63,12 +69,7 @@
 <script>
 import VsudAvatar from "@/components/VsudAvatar.vue";
 import VsudBadge from "@/components/VsudBadge.vue";
-import img1 from "../../assets/img/team-2.jpg";
-import img2 from "../../assets/img/team-3.jpg";
-import img3 from "../../assets/img/team-4.jpg";
-import img4 from "../../assets/img/team-3.jpg";
-import img5 from "../../assets/img/team-2.jpg";
-import img6 from "../../assets/img/team-4.jpg";
+import img1 from "./team-2.jpg";
 
 export default {
   name: "authors-table",
@@ -76,11 +77,6 @@ export default {
     return {
       users:[],
       img1,
-      img2,
-      img3,
-      img4,
-      img5,
-      img6,
     };
   },
 
@@ -88,6 +84,7 @@ export default {
     this.users= await (await fetch("http://localhost:8000/api/users")).json();
     console.log(this.users);
   },
+
   components: {
     VsudAvatar,
     VsudBadge,

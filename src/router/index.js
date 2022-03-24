@@ -7,6 +7,8 @@ import Profile from "@/views/Profile.vue";
 import Rtl from "@/views/Rtl.vue";
 import SignIn from "@/views/SignIn.vue";
 import SignUp from "@/views/SignUp.vue";
+import UsersTable from "../views/components/users/UsersTable.vue";
+import AddUser from "../views/components/users/AddUserFrom.vue";
 
 const routes = [
   {
@@ -19,6 +21,18 @@ const routes = [
     name: "Dashboard",
     component: Dashboard,
   },
+  //begin users routes
+  {
+    path: "/users",
+    name: "Users",
+    component: UsersTable,
+  },
+  {
+    path: "/users/add",
+    name: "addUser",
+    component: AddUser,
+  },
+  //end users routes
   {
     path: "/tables",
     name: "Tables",

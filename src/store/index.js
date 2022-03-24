@@ -13,7 +13,7 @@ export default createStore({
     showNavs: true,
     showSidenav: true,
     showNavbar: true,
-    showFooter: true,
+    showFooter: false,
     showMain: true,
   },
   mutations: {
