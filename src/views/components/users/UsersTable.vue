@@ -20,14 +20,12 @@
               >Email</th>
               <th
                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-              >Status</th>
-              <th
-                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-              >Employ ed</th>
+              >created at</th>
+              <th class="text-secondary opacity-7"></th>
               <th class="text-secondary opacity-7"></th>
             </tr>
           </thead>
-          <tbody>
+          <tbody :key="componentKey">
             <tr v-for="user in users" :key="user.id" >
               <td>
                 <div class="d-flex px-2 py-1">
@@ -36,28 +34,33 @@
                   </div>
                   <div class="d-flex flex-column justify-content-center">
                     <h6 class="mb-0 text-sm">{{ user.name}}</h6>
-                    <p class="text-xs text-secondary mb-0">john@creative-tim.com</p>
                   </div>
                 </div>
               </td>
               <td>
-                <p class="text-xs font-weight-bold mb-0">Manager</p>
-                <p class="text-xs text-secondary mb-0">Organization</p>
-              </td>
-              <td class="align-middle text-center text-sm">
-                <vsud-badge color="success" variant="gradient" size="sm">Online</vsud-badge>
+                <p class="text-xs font-weight-bold mb-0">{{user.email}}</p>
               </td>
               <td class="align-middle text-center">
-                <span class="text-secondary text-xs font-weight-bold">23/04/18</span>
+                <span class="text-secondary text-xs font-weight-bold">{{convertToDate(user.created_at)}}</span>
               </td>
               <td class="align-middle">
-                <a
-                  href="javascript:;"
-                  class="text-secondary font-weight-bold text-xs"
-                  data-toggle="tooltip"
-                  data-original-title="Edit user"
-                >Edit</a>
+                <router-link :to="'/users/edit/'+user.id" >
+                  <a
+                    class="text-secondary font-weight-bold text-xs"
+                    data-toggle="tooltip"
+                    data-original-title="Edit user">
+                    Edit</a>
+                </router-link>
               </td>
+              <td class="align-middle" >
+                <span @click="deleteUser(user.id)">
+                  <a
+                  style="cursor: pointer;"
+                  class="text-danger font-weight-bold text-xs">
+                  delete</a>
+                </span>
+              </td>
+
             </tr>
           </tbody>
         </table>
@@ -68,26 +71,55 @@
 
 <script>
 import VsudAvatar from "@/components/VsudAvatar.vue";
-import VsudBadge from "@/components/VsudBadge.vue";
 import img1 from "./team-2.jpg";
+import UserService from "../../../services/UserService";
+
 
 export default {
-  name: "authors-table",
+  name: "users-table",
   data() {
     return {
       users:[],
       img1,
+      componentKey:0
     };
   },
 
   async created(){
-    this.users= await (await fetch("http://localhost:8000/api/users")).json();
-    console.log(this.users);
+    this.getUsers();
   },
 
   components: {
     VsudAvatar,
-    VsudBadge,
   },
+  methods: {
+    getUsers() {
+      UserService.getAll()
+        .then(response => {
+          this.users = response.data;
+          console.log(response.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    },
+    convertToDate(datetime){
+      return datetime.split("").splice(0,10).join("")
+    },
+    deleteUser(id){
+      if (!confirm("are you sure?")) return;
+
+      UserService.delete(id).then(res=>{
+          console.log(res);
+          this.users=this.users.filter(user=>user.id!==id);
+          this.forceRerender();
+        }).catch(err=>{
+          console.log(err);
+        });
+    },
+    forceRerender() {
+      this.componentKey += 1;
+    }
+  }
 };
 </script>

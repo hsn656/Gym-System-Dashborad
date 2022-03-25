@@ -8,7 +8,8 @@ import Rtl from "@/views/Rtl.vue";
 import SignIn from "@/views/SignIn.vue";
 import SignUp from "@/views/SignUp.vue";
 import UsersTable from "../views/components/users/UsersTable.vue";
-import AddUser from "../views/components/users/AddUserFrom.vue";
+import AddUser from "../views/components/users/AddUserForm.vue";
+import editUser from "../views/components/users/EditUserForm .vue";
 
 const routes = [
   {
@@ -32,7 +33,12 @@ const routes = [
     name: "addUser",
     component: AddUser,
   },
-  //end users routes
+  {
+    path: "/users/edit/:id",
+    name: "editUser",
+    component: editUser,
+  },
+  // end users routes
   {
     path: "/tables",
     name: "Tables",
