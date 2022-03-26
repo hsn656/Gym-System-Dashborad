@@ -11,7 +11,7 @@
           </template>
         </sidenav-collapse>
       </li>
-       <li class="nav-item">
+      <li class="nav-item">
         <sidenav-collapse navText="Users" :to="{ name: 'Users' }">
           <template v-slot:icon>
             <icon name="dashboard" />
@@ -102,7 +102,9 @@
 import Icon from "@/components/Icon.vue";
 import SidenavCollapse from "./SidenavCollapse.vue";
 import SidenavCard from "./SidenavCard.vue";
-import jwt_decode from 'jwt-decode';
+import jwtDecode from "../../jwtdecode";
+// import jwt_decode from 'jwt-decode';
+// import jwt_decode from '../../../node_modules/jwt-decode';
 
 export default {
   name: "SidenavList",
@@ -114,12 +116,17 @@ export default {
       title: "Soft UI Dashboard PRO",
       controls: "dashboardsExamples",
       isActive: "active",
-      tokenPayload:{}
+      tokenPayload: {},
     };
   },
-  created(){
+  created() {
     var token = localStorage.getItem("gstoken");
-    this.tokenPayload = jwt_decode(token);
+
+    if (token) {
+
+      this.tokenPayload = jwtDecode(token);
+      console.log(this.tokenPayload);
+    }
   },
   components: {
     Icon,

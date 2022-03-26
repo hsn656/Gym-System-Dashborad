@@ -18,6 +18,7 @@
     "vue": "3.2.0",
     "vue-flatpickr-component": "9.0.5",
     "vue-router": "^4.0.0-0",
+    "vuejs-jwt": "^1.1.0",
     "vuex": "^4.0.2"
   },
   "devDependencies": {
