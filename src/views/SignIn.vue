@@ -24,15 +24,15 @@
                   <p class="mb-0">Enter your email and password to sign in</p>
                 </div>
                 <div class="card-body">
-                  <form role="form" class="text-start">
-                    <label>Email</label>
-                    <vsud-input type="email" placeholder="Email" name="email" />
-                    <label>Password</label>
-                    <vsud-input
-                      type="password"
-                      placeholder="Password"
-                      name="password"
-                    />
+                    <div class="mb-3">
+                      <label for="inputEmail" class="form-label">Email</label>
+                      <input v-model="email" type="email" class="form-control" id="inputEmail">
+                    </div>
+                    <div class="mb-3">
+                      <label for="inputPassword" class="form-label">Password</label>
+                      <input v-model="password" type="password" class="form-control" id="inputPassword">
+                    </div>
+
                     <vsud-switch id="rememberMe" checked>
                       Remember me
                     </vsud-switch>
@@ -42,10 +42,10 @@
                         variant="gradient"
                         color="info"
                         fullWidth
+                        @click="login()"
                         >Sign in
                       </vsud-button>
                     </div>
-                  </form>
                 </div>
                 <div class="px-1 pt-0 text-center card-footer px-lg-2">
                   <p class="mx-auto mb-4 text-sm">
@@ -85,9 +85,12 @@
 <script>
 import Navbar from "@/examples/PageLayout/Navbar.vue";
 import AppFooter from "@/examples/PageLayout/Footer.vue";
-import VsudInput from "@/components/VsudInput.vue";
 import VsudSwitch from "@/components/VsudSwitch.vue";
 import VsudButton from "@/components/VsudButton.vue";
+import AuthService from "../services/AuthService";
+
+
+
 const body = document.getElementsByTagName("body")[0];
 
 export default {
@@ -95,10 +98,25 @@ export default {
   components: {
     Navbar,
     AppFooter,
-    VsudInput,
     VsudSwitch,
     VsudButton,
   },
+  data() {
+      return {
+        email:"",
+        password:""
+      }
+  },
+  methods:{
+    login(){
+      AuthService.login(this.email,this.password).then((res)=>{
+        localStorage.setItem("gstoken",res.data.access_token);
+      }).catch(
+        err=>{console.log(err)}
+      );
+    }
+  }
+  ,
   beforeMount() {
     this.$store.state.hideConfigButton = true;
     this.$store.state.showNavbar = false;

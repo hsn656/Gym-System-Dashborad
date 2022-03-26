@@ -1,6 +1,6 @@
 import http from "../http-common";
 
-class TutorialDataService {
+class UsersService {
   getAll() {
     return http.get("/users");
   }
@@ -16,9 +16,10 @@ class TutorialDataService {
   update(id, data) {
     return http.post(`/users/${id}`, data);
   }
+
   delete(id) {
     return http.delete(`/users/${id}`);
   }
 }
 
-export default new TutorialDataService();
+export default new UsersService();
