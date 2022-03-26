@@ -147,6 +147,9 @@ export default {
     VsudButton,
   },
   created() {
+    if (localStorage.getItem("gstoken")) {
+      this.$router.push("/dashboard");
+    }
     this.$store.state.hideConfigButton = true;
     this.$store.state.showNavbar = false;
     this.$store.state.showSidenav = false;

@@ -111,6 +111,7 @@ export default {
     login(){
       AuthService.login(this.email,this.password).then((res)=>{
         localStorage.setItem("gstoken",res.data.access_token);
+        this.$router.push("/dashboard");
       }).catch(
         err=>{console.log(err)}
       );
@@ -118,6 +119,9 @@ export default {
   }
   ,
   beforeMount() {
+    if (localStorage.getItem("gstoken")) {
+      this.$router.push("/dashboard");
+    }
     this.$store.state.hideConfigButton = true;
     this.$store.state.showNavbar = false;
     this.$store.state.showSidenav = false;

@@ -22,7 +22,7 @@ const routes = [
     name: "Dashboard",
     component: Dashboard,
   },
-  //begin users routes
+  //#region users routes
   {
     path: "/users",
     name: "Users",
@@ -38,7 +38,7 @@ const routes = [
     name: "editUser",
     component: editUser,
   },
-  // end users routes
+  //#endregion
   {
     path: "/tables",
     name: "Tables",

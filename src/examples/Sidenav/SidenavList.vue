@@ -102,6 +102,7 @@
 import Icon from "@/components/Icon.vue";
 import SidenavCollapse from "./SidenavCollapse.vue";
 import SidenavCard from "./SidenavCard.vue";
+import jwt_decode from 'jwt-decode';
 
 export default {
   name: "SidenavList",
@@ -113,7 +114,12 @@ export default {
       title: "Soft UI Dashboard PRO",
       controls: "dashboardsExamples",
       isActive: "active",
+      tokenPayload:{}
     };
+  },
+  created(){
+    var token = localStorage.getItem("gstoken");
+    this.tokenPayload = jwt_decode(token);
   },
   components: {
     Icon,

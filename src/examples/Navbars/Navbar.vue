@@ -33,6 +33,7 @@
           <li class="nav-item d-flex align-items-center">
             <router-link
               :to="{ name: 'Sign In' }"
+              @click="removeToken()"
               class="px-0 nav-link font-weight-bold"
               :class="textWhite ? textWhite : 'text-body'"
             >
@@ -41,9 +42,9 @@
                 :class="this.$store.state.isRTL ? 'ms-sm-2' : 'me-sm-1'"
               ></i>
               <span v-if="this.$store.state.isRTL" class="d-sm-inline d-none"
-                >يسجل دخول</span
+                >سجل خروج</span
               >
-              <span v-else class="d-sm-inline d-none">Sign In </span>
+              <span v-else class="d-sm-inline d-none">Sign out </span>
             </router-link>
           </li>
           <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
@@ -204,6 +205,7 @@
 import Breadcrumbs from "../Breadcrumbs.vue";
 import { mapMutations, mapActions } from "vuex";
 
+
 export default {
   name: "navbar",
   data() {
@@ -218,7 +220,9 @@ export default {
   methods: {
     ...mapMutations(["navbarMinimize", "toggleConfigurator"]),
     ...mapActions(["toggleSidebarColor"]),
-
+    removeToken(){
+      localStorage.removeItem("gstoken");
+    },
     toggleSidebar() {
       this.toggleSidebarColor("bg-white");
       this.navbarMinimize();
@@ -232,6 +236,11 @@ export default {
       return this.$route.name;
     },
   },
+  beforeCreate(){
+    if(!localStorage.getItem("gstoken"))
+      this.$router.push("sign-in");
+  }
+  ,
   updated() {
     const navbar = document.getElementById("navbarBlur");
     window.addEventListener("scroll", () => {
