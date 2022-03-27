@@ -10,6 +10,7 @@ import SignUp from "@/views/SignUp.vue";
 import UsersTable from "../views/components/users/UsersTable.vue";
 import AddUser from "../views/components/users/AddUserForm.vue";
 import editUser from "../views/components/users/EditUserForm .vue";
+import Packages from "../views/components/training-packages/Packages.vue";
 
 const routes = [
   {
@@ -74,6 +75,23 @@ const routes = [
     name: "Sign Up",
     component: SignUp,
   },
+  //#region packages routes
+  {
+    path: "/packages",
+    name: "Training Packages",
+    component: Packages,
+  },
+  // {
+  //   path: "/users/add",
+  //   name: "addUser",
+  //   component: AddUser,
+  // },
+  // {
+  //   path: "/users/edit/:id",
+  //   name: "editUser",
+  //   component: editUser,
+  // },
+  //#endregion
 ];
 
 const router = createRouter({
