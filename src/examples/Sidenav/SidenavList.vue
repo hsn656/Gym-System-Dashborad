@@ -11,6 +11,34 @@
           </template>
         </sidenav-collapse>
       </li>
+      <!-- <li class="nav-item">
+        <sidenav-collapse navText="Cities" :to="{ name: 'Cities' }">
+          <template v-slot:icon>
+            <icon name="dashboard" />
+          </template>
+        </sidenav-collapse>
+      </li> -->
+      <!-- <li class="nav-item">
+        <sidenav-collapse navText="City Managers" :to="{ name: 'City Managers' }">
+          <template v-slot:icon>
+            <icon name="dashboard" />
+          </template>
+        </sidenav-collapse>
+      </li> -->
+      <!-- <li class="nav-item">
+        <sidenav-collapse navText="Branches" :to="{ name: 'Branches' }">
+          <template v-slot:icon>
+            <icon name="dashboard" />
+          </template>
+        </sidenav-collapse>
+      </li> -->
+      <!-- <li class="nav-item">
+        <sidenav-collapse navText="Branch Managers" :to="{ name: 'Branch Managers' }">
+          <template v-slot:icon>
+            <icon name="dashboard" />
+          </template>
+        </sidenav-collapse>
+      </li> -->
       <li class="nav-item">
         <sidenav-collapse navText="Users" :to="{ name: 'Users' }">
           <template v-slot:icon>
@@ -18,6 +46,27 @@
           </template>
         </sidenav-collapse>
       </li>
+      <li class="nav-item">
+        <sidenav-collapse navText="City Managers" :to="{ name: 'CityManagers' }">
+          <template v-slot:icon>
+            <icon name="dashboard" />
+          </template>
+        </sidenav-collapse>
+
+      </li><li class="nav-item">
+        <sidenav-collapse navText="Training Packages" :to="{ name: 'Training Packages' }">
+          <template v-slot:icon>
+            <icon name="dashboard" />
+          </template>
+        </sidenav-collapse>
+      </li>
+      <!-- <li class="nav-item">
+        <sidenav-collapse navText="Coaches" :to="{ name: 'Coaches' }">
+          <template v-slot:icon>
+            <icon name="dashboard" />
+          </template>
+        </sidenav-collapse>
+      </li> -->
       <li class="nav-item">
         <sidenav-collapse navText="Tables" :to="{ name: 'Tables' }">
           <template v-slot:icon>
