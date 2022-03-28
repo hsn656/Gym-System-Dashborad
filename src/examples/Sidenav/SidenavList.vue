@@ -47,6 +47,13 @@
         </sidenav-collapse>
       </li>
       <li class="nav-item">
+        <sidenav-collapse navText="City Managers" :to="{ name: 'CityManagers' }">
+          <template v-slot:icon>
+            <icon name="dashboard" />
+          </template>
+        </sidenav-collapse>
+
+      </li><li class="nav-item">
         <sidenav-collapse navText="Training Packages" :to="{ name: 'Training Packages' }">
           <template v-slot:icon>
             <icon name="dashboard" />

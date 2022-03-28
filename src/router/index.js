@@ -11,6 +11,10 @@ import UsersTable from "../views/components/users/UsersTable.vue";
 import AddUser from "../views/components/users/AddUserForm.vue";
 import editUser from "../views/components/users/EditUserForm .vue";
 import Packages from "../views/components/training-packages/Packages.vue";
+import CityManagersTable from "@/views/components/CityManagers/CityManagersTable";
+import AddCityManager from "../views/components/CityManagers/AddCityManagerForm";
+import EditCityManager from "../views/components/CityManagers/EditCityManagerForm";
+
 
 const routes = [
   {
@@ -38,6 +42,23 @@ const routes = [
     path: "/users/edit/:id",
     name: "editUser",
     component: editUser,
+  },
+  //#endregion
+  // #region City Managers routes
+  {
+    path: "/citymanagers",
+    name: "CityManagers",
+    component: CityManagersTable,
+  },
+  {
+    path: "/citymanagers/add",
+    name: "addCityManager",
+    component: AddCityManager,
+  },
+  {
+    path: "/citymanagers/edit/:id",
+    name: "editCityManager",
+    component: EditCityManager,
   },
   //#endregion
   {
