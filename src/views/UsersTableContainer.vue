@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import UsersTable from './components/UsersTable.vue';
+import UsersTable from './components/CityManagersTable.vue';
 
 export default {
   name: "tables",

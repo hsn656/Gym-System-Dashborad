@@ -1,72 +1,95 @@
 <template>
-<div class="conatiner mx-4">
- <a class="btn btn-success mb-3 ">Add package</a>
- <a class="btn btn-primary mb-3 mx-3">Buy package to user</a>
- <div class="row d-flex">
- <div v-for="traningPackage in packages" :key="traningPackage.id" class="card mx-2 mb-3" style="width: 18rem;">
-  <div class="card-body">
-    <img src="https://via.placeholder.com/150" class="card-img-top" alt="">
-    <h5 class="card-title">{{ traningPackage.name }}</h5>
-    <h5 class="card-text">price: {{ traningPackage.price }}</h5>
-    <h5 class="card-text">{{ traningPackage.number_of_sessions }} sessions</h5>
-    <div class="d-flex justify-content-between">
-        <a href="#" class="btn btn-info">Edit</a>
-        <button class="btn btn-danger" @click="deletePackage(traningPackage.id)">Delete</button>
-        
+  <div class="conatiner mx-4">
+    <!-- <a class="btn btn-success mb-3 ">Add package</a> -->
+    <add-component @add-package="updatePackageArray" />
+    <a class="btn btn-primary mb-3 mx-3">Buy package to user</a>
+    <div class="row d-flex">
+      <div
+        v-for="traningPackage in packages"
+        :key="traningPackage.id"
+        class="card mx-2 mb-3"
+        style="width: 18rem"
+      >
+        <div class="card-body">
+          <img
+            src="https://via.placeholder.com/150"
+            class="card-img-top"
+            alt=""
+          />
+          <h5 class="card-title">{{ traningPackage.name }}</h5>
+          <h5 class="card-text">price: {{ traningPackage.price }}</h5>
+          <h5 class="card-text">
+            {{ traningPackage.number_of_sessions }} sessions
+          </h5>
+          <div class="d-flex justify-content-between">
+            <a href="#" class="btn btn-info">Edit</a>
+            <!-- <a href="#" class="btn btn-primary">Subscribe</a> -->
+            <button
+              class="btn btn-danger"
+              @click="deletePackage(traningPackage.id)"
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
- </div>
- </div>
-
-
-
-</div>
- 
 </template>
 
 <script>
 import PackageService from "../../../services/PackageService";
-
+import addComponent from "./AddPackage.vue";
 export default {
-    data() {
+  data() {
     return {
-      packages:[]
+      packages: [],
     };
   },
 
-  async created(){
+  components: {
+    addComponent,
+  },
+
+  async created() {
     this.getPackages();
   },
-    
-  methods:{
-      getPackages() {
+
+  methods: {
+    getPackages() {
       PackageService.getAll()
-        .then(response => {
+        .then((response) => {
           this.packages = response.data;
           console.log(response.data);
         })
-        .catch(e => {
+        .catch((e) => {
           console.log(e);
         });
     },
 
-    deletePackage(id){
+    deletePackage(id) {
       if (!confirm("are you sure?")) return;
 
-      PackageService.delete(id).then(res=>{
+      PackageService.delete(id)
+        .then((res) => {
           console.log(res);
-          this.packages=this.packages.filter(packages=>packages.id!==id);
-        }).catch(err=>{
+          this.packages = this.packages.filter(
+            (packages) => packages.id !== id
+          );
+        })
+        .catch((err) => {
           console.log(err);
         });
     },
-  }
 
-}
-
-
+    updatePackageArray(data) {
+      // alert("from add in packages")
+      this.packages.push(data);
+    },
+  },
+  emits: ["add-package"],
+};
 </script>
 
 <style>
-
 </style>
