@@ -8,6 +8,10 @@ class PackageService {
   delete(id) {
     return http.delete(`/packages/${id}`);
   }
+
+  create(data) {
+    return http.post("/packages", data);
+  }
 }
 
 export default new PackageService();
