@@ -11,6 +11,8 @@ import UsersTable from "../views/components/users/UsersTable.vue";
 import AddUser from "../views/components/users/AddUserForm.vue";
 import editUser from "../views/components/users/EditUserForm .vue";
 import Packages from "../views/components/training-packages/Packages.vue";
+import SessionTableContainer from "@/views/components/sessions/SessionTableContainer";
+import AddSessionForm2 from "@/views/components/sessions/AddSessionForm2";
 import CityManagersTable from "@/views/components/CityManagers/CityManagersTable";
 import AddCityManager from "../views/components/CityManagers/AddCityManagerForm";
 import EditCityManager from "../views/components/CityManagers/EditCityManagerForm";
@@ -113,6 +115,18 @@ const routes = [
   //   component: editUser,
   // },
   //#endregion
+  //#region Sessions routes
+  {
+    path: "/sessions",
+    name: "Sessions",
+    component: SessionTableContainer,
+  }
+
+  ,{
+  path: "/sessions/add",
+    name: "AddSessionForm2",
+    component: AddSessionForm2
+  }
 ];
 
 const router = createRouter({
