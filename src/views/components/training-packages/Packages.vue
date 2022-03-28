@@ -22,7 +22,14 @@
             {{ traningPackage.number_of_sessions }} sessions
           </h5>
           <div class="d-flex justify-content-between">
-            <a href="#" class="btn btn-info">Edit</a>
+            <a
+              href="#"
+              class="btn btn-info"
+              data-bs-target="#editPackageModal"
+              data-bs-toggle="modal"
+              @click="fillForm(traningPackage.id)"
+              >Edit</a
+            >
             <!-- <a href="#" class="btn btn-primary">Subscribe</a> -->
             <button
               class="btn btn-danger"
@@ -31,6 +38,44 @@
               Delete
             </button>
           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- edit modal -->
+  <div
+    class="modal fade"
+    id="editPackageModal"
+    data-bs-keyboard="false"
+    data-bs-backdrop="static"
+  >
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5>Edit training package</h5>
+        </div>
+        <div class="modal-body">
+          <form>
+            <input type="text" class="form-control my-2" v-model="name" />
+            <input type="text" class="form-control my-2" v-model="price" />
+            <input
+              type="text"
+              class="form-control my-2"
+              v-model="number_of_sessions"
+            />
+          </form>
+        </div>
+        <div class="moda-footer d-flex flex-row-reverse px-3">
+          <button class="btn btn-danger ms-3" data-bs-dismiss="modal">
+            Cancel
+          </button>
+          <button
+            class="btn btn-success"
+            data-bs-dismiss="modal"
+            @click="updatePackage(packageId)"
+          >
+            Update
+          </button>
         </div>
       </div>
     </div>
@@ -44,6 +89,10 @@ export default {
   data() {
     return {
       packages: [],
+      name: "",
+      price: "",
+      number_of_sessions: "",
+      packageId: "",
     };
   },
 
@@ -83,8 +132,48 @@ export default {
     },
 
     updatePackageArray(data) {
-      // alert("from add in packages")
       this.packages.push(data);
+    },
+
+    clearForm() {
+      (this.name = ""), (this.price = ""), (this.number_of_sessions = "");
+    },
+
+    fillForm(_id) {
+      this.name = this.packages.find((p) => p.id == _id).name;
+      this.price = this.packages.find((p) => p.id == _id).price;
+      this.number_of_sessions = this.packages.find(
+        (p) => p.id == _id
+      ).number_of_sessions;
+      this.packageId = _id;
+      // console.log(_id);
+    },
+
+    updatePackage(_id) {
+      let data = {
+        name: this.name,
+        price: this.price,
+        number_of_sessions: this.number_of_sessions,
+      };
+
+      PackageService.update(_id, data)
+        .then((res) => {
+          if (res.data == "Package was updated successfully") {
+            this.packages = this.packages.map((p) =>
+              p.id == _id
+                ? {
+                    name: this.name,
+                    price: this.price,
+                    number_of_sessions: this.number_of_sessions,
+                  }
+                : p
+            );
+          }
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
   },
   emits: ["add-package"],

@@ -12,6 +12,10 @@ class PackageService {
   create(data) {
     return http.post("/packages", data);
   }
+
+  update(id, data) {
+    return http.put(`/packages/${id}`, data);
+  }
 }
 
 export default new PackageService();
