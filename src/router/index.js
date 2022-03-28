@@ -15,6 +15,7 @@ import CityManagersTable from "@/views/components/CityManagers/CityManagersTable
 import AddCityManager from "../views/components/CityManagers/AddCityManagerForm";
 import EditCityManager from "../views/components/CityManagers/EditCityManagerForm";
 
+
 const routes = [
   {
     path: "/",
