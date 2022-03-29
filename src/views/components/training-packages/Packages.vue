@@ -56,6 +56,7 @@
         </div>
         <div class="modal-body">
           <form>
+            <input type="hidden" v-model="id" />
             <input type="text" class="form-control my-2" v-model="name" />
             <input type="text" class="form-control my-2" v-model="price" />
             <input
@@ -93,6 +94,7 @@ export default {
       price: "",
       number_of_sessions: "",
       packageId: "",
+      id: "",
     };
   },
 
@@ -131,49 +133,58 @@ export default {
         });
     },
 
-    updatePackageArray(data) {
-      this.packages.push(data);
-    },
-
-    clearForm() {
-      (this.name = ""), (this.price = ""), (this.number_of_sessions = "");
+    // try to refactor
+    async updatePackageArray() {
+      this.getPackages();
     },
 
     fillForm(_id) {
+      this.id = this.packages.find((p) => p.id == _id).id;
       this.name = this.packages.find((p) => p.id == _id).name;
       this.price = this.packages.find((p) => p.id == _id).price;
       this.number_of_sessions = this.packages.find(
         (p) => p.id == _id
       ).number_of_sessions;
       this.packageId = _id;
-      // console.log(_id);
+      console.log(this.id);
     },
 
     updatePackage(_id) {
-      let data = {
-        name: this.name,
-        price: this.price,
-        number_of_sessions: this.number_of_sessions,
-      };
+      if (
+        this.name == "" ||
+        this.price == "" ||
+        this.number_of_sessions == ""
+      ) {
+        alert("all fields are required !");
+      } else {
+        let data = {
+          name: this.name,
+          price: this.price,
+          number_of_sessions: this.number_of_sessions,
+        };
 
-      PackageService.update(_id, data)
-        .then((res) => {
-          if (res.data == "Package was updated successfully") {
-            this.packages = this.packages.map((p) =>
-              p.id == _id
-                ? {
-                    name: this.name,
-                    price: this.price,
-                    number_of_sessions: this.number_of_sessions,
-                  }
-                : p
-            );
-          }
-          console.log(res);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+        PackageService.update(_id, data)
+          .then((res) => {
+            if (res.data == "Package was updated successfully") {
+              this.packages = this.packages.map((p) =>
+                p.id == _id
+                  ? {
+                      id: this.id,
+                      name: this.name,
+                      price: this.price,
+                      number_of_sessions: this.number_of_sessions,
+                    }
+                  : p
+              );
+            }
+
+            console.log(res);
+            console.log(this.id);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
     },
   },
   emits: ["add-package"],

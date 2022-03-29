@@ -96,11 +96,7 @@ export default {
             // this.isAdded = true;
             // console.log(this.isAdded);
             if (res.data == "Package was created successfully") {
-              this.$emit("add-package", {
-                name: this.name,
-                price: this.price,
-                number_of_sessions: this.number_of_sessions,
-              });
+              this.$emit("add-package");
             } else {
               alert("invalid input, please try again");
             }
