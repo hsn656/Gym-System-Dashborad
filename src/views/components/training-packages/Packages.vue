@@ -12,8 +12,14 @@
       >
         <div class="card-body">
           <img
-            src="https://via.placeholder.com/150"
+            :src="'http://127.0.0.1:8000/' + traningPackage.image"
             class="card-img-top"
+            style="
+              max-height: 200px;
+              min-height: 200px;
+              max-width: 100%;
+              min-width: 100%;
+            "
             alt=""
           />
           <h5 class="card-title">{{ traningPackage.name }}</h5>

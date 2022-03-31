@@ -19,7 +19,7 @@
           <h5>Add new training package</h5>
         </div>
         <div class="modal-body">
-          <form>
+          <form enctype="multipart/form-data">
             <input
               type="text"
               class="form-control my-2"
@@ -40,6 +40,32 @@
               v-model="number_of_sessions"
               placeholder="Number of sessions"
               required
+            />
+            <input
+              type="file"
+              ref="fileInput"
+              name="file"
+              @change="onFileChange"
+              style="display: none"
+            />
+
+            <input
+              type="button"
+              value="Browse..."
+              @click="this.$refs.fileInput.click()"
+            />
+
+            <img
+              :src="getImageSrc"
+              alt=""
+              ref="imagePH"
+              style="
+                max-height: 120px;
+                min-height: 120px;
+                max-width: 120px;
+                min-width: 120px;
+              "
+              class="formImage"
             />
           </form>
         </div>
@@ -73,11 +99,29 @@ export default {
       name: "",
       price: "",
       number_of_sessions: "",
+      file: "",
+      imageSrc: "https://via.placeholder.com/150/150",
       //   isAdded: false,
     };
   },
+  computed: {
+    getImageSrc() {
+      return this.imageSrc;
+    },
+  },
   methods: {
+    onFileChange(event) {
+      this.file = event.target.files[0];
+      console.log(event.target.files);
+      var fr = new FileReader();
+      fr.onload = () => {
+        this.imageSrc = fr.result;
+      };
+      fr.readAsDataURL(this.file);
+    },
+
     addPackage() {
+      const formData = new FormData();
       if (
         this.name == "" ||
         this.price == "" ||
@@ -85,13 +129,17 @@ export default {
       ) {
         alert("all fields are required !");
       } else {
-        let data = {
-          name: this.name,
-          price: this.price,
-          number_of_sessions: this.number_of_sessions,
-        };
+        // let data = {
+        //   name: this.name,
+        //   price: this.price,
+        //   number_of_sessions: this.number_of_sessions,
+        // };
+        formData.append("name", this.name);
+        formData.append("price", this.price);
+        formData.append("number_of_sessions", this.number_of_sessions);
+        formData.append("image", this.file);
 
-        PackageService.create(data)
+        PackageService.create(formData)
           .then((res) => {
             // this.isAdded = true;
             // console.log(this.isAdded);
@@ -112,7 +160,11 @@ export default {
     },
 
     clearForm() {
-      (this.name = ""), (this.price = ""), (this.number_of_sessions = "");
+      this.name = "";
+      this.price = "";
+      this.number_of_sessions = "";
+      this.file = "";
+      this.imageSrc = "https://via.placeholder.com/150/150";
     },
   },
 
@@ -120,4 +172,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.formImage {
+  margin-left: 50px;
+}
+</style>
