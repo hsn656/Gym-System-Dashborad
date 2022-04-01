@@ -8,6 +8,7 @@ import Rtl from "@/views/Rtl.vue";
 import SignIn from "@/views/SignIn.vue";
 import SignUp from "@/views/SignUp.vue";
 import UsersTable from "../views/components/users/UsersTable.vue";
+import UsersTable2 from "../views/components/users/UsersTable2.vue";
 import AddUser from "../views/components/users/AddUserForm.vue";
 import editUser from "../views/components/users/EditUserForm .vue";
 import Packages from "../views/components/training-packages/Packages.vue";
@@ -16,7 +17,6 @@ import AddSessionForm2 from "@/views/components/sessions/AddSessionForm2";
 import CityManagersTable from "@/views/components/CityManagers/CityManagersTable";
 import AddCityManager from "../views/components/CityManagers/AddCityManagerForm";
 import EditCityManager from "../views/components/CityManagers/EditCityManagerForm";
-
 
 const routes = [
   {
@@ -34,6 +34,11 @@ const routes = [
     path: "/users",
     name: "Users",
     component: UsersTable,
+  },
+  {
+    path: "/users2",
+    name: "Users2",
+    component: UsersTable2,
   },
   {
     path: "/users/add",
@@ -120,13 +125,13 @@ const routes = [
     path: "/sessions",
     name: "Sessions",
     component: SessionTableContainer,
-  }
+  },
 
-  ,{
-  path: "/sessions/add",
+  {
+    path: "/sessions/add",
     name: "AddSessionForm2",
-    component: AddSessionForm2
-  }
+    component: AddSessionForm2,
+  },
 ];
 
 const router = createRouter({
