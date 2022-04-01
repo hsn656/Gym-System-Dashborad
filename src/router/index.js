@@ -18,6 +18,9 @@ import CityManagersTable from "@/views/components/CityManagers/CityManagersTable
 import AddCityManager from "../views/components/CityManagers/AddCityManagerForm";
 import EditCityManager from "../views/components/CityManagers/EditCityManagerForm";
 import EditSessionForm from "@/views/components/sessions/EditSessionForm ";
+import CoachesTableContainer from "@/views/components/coaches/CoachesTableContainer";
+import AddCoachForm from "@/views/components/coaches/AddCoachForm";
+import EditCoachForm from "@/views/components/coaches/EditCoachForm";
 
 const routes = [
   {
@@ -137,8 +140,23 @@ const routes = [
     path: "/sessions/edit/:id",
     name: "editSession",
     component: EditSessionForm
+  },
+  {
+    path: "/coaches",
+    name: "Coaches",
+    component: CoachesTableContainer,
+  },
+
+  {
+    path: "/coaches/add",
+    name: "AddCoachForm",
+    component: AddCoachForm
+  },
+  {
+    path: "/coaches/edit/:id",
+    name: "editCoach",
+    component: EditCoachForm
   }
-  ,
 ];
 
 const router = createRouter({
