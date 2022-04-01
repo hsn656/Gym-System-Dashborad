@@ -16,6 +16,7 @@ import AddSessionForm2 from "@/views/components/sessions/AddSessionForm2";
 import CityManagersTable from "@/views/components/CityManagers/CityManagersTable";
 import AddCityManager from "../views/components/CityManagers/AddCityManagerForm";
 import EditCityManager from "../views/components/CityManagers/EditCityManagerForm";
+import EditSessionForm from "@/views/components/sessions/EditSessionForm ";
 
 
 const routes = [
@@ -126,6 +127,11 @@ const routes = [
   path: "/sessions/add",
     name: "AddSessionForm2",
     component: AddSessionForm2
+  },
+  {
+    path: "/sessions/edit/:id",
+    name: "editSession",
+    component: EditSessionForm
   }
 ];
 

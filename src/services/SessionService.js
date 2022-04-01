@@ -13,19 +13,19 @@ class SessionService {
     return http.get(`/sessions/${id}`);
   }
 
-  update(id, data) {
-    return http.post(`/sessions/${id}`, data);
+  update(data, id) {
+    return http.put(`/sessions/${id}`, data);
   }
 
   delete(id) {
     return http.delete(`/sessions/${id}`);
   }
 
-  getbranches(){
+  getbranches() {
     return http.get(`/citybranches`);
   }
 
-  getcoaches(){
+  getcoaches() {
     return http.get(`/coaches`);
   }
 }

@@ -77,7 +77,6 @@ export default {
     },
     addSession(){
         if(this.name && this.branchId && this.startDate && this.startTime && this.endDate && this.endTime && this.inputCoaches.length > 0){
-
           let Data = {
               name: this.name,
               branch_id: this.branchId,
@@ -89,7 +88,20 @@ export default {
               console.log(res);
               this.$router.push("/sessions");
             })
+        }else if(this.name && this.branchId && this.startDate && this.endDate && this.inputCoaches.length > 0){
+          let Data = {
+            name: this.name,
+            branch_id: this.branchId,
+            start_time: this.startDate + " 12:00:00",
+            end_time: this.endDate+ " 14:00:00",
+            coaches: this.inputCoaches
+          }
+          SessionService.create(Data).then(res=>{
+            console.log(res);
+            this.$router.push("/sessions");
+          })
         }
+
     }
   }
 };
