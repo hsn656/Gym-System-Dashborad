@@ -5,6 +5,13 @@ class UsersService {
     return http.get("/users");
   }
 
+  getSome(page, search) {
+    if (!page) page = 1;
+    if (!search) search = "";
+
+    return http.get(`/users/paginate?page=${page}&search=${search}`);
+  }
+
   create(data) {
     return http.post("/users", data);
   }
