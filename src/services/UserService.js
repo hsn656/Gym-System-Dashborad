@@ -5,11 +5,13 @@ class UsersService {
     return http.get("/users");
   }
 
-  getSome(page, search) {
+  getSome(page, search, sortField = "created_at", sortDirection = "asc") {
     if (!page) page = 1;
     if (!search) search = "";
 
-    return http.get(`/users/paginate?page=${page}&search=${search}`);
+    return http.get(
+      `/users/paginate?page=${page}&search=${search}&sortField=${sortField}&sortDirection=${sortDirection}`
+    );
   }
 
   create(data) {

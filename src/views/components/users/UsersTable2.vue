@@ -24,29 +24,59 @@
     </div>
     <div class="card-body px-0 pt-0 pb-2">
       <div class="table-responsive p-0">
-        <table class="table align-items-center mb-0">
+        <table class="table align-items-center mb-0 text-center">
           <thead>
-            <tr>
+            <tr >
               <th
                 class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+                data-field="name"
+                @click="sort"
               >
                 Name
+                <i
+                  v-if="sortField == 'name' && sortDirection == 'asc'"
+                  class="fas fa-arrow-up text-dark"
+                ></i>
+                <i
+                  v-if="sortField == 'name' && sortDirection == 'desc'"
+                  class="fas fa-arrow-down text-dark"
+                ></i>
               </th>
               <th
                 class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
+                data-field="email"
+                @click="sort"
               >
                 Email
+                <i
+                  v-if="sortField == 'email' && sortDirection == 'asc'"
+                  class="fas fa-arrow-up text-dark"
+                ></i>
+                <i
+                  v-if="sortField == 'email' && sortDirection == 'desc'"
+                  class="fas fa-arrow-down text-dark"
+                ></i>
               </th>
               <th
                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+                data-field="created_at"
+                @click="sort"
               >
                 created at
+                <i
+                  v-if="sortField == 'created_at' && sortDirection == 'asc'"
+                  class="fas fa-arrow-up text-dark"
+                ></i>
+                <i
+                  v-if="sortField == 'created_at' && sortDirection == 'desc'"
+                  class="fas fa-arrow-down text-dark"
+                ></i>
               </th>
               <th class="text-secondary opacity-7"></th>
               <th class="text-secondary opacity-7"></th>
             </tr>
           </thead>
-          <tbody :key="componentKey">
+          <tbody>
             <tr v-for="user in users" :key="user.id">
               <td>
                 <div class="d-flex px-2 py-1">
@@ -121,7 +151,6 @@ export default {
     return {
       users: [],
       img1,
-      componentKey: 0,
       links: [],
       search: "",
       sortField: "created_at",
@@ -140,9 +169,7 @@ export default {
     getUsers() {
       UserService.getSome()
         .then((response) => {
-          this.users = response.data.data.data;
-          this.links = response.data.data.links.slice(1, -1);
-          console.log(response.data);
+          this.rerenderTableBody(response);
         })
         .catch((e) => {
           console.log(e);
@@ -152,12 +179,9 @@ export default {
       return datetime.split("").splice(0, 10).join("");
     },
     getSearch() {
-      console.log("ss");
       UserService.getSome(null, this.search)
         .then((response) => {
-          this.users = response.data.data.data;
-          this.links = response.data.data.links.slice(1, -1);
-          console.log(response.data);
+          this.rerenderTableBody(response);
         })
         .catch((e) => {
           console.log(e);
@@ -166,9 +190,7 @@ export default {
     paginate(page) {
       UserService.getSome(page, this.search)
         .then((response) => {
-          this.users = response.data.data.data;
-          this.links = response.data.data.links.slice(1, -1);
-          console.log(response.data);
+          this.rerenderTableBody(response);
         })
         .catch((e) => {
           console.log(e);
@@ -176,19 +198,33 @@ export default {
     },
     deleteUser(id) {
       if (!confirm("are you sure?")) return;
-
       UserService.delete(id)
         .then((res) => {
           console.log(res);
-          this.users = this.users.filter((user) => user.id !== id);
-          this.forceRerender();
+          //this.users = this.users.filter((user) => user.id !== id);
+          this.getUsers();
         })
         .catch((err) => {
           console.log(err);
         });
     },
-    forceRerender() {
-      this.componentKey += 1;
+    sort(e) {
+      if (this.sortField == e.target.dataset.field)
+        this.sortDirection = this.sortDirection == "asc" ? "desc" : "asc";
+      this.sortField = e.target.dataset.field;
+      UserService.getSome(null, this.search, this.sortField, this.sortDirection)
+        .then((response) => {
+          console.log("response", response);
+          this.rerenderTableBody(response);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    rerenderTableBody(response) {
+      this.users = response.data.data.data;
+      this.links = response.data.data.links.slice(1, -1);
+      console.log(response.data);
     },
   },
 };
