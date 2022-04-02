@@ -70,6 +70,32 @@
               class="form-control my-2"
               v-model="number_of_sessions"
             />
+            <input
+              type="file"
+              ref="fileInput"
+              name="file"
+              @change="onFileChange"
+              style="display: none"
+            />
+
+            <input
+              type="button"
+              value="Browse..."
+              @click="this.$refs.fileInput.click()"
+            />
+
+            <img
+              :src="getImageSrc"
+              alt=""
+              ref="imagePH"
+              style="
+                max-height: 120px;
+                min-height: 120px;
+                max-width: 120px;
+                min-width: 120px;
+              "
+              class="formImage"
+            />
           </form>
         </div>
         <div class="moda-footer d-flex flex-row-reverse px-3">
@@ -101,7 +127,15 @@ export default {
       number_of_sessions: "",
       packageId: "",
       id: "",
+      image: "",
+      imageSrc: "",
+      file: "",
     };
+  },
+  computed: {
+    getImageSrc() {
+      return this.imageSrc;
+    },
   },
 
   components: {
@@ -113,6 +147,16 @@ export default {
   },
 
   methods: {
+    onFileChange(event) {
+      if ((this.file = event.target.files[0])) {
+        console.log(event.target.files);
+        var fr = new FileReader();
+        fr.onload = () => {
+          this.imageSrc = fr.result;
+        };
+        fr.readAsDataURL(this.file);
+      }
+    },
     getPackages() {
       PackageService.getAll()
         .then((response) => {
@@ -140,12 +184,20 @@ export default {
     },
 
     // try to refactor
-    async updatePackageArray() {
-      this.getPackages();
+    updatePackageArray(e) {
+      this.packages.push(e);
+      console.log(e);
     },
 
     fillForm(_id) {
       this.id = this.packages.find((p) => p.id == _id).id;
+      this.image = this.packages.find((p) => p.id == _id).image;
+      // this.imageSrc = `http://127.0.0.1:8000/${
+      //   this.packages.find((p) => p.id == _id).image
+      // }`;
+      this.imageSrc = `http://127.0.0.1:8000/${
+        this.packages.find((p) => p.id == _id).image
+      }`;
       this.name = this.packages.find((p) => p.id == _id).name;
       this.price = this.packages.find((p) => p.id == _id).price;
       this.number_of_sessions = this.packages.find(
@@ -156,6 +208,8 @@ export default {
     },
 
     updatePackage(_id) {
+      const formData = new FormData();
+
       if (
         this.name == "" ||
         this.price == "" ||
@@ -163,15 +217,25 @@ export default {
       ) {
         alert("all fields are required !");
       } else {
-        let data = {
-          name: this.name,
-          price: this.price,
-          number_of_sessions: this.number_of_sessions,
-        };
+        // let data = {
+        //   name: this.name,
+        //   price: this.price,
+        //   number_of_sessions: this.number_of_sessions,
+        //   image: this.image,
+        // };
 
-        PackageService.update(_id, data)
+        formData.append("name", this.name);
+        formData.append("price", this.price);
+        formData.append("number_of_sessions", this.number_of_sessions);
+        formData.append("image", this.file);
+
+        for (var pair of formData.entries()) {
+          console.log(pair[0] + ", " + pair[1]);
+        }
+
+        PackageService.update(_id, formData)
           .then((res) => {
-            if (res.data == "Package was updated successfully") {
+            if (res.data.message == "Package was updated successfully") {
               this.packages = this.packages.map((p) =>
                 p.id == _id
                   ? {
@@ -179,6 +243,7 @@ export default {
                       name: this.name,
                       price: this.price,
                       number_of_sessions: this.number_of_sessions,
+                      image: res.data.package.image,
                     }
                   : p
               );
@@ -197,5 +262,8 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+.formImage {
+  margin-left: 50px;
+}
 </style>

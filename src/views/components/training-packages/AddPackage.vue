@@ -96,11 +96,12 @@ import PackageService from "../../../services/PackageService";
 export default {
   data() {
     return {
+      id: "",
       name: "",
       price: "",
       number_of_sessions: "",
       file: "",
-      imageSrc: "https://via.placeholder.com/150/150",
+      imageSrc: "http://127.0.0.1:8000/assets/images/noImageYet.jpg",
       //   isAdded: false,
     };
   },
@@ -142,9 +143,10 @@ export default {
         PackageService.create(formData)
           .then((res) => {
             // this.isAdded = true;
-            // console.log(this.isAdded);
-            if (res.data == "Package was created successfully") {
-              this.$emit("add-package");
+            console.log(res);
+            if (res.data.result == "Package was created successfully") {
+              this.id = res.data.package.id;
+              this.$emit("add-package", res.data.package);
             } else {
               alert("invalid input, please try again");
             }
@@ -168,7 +170,7 @@ export default {
     },
   },
 
-  emits: ["addPackage"],
+  emits: ["add-package"],
 };
 </script>
 

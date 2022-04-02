@@ -14,7 +14,7 @@ class PackageService {
   }
 
   update(id, data) {
-    return http.put(`/packages/${id}`, data);
+    return http.post(`/packages/${id}`, data);
   }
 }
 
