@@ -166,7 +166,7 @@ export default {
       this.price = "";
       this.number_of_sessions = "";
       this.file = "";
-      this.imageSrc = "https://via.placeholder.com/150/150";
+      this.imageSrc = "http://127.0.0.1:8000/assets/images/noImageYet.jpg";
     },
   },
 
