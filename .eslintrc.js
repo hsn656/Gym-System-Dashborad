@@ -1,7 +1,7 @@
 module.exports = {
-  root: false,
+  root: true,
   env: {
-    node: false,
+    node: true,
   },
   extends: ["plugin:vue/vue3-essential", "eslint:recommended", "@vue/prettier"],
   parserOptions: {

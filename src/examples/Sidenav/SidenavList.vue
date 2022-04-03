@@ -78,6 +78,17 @@
         </sidenav-collapse>
       </li>
 
+      <li class="nav-item">
+        <sidenav-collapse
+          navText="Attendance"
+          :to="{ name: 'Attendance' }"
+        >
+          <template v-slot:icon>
+            <icon name="dashboard" />
+          </template>
+        </sidenav-collapse>
+      </li>
+
 
 
 

@@ -24,6 +24,7 @@ import EditCoachForm from "@/views/components/coaches/EditCoachForm";
 import Cities from "../views/components/Cities/Cities";
 import AddCityForm from "../views/components/Cities/AddCityForm";
 import EditCityForm from "../views/components/Cities/EditCityForm";
+import AttendanceTable from "../views/components/Attendance/AttendanceTable";
 
 const routes = [
   {
@@ -91,6 +92,14 @@ const routes = [
     name: "Edit City",
     component: EditCityForm,
   },
+  // #endregion
+  // #region Attendance routes
+  {
+    path: "/sheets",
+    name: "Attendance",
+    component: AttendanceTable,
+  },
+
   //#endregion
   {
     path: "/tables",
