@@ -9,16 +9,19 @@
     </div>
     <div class="card-body px-0 pt-0 pb-2">
       <div class="table-responsive p-0">
-
-        <select class="form-select w-25" v-model="city.id" @change="getBranches">
+        <label for="city">City</label>
+        <select id="city" class="form-select w-25" v-model="city.id" @change="getBranches">
           <option v-for="city in cities" :key="city.id" v-bind:value="city.id">{{ city.name }}</option>
         </select>
 
-        <select class="form-select w-25" v-model="branchId">
-          <option v-for="branch in branches" :key="branch.id" v-bind:value="branch.id" @change="getAttendance">{{ branch.name }}</option>
-        </select>
+        <div v-if="city.id">
+          <label for="branch">Branch</label>
+          <select id="branch" class="form-select w-25" v-model="branchId" @change="getAttendance">
+            <option v-for="branch in branches" :key="branch.id" v-bind:value="branch.id">{{ branch.name }}</option>
+          </select>
+        </div>
 
-        <table class="table align-items-center mb-0">
+        <table v-if="branchId" class="table align-items-center mb-0">
           <thead>
           <tr>
             <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">User Name</th>
@@ -104,15 +107,13 @@ export default {
 
   async created() {
     this.getCities();
-    // this.getAttendance();
   },
 
   components: {
     VsudAvatar
   },
   methods: {
-   async getAttendance() {
-      console.log("Hello");
+    async getAttendance() {
       AttendanceService.getAll(this.branchId)
         .then(response => {
           this.attendanceSheet = response.data;
@@ -139,13 +140,10 @@ export default {
           console.log(e);
         });
     },
-    showCityID() {
-      console.log(this.city.id);
-    },
     getBranches() {
-      BranchService.getBranchesByCityId(this.city.id)
+      BranchService.getByCityId(this.city.id)
         .then(response => {
-          this.branches = response.data;
+          this.branches = response.data.data;
           console.log(response.data);
         })
         .catch(e => {

@@ -1,17 +1,10 @@
 import http from "../http-common";
 
-class BranchService {
-
-  getBranchesByCityId(id) {
-    return http.get(`/branches/${id}`);
+class BranchesService {
+  
+  getByCityId(cityId) {
+    return http.get(`/branches?city_id=${cityId}`);
   }
-
-
-
-
-
-
-
 }
 
-export default new BranchService();
+export default new BranchesService();
