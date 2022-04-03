@@ -21,6 +21,9 @@ import EditSessionForm from "@/views/components/sessions/EditSessionForm ";
 import CoachesTableContainer from "@/views/components/coaches/CoachesTableContainer";
 import AddCoachForm from "@/views/components/coaches/AddCoachForm";
 import EditCoachForm from "@/views/components/coaches/EditCoachForm";
+import Cities from "../views/components/Cities/Cities";
+import AddCityForm from "../views/components/Cities/AddCityForm";
+import EditCityForm from "../views/components/Cities/EditCityForm";
 
 const routes = [
   {
@@ -70,6 +73,23 @@ const routes = [
     path: "/citymanagers/edit/:id",
     name: "editCityManager",
     component: EditCityManager,
+  },
+  //#endregion
+  // #region Cities routes
+  {
+    path: "/cities",
+    name: "Cities",
+    component: Cities,
+  },
+  {
+    path: "/cities/add",
+    name: "Add City",
+    component: AddCityForm,
+  },
+  {
+    path: "/cities/edit/:id",
+    name: "Edit City",
+    component: EditCityForm,
   },
   //#endregion
   {
