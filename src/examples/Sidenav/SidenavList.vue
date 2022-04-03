@@ -53,6 +53,10 @@
           </template>
         </sidenav-collapse>
       </li>
+
+
+
+
       <li class="nav-item">
         <sidenav-collapse
           navText="City Managers"
@@ -63,6 +67,24 @@
           </template>
         </sidenav-collapse>
       </li>
+      <li class="nav-item">
+        <sidenav-collapse
+          navText="Cities"
+          :to="{ name: 'Cities' }"
+        >
+          <template v-slot:icon>
+            <icon name="dashboard" />
+          </template>
+        </sidenav-collapse>
+      </li>
+
+
+
+
+
+
+
+
       <li class="nav-item">
         <sidenav-collapse
           navText="Training Packages"
