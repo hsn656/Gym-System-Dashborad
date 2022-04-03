@@ -64,6 +64,7 @@
 <script>
 import UserService from "../../../services/UserService";
 import { Form, Field, ErrorMessage } from "vee-validate";
+import Swal from "sweetalert2";
 
 export default {
   name: "add-user",
@@ -87,6 +88,7 @@ export default {
   methods: {
     onSubmit(values) {
       console.log(values);
+      this.addUser();
     },
     validateEmail(value) {
       // if the field is empty
@@ -109,11 +111,20 @@ export default {
         image_url: this.user.image_url,
         password: this.user.password,
       };
-
+      console.log(data);
       UserService.create(data)
         .then((res) => {
           console.log(res);
-          this.isAdded = true;
+          if (res.data.isSuccess) this.isAdded = true;
+          else {
+            // let error=res.data.errors?.email?res.data.errors?.email[0]:res.data.errors.national_id[0];
+            let error= Object.values(res.data.errors).reduce((p,n)=>p+" & "+n);
+            Swal.fire({
+              text:  error,
+              icon: "error",
+              confirmButtonText: "ok",
+            });
+          }
         })
         .catch((err) => {
           console.log(err);
