@@ -96,7 +96,7 @@ export default {
     getUsers() {
       UserService.getAll()
         .then(response => {
-          this.users = response.data;
+          this.users = response.data.data;
           console.log(response.data);
         })
         .catch(e => {

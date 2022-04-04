@@ -2,7 +2,7 @@
   <div class="card mb-4">
     <div class="d-flex justify-content-between">
       <div class="card-header pb-0 mt-2">
-        <h6>Users table</h6>
+        <h6>Branches table</h6>
       </div>
       <div class="input-group h-50 w-25 mt-4">
         <span class="input-group-text text-body"
@@ -143,10 +143,10 @@
 <script>
 import VsudAvatar from "@/components/VsudAvatar.vue";
 import img1 from "./team-2.jpg";
-import UserService from "@/services/UserService";
+import BranchService from "../../../services/BranchService.js";
 
 export default {
-  name: "users-table",
+  name: "branches-table",
   data() {
     return {
       users: [],
@@ -167,7 +167,7 @@ export default {
   },
   methods: {
     getUsers() {
-      UserService.getSome()
+      BranchService.getSomeByCityId()
         .then((response) => {
           this.rerenderTableBody(response);
         })
@@ -179,7 +179,7 @@ export default {
       return datetime.split("").splice(0, 10).join("");
     },
     getSearch() {
-      UserService.getSome(null, this.search)
+      BranchService.getSomeByCityId(null, this.search)
         .then((response) => {
           this.rerenderTableBody(response);
         })
@@ -188,7 +188,7 @@ export default {
         });
     },
     paginate(page) {
-      UserService.getSome(page, this.search)
+      BranchService.getSomeByCityId(null,page, this.search)
         .then((response) => {
           this.rerenderTableBody(response);
         })
@@ -198,7 +198,7 @@ export default {
     },
     deleteUser(id) {
       if (!confirm("are you sure?")) return;
-      UserService.delete(id)
+      BranchService.delete(id)
         .then((res) => {
           console.log(res);
           //this.users = this.users.filter((user) => user.id !== id);
@@ -212,7 +212,7 @@ export default {
       if (this.sortField == e.target.dataset.field)
         this.sortDirection = this.sortDirection == "asc" ? "desc" : "asc";
       this.sortField = e.target.dataset.field;
-      UserService.getSome(null, this.search, this.sortField, this.sortDirection)
+      BranchService.getSome(null, this.search, this.sortField, this.sortDirection)
         .then((response) => {
           console.log("response", response);
           this.rerenderTableBody(response);
@@ -223,7 +223,7 @@ export default {
     },
     rerenderTableBody(response) {
       this.users = response.data.data.data;
-      this.links = response.data.data.links.slice(1, -1);
+      this.links = response.data.data.links;
       console.log(response.data);
     },
   },

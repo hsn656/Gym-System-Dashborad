@@ -21,6 +21,11 @@ import EditSessionForm from "@/views/components/sessions/EditSessionForm ";
 import CoachesTableContainer from "@/views/components/coaches/CoachesTableContainer";
 import AddCoachForm from "@/views/components/coaches/AddCoachForm";
 import EditCoachForm from "@/views/components/coaches/EditCoachForm";
+import Cities from "../views/components/Cities/Cities";
+import AddCityForm from "../views/components/Cities/AddCityForm";
+import EditCityForm from "../views/components/Cities/EditCityForm";
+import AttendanceTable from "../views/components/Attendance/AttendanceTable";
+import BranchesTable from "../views/components/branches/BranchesTable";
 
 const routes = [
   {
@@ -71,6 +76,38 @@ const routes = [
     name: "editCityManager",
     component: EditCityManager,
   },
+  //#endregion
+  // #region Cities routes
+  {
+    path: "/cities",
+    name: "Cities",
+    component: Cities,
+  },
+  {
+    path: "/cities/add",
+    name: "Add City",
+    component: AddCityForm,
+  },
+  {
+    path: "/cities/edit/:id",
+    name: "Edit City",
+    component: EditCityForm,
+  },
+  // #endregion
+  // #region Branches routes
+  {
+    path: "/branches",
+    name: "Branches",
+    component: BranchesTable,
+  },
+  //#endregion
+  // #region Attendance routes
+  {
+    path: "/sheets",
+    name: "Attendance",
+    component: AttendanceTable,
+  },
+
   //#endregion
   {
     path: "/tables",
@@ -134,12 +171,12 @@ const routes = [
   {
     path: "/sessions/add",
     name: "AddSessionForm2",
-    component: AddSessionForm2
+    component: AddSessionForm2,
   },
   {
     path: "/sessions/edit/:id",
     name: "editSession",
-    component: EditSessionForm
+    component: EditSessionForm,
   },
   {
     path: "/coaches",
@@ -150,13 +187,13 @@ const routes = [
   {
     path: "/coaches/add",
     name: "AddCoachForm",
-    component: AddCoachForm
+    component: AddCoachForm,
   },
   {
     path: "/coaches/edit/:id",
     name: "editCoach",
-    component: EditCoachForm
-  }
+    component: EditCoachForm,
+  },
 ];
 
 const router = createRouter({

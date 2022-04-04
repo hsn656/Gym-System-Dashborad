@@ -5,10 +5,9 @@ import router from "./router";
 import "./assets/css/nucleo-icons.css";
 import "./assets/css/nucleo-svg.css";
 import SoftUIDashboard from "./soft-ui-dashboard";
-// import Vue from 'vue';
-// import VueJWT from 'vuejs-jwt';
- 
+import { getFormValidators } from "./globalValidator";
 
+getFormValidators();
 
 const appInstance = createApp(App);
 appInstance.use(store);
