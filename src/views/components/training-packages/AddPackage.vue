@@ -144,9 +144,9 @@ export default {
           .then((res) => {
             // this.isAdded = true;
             console.log(res);
-            if (res.data.result == "Package was created successfully") {
-              this.id = res.data.package.id;
-              this.$emit("add-package", res.data.package);
+            if (res.data.data.result == "Package was created successfully") {
+              this.id = res.data.data.package.id;
+              this.$emit("add-package", res.data.data.package);
             } else {
               alert("invalid input, please try again");
             }
@@ -166,7 +166,7 @@ export default {
       this.price = "";
       this.number_of_sessions = "";
       this.file = "";
-      this.imageSrc = "https://via.placeholder.com/150/150";
+      this.imageSrc = "http://127.0.0.1:8000/assets/images/noImageYet.jpg";
     },
   },
 
