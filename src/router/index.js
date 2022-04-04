@@ -25,6 +25,7 @@ import Cities from "../views/components/Cities/Cities";
 import AddCityForm from "../views/components/Cities/AddCityForm";
 import EditCityForm from "../views/components/Cities/EditCityForm";
 import AttendanceTable from "../views/components/Attendance/AttendanceTable";
+import BranchesTable from "../views/components/branches/BranchesTable";
 
 const routes = [
   {
@@ -93,6 +94,13 @@ const routes = [
     component: EditCityForm,
   },
   // #endregion
+  // #region Branches routes
+  {
+    path: "/branches",
+    name: "Branches",
+    component: BranchesTable,
+  },
+  //#endregion
   // #region Attendance routes
   {
     path: "/sheets",
@@ -163,12 +171,12 @@ const routes = [
   {
     path: "/sessions/add",
     name: "AddSessionForm2",
-    component: AddSessionForm2
+    component: AddSessionForm2,
   },
   {
     path: "/sessions/edit/:id",
     name: "editSession",
-    component: EditSessionForm
+    component: EditSessionForm,
   },
   {
     path: "/coaches",
@@ -179,13 +187,13 @@ const routes = [
   {
     path: "/coaches/add",
     name: "AddCoachForm",
-    component: AddCoachForm
+    component: AddCoachForm,
   },
   {
     path: "/coaches/edit/:id",
     name: "editCoach",
-    component: EditCoachForm
-  }
+    component: EditCoachForm,
+  },
 ];
 
 const router = createRouter({
