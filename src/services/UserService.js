@@ -29,6 +29,10 @@ class UsersService {
   delete(id) {
     return http.delete(`/users/${id}`);
   }
+
+  getBranchUsers(id) {
+    return http.get(`/users/branch/${id}`);
+  }
 }
 
 export default new UsersService();
