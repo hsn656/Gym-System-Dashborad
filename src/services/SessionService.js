@@ -4,6 +4,9 @@ class SessionService {
   getAll() {
     return http.get("/sessions");
   }
+  getOld() {
+    return http.get("/oldsessions");
+  }
 
   create(data) {
     return http.post("/sessions", data);

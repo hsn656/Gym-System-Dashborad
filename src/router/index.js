@@ -26,7 +26,7 @@ import AddCityForm from "../views/components/Cities/AddCityForm";
 import EditCityForm from "../views/components/Cities/EditCityForm";
 import AttendanceTable from "../views/components/Attendance/AttendanceTable";
 import BranchesTable from "../views/components/branches/BranchesTable";
-
+import OldSessionTableContainer from "../views/components/oldSessions/OldSessionTableContainer"
 const routes = [
   {
     path: "/",
@@ -177,6 +177,11 @@ const routes = [
     path: "/sessions/edit/:id",
     name: "editSession",
     component: EditSessionForm,
+  },
+  {
+    path: "/oldsessions",
+    name: "oldSessions",
+    component: OldSessionTableContainer,
   },
   {
     path: "/coaches",

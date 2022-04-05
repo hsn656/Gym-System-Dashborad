@@ -32,15 +32,7 @@
             <tr v-for="coach in coaches" :key="coach.id">
               <td>
                 <div class="d-flex px-2 py-1">
-                  <div>
-                    <vsud-avatar
-                      :img="img1"
-                      size="sm"
-                      border-radius="lg"
-                      class="me-3"
-                      alt="user1"
-                    />
-                  </div>
+                
                   <div class="d-flex flex-column justify-content-center">
                     <h6 class="mb-0 text-sm">{{ coach.name }}</h6>
                   </div>
@@ -75,16 +67,12 @@
 </template>
 
 <script>
-import VsudAvatar from "@/components/VsudAvatar.vue";
-import img1 from "./team-2.jpg";
 import CoachService from "../../../services/CoachService";
-
 export default {
   name: "CoachesTable",
   data() {
     return {
       coaches: [],
-      img1,
       componentKey: 0,
     };
   },
@@ -94,7 +82,6 @@ export default {
   },
 
   components: {
-    VsudAvatar,
   },
   methods: {
     getCoaches() {

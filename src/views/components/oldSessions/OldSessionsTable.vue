@@ -2,13 +2,9 @@
   <div class="card mb-4">
     <div class="d-flex justify-content-between">
       <div class="card-header pb-0">
-        <h6>Upcoming Sessions table</h6>
+        <h6>old Sessions table</h6>
       </div>
-      <div class="card-header pb-0">
-        <router-link :to="{ name: 'AddSessionForm2' }"
-          ><a class="btn btn-success">Add session</a></router-link
-        >
-      </div>
+     
     </div>
     <div class="card-body px-0 pt-0 pb-2">
       <div class="table-responsive p-0">
@@ -61,15 +57,14 @@
               >
                 Coaches
               </th>
-              <th class="text-secondary opacity-7 text-center">Edit</th>
-              <th class="text-secondary opacity-7 text-center">Delete</th>
+            <th class="text-secondary opacity-7 text-center">Delete</th>
             </tr>
           </thead>
           <tbody :key="componentKey">
             <tr v-for="session in sessions" :key="session.id">
               <td>
                 <div class="d-flex px-2 py-1">
-                
+                  
                   <div class="d-flex flex-column justify-content-center">
                     <h6 class="mb-0 text-sm">{{ session.name }}</h6>
                   </div>
@@ -105,17 +100,7 @@
                   {{ coach.name }}
                 </p>
               </td>
-              <td class="align-middle text-center">
-                <router-link :to="'/sessions/edit/' + session.id">
-                  <a
-                    class="text-secondary font-weight-bold text-xs"
-                    data-toggle="tooltip"
-                    data-original-title="Edit user"
-                  >
-                    Edit</a
-                  >
-                </router-link>
-              </td>
+              
               <td class="align-middle text-center">
                 <span @click="deleteSession(session.id)"
                   ><a
@@ -139,10 +124,11 @@
 import SessionService from "../../../services/SessionService";
 
 export default {
-  name: "SessionsTable",
+  name: "OldSessionsTable",
   data() {
     return {
       sessions: [],
+    
       componentKey: 0,
     };
   },
@@ -156,7 +142,7 @@ export default {
   },
   methods: {
     getSessions() {
-      SessionService.getAll()
+      SessionService.getOld()
         .then((response) => {
           this.sessions = response.data.data;
         })

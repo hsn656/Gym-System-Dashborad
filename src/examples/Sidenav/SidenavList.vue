@@ -117,7 +117,14 @@
         </sidenav-collapse>
       </li>
       <li class="nav-item">
-        <sidenav-collapse navText="Sessions" :to="{ name: 'Sessions' }">
+        <sidenav-collapse navText="Upcoming Sessions" :to="{ name: 'Sessions' }">
+          <template v-slot:icon>
+            <icon name="dashboard" />
+          </template>
+        </sidenav-collapse>
+      </li>
+       <li class="nav-item">
+        <sidenav-collapse navText="Old Sessions" :to="{ name: 'oldSessions' }">
           <template v-slot:icon>
             <icon name="dashboard" />
           </template>
