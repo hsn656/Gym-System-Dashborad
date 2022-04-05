@@ -117,7 +117,6 @@ export default {
           console.log(res);
           if (res.data.isSuccess) this.isAdded = true;
           else {
-            // let error=res.data.errors?.email?res.data.errors?.email[0]:res.data.errors.national_id[0];
             let error= Object.values(res.data.errors).reduce((p,n)=>p+" & "+n);
             Swal.fire({
               text:  error,

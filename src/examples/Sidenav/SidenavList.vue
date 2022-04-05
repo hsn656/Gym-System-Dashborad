@@ -54,7 +54,7 @@
         </sidenav-collapse>
       </li>
 
-      <li class="nav-item">
+      <li v-if="$store.getters.isAdmin" class="nav-item">
         <sidenav-collapse
           navText="City Managers"
           :to="{ name: 'CityManagers' }"
@@ -214,7 +214,6 @@
 import Icon from "@/components/Icon.vue";
 import SidenavCollapse from "./SidenavCollapse.vue";
 import SidenavCard from "./SidenavCard.vue";
-import jwtDecode from "../../jwtdecode";
 // import jwt_decode from 'jwt-decode';
 // import jwt_decode from '../../../node_modules/jwt-decode';
 
@@ -232,12 +231,7 @@ export default {
     };
   },
   created() {
-    var token = localStorage.getItem("gstoken");
 
-    if (token) {
-      this.tokenPayload = jwtDecode(token);
-      console.log(this.tokenPayload);
-    }
   },
   components: {
     Icon,
