@@ -1,4 +1,5 @@
 import { createStore } from "vuex";
+import { getpayload } from "@/jwtdecode";
 
 export default createStore({
   state: {
@@ -54,5 +55,18 @@ export default createStore({
       commit("sidebarType", payload);
     },
   },
-  getters: {},
+  getters: {
+    isAdmin() {
+      return getpayload().role == "admin";
+    },
+    isCityManager() {
+      return getpayload().role == "city manager";
+    },
+    isBranchManager() {
+      return getpayload().role == "branch manager";
+    },
+    isUser() {
+      return getpayload().role == "user";
+    },
+  },
 });
