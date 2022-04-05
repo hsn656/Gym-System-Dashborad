@@ -15,5 +15,6 @@ export default function parseJwt(token) {
 
 export function getpayload() {
   var token = localStorage.getItem("gstoken");
-  return parseJwt(token);
+  if (token) return parseJwt(token);
+  return { role: "not logged in" };
 }
