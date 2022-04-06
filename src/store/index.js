@@ -68,5 +68,8 @@ export default createStore({
     isUser() {
       return getpayload().role == "user";
     },
+    getPayLoad(){
+      return getpayload();
+    }
   },
 });

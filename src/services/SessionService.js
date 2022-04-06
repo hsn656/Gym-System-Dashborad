@@ -36,6 +36,10 @@ class SessionService {
   getcoaches() {
     return http.get(`/coaches`);
   }
+
+  getOldSessionsByBranch(id) {
+    return http.get("/oldsessions?branch_id="+id);
+  }
 }
 
 export default new SessionService();

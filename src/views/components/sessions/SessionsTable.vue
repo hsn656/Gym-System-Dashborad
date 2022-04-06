@@ -8,7 +8,7 @@
         <router-link :to="{ name: 'AddSessionForm2' }"><a class="btn btn-success">Add session</a></router-link>
       </div>
     </div>
-    <div>
+    <div v-if="$store.getters.isAdmin">
       <label for="city">City</label>
       <select id="city" class="form-select w-25" v-model="city.id" @change="getBranches">
         <option v-for="city in cities" :key="city.id" v-bind:value="city.id">{{ city.name }}</option>
@@ -134,6 +134,7 @@ export default {
 
   async created() {
     this.getCities();
+    console.log(this.$store.getters.getPayLoad);
   },
 
   components: {

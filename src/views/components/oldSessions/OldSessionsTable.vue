@@ -145,7 +145,7 @@ export default {
         });
     }
     ,getSessions(id) {
-      SessionService.getSessionsByBranch(id)
+      SessionService.getOldSessionsByBranch(id)
         .then((response) => {
           console.log(response);
           this.sessions = response.data.data;
