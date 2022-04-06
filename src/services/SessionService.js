@@ -4,6 +4,11 @@ class SessionService {
   getAll() {
     return http.get("/sessions");
   }
+
+  getSessionsByBranch(id) {
+    return http.get("/sessions?branch_id="+id);
+  }
+
   getOld() {
     return http.get("/oldsessions");
   }
@@ -25,7 +30,7 @@ class SessionService {
   }
 
   getbranches() {
-    return http.get(`/citybranches`);
+    return http.get(`/branches`);
   }
 
   getcoaches() {

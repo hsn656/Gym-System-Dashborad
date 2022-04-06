@@ -67,7 +67,8 @@ export default {
   methods: {
     getBranches(){
       SessionService.getbranches().then(response =>{
-        this.branches = response.data
+        console.log(response)
+        this.branches = response.data.data
       });
     },
     getCoaches(){
