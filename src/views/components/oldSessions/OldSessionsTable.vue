@@ -5,9 +5,23 @@
         <h6>old Sessions table</h6>
       </div>
     </div>
+    <div class="seletStyle">
+      <div class="m-auto">
+         <label for="city">City</label>
+         <select id="city" class="form-select w-25" v-model="city.id" @change="getBranches">
+           <option v-for="city in cities" :key="city.id" v-bind:value="city.id">{{ city.name }}</option>
+       </select>
+       </div>
+    </div>
+    <div v-if="city.id" class="seletStyle">
+      <label for="branch">Branch</label>
+      <select id="branch" class="form-select w-25" v-model="branchId" @change="getSessions(branchId)">
+        <option v-for="branch in branches" :key="branch.id" v-bind:value="branch.id">{{ branch.name }}</option>
+      </select>
+    </div>
     <div class="card-body px-0 pt-0 pb-2">
       <div class="table-responsive p-0">
-        <table class="table align-items-center mb-0">
+        <table class="table align-items-center mb-0" v-if="branchId">
           <thead>
             <tr>
               <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
@@ -82,28 +96,58 @@
 <script>
 
 import SessionService from "../../../services/SessionService";
+import CityService from "@/services/CityService";
+import BranchService from "@/services/BranchService";
 
 export default {
   name: "OldSessionsTable",
   data() {
     return {
-      sessions: [],
-    
+     sessions: [],
       componentKey: 0,
+      cities: [],
+      city:{
+        "name":"",
+        "id":""
+      },
+      branches: [],
+      branchId:''
     };
   },
 
   async created() {
     this.getSessions();
+    this.getCities();
   },
 
   components: {
    
   },
   methods: {
-    getSessions() {
-      SessionService.getOld()
+    getCities() {
+      CityService.getAll()
+        .then(response => {
+          this.cities = response.data;
+          console.log(response.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    },
+    getBranches() {
+      BranchService.getByCityId(this.city.id)
+        .then(response => {
+          this.branches = response.data.data;
+          this.branchId = ""
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    }
+    ,getSessions(id) {
+      SessionService.getSessionsByBranch(id)
         .then((response) => {
+          console.log(response);
           this.sessions = response.data.data;
         })
         .catch((e) => {
