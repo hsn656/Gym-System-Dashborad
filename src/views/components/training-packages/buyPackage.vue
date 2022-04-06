@@ -34,8 +34,12 @@
               </option>
             </datalist>
             <div class="d-flex justify-content-around my-2">
-              <select class="form-select" v-model="selectedBranch">
-                <option selected disabled value="">select Branch</option>
+              <select
+                id="branchSelect"
+                class="form-select"
+                v-model="selectedBranch"
+              >
+                <option selected disabled value="">Select Branch</option>
                 <option
                   v-for="branch in branches"
                   :key="branch.id"
@@ -50,8 +54,9 @@
                 class="form-select"
                 v-model="selectedPackage"
                 @change="packageData"
+                id="packageSelect"
               >
-                <option selected disabled value="">select Package</option>
+                <option selected disabled value="">Select Package</option>
                 <option
                   v-for="traningPackage in packages"
                   :key="traningPackage.id"
@@ -86,8 +91,8 @@
 
 <script>
 import BranchService from "../../../services/BranchService.js";
-
 import UserService from "@/services/UserService";
+import BuyPackageService from "@/services/BuyPackageService";
 
 export default {
   data() {
@@ -97,6 +102,7 @@ export default {
       selectedBranch: "",
       selectedPackage: "",
       selectedPackagePrice: "",
+      packageSessions: "",
       selectedUserName: "",
       userid: "",
       search: "",
@@ -139,19 +145,53 @@ export default {
       this.selectedPackagePrice = this.packages.find(
         (p) => p.id == this.selectedPackage
       ).price;
-    },
-    buyPackage(userName) {
-      this.userid = this.users.find((u) => u.name == userName).id;
-      console.log(
-        "branch: " + this.selectedBranch,
-        "package: " + this.selectedPackage,
-        "user name: " + this.selectedUserName,
-        "user id: " + this.userid,
-        "price: " + this.selectedPackagePrice
-      );
+      this.packageSessions = this.packages.find(
+        (p) => p.id == this.selectedPackage
+      ).number_of_sessions;
     },
 
-    clearForm() {},
+    buyPackage(userName) {
+      this.userid = this.users.find((u) => u.name == userName).id;
+
+      let data = {
+        package_id: this.selectedPackage,
+        user_id: this.userid,
+        branch_id: this.selectedBranch,
+        enrollement_price: this.selectedPackagePrice,
+        remianing_sessions: this.packageSessions,
+      };
+
+      BuyPackageService.create(data)
+        .then((res) => {
+          if (res.data.data.result == "transaction completed successfully") {
+            alert("transaction completed successfully");
+          } else {
+            alert("something went wrong, please try again later");
+          }
+          console.log(res);
+          this.clearForm();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+
+      // console.log(
+      //   "branch: " + this.selectedBranch,
+      //   ", package: " + this.selectedPackage,
+      //   ", user name: " + this.selectedUserName,
+      //   ", user id: " + this.userid,
+      //   ", price: " + this.selectedPackagePrice,
+      //   ", sessions: " + this.packageSessions
+      // );
+    },
+
+    clearForm() {
+      this.selectedUserName = "";
+      // document.getElementById("branchSelect").value = "Select Branch";
+      // document.getElementById("packageSelect").value = "Select Package";
+      this.selectedBranch = "";
+      this.selectedPackage = "";
+    },
   },
 };
 </script>
