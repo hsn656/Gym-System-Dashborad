@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid" >
+  <div class="container-fluid bg-white h-100 py-5">
     <div class="row justify-content-center">
     <div class=" col-10 col-md-8 col-lg-6" >
       <input  v-model="user.name" name="name" placeholder="name" type="text" class="my-2 form-control">
@@ -24,6 +24,7 @@ export default {
   data() {
     return {
       user: {
+        id:this.$route.params.id,
         name: "",
         email: "",
         national_id: "",
@@ -36,7 +37,7 @@ export default {
     getUser(id){
       UserService.getById(id)
         .then(response => {
-          this.user = response.data;
+          this.user = response.data.data;
           console.log(response.data);
         })
         .catch(e => {

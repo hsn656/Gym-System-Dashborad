@@ -39,26 +39,20 @@
           </template>
         </sidenav-collapse>
       </li> -->
-      <li class="nav-item">
-        <sidenav-collapse navText="Users" :to="{ name: 'Users' }">
-          <template v-slot:icon>
-            <icon name="dashboard" />
-          </template>
-        </sidenav-collapse>
-      </li>
-      <li class="nav-item">
-        <sidenav-collapse navText="Users2" :to="{ name: 'Users2' }">
-          <template v-slot:icon>
-            <icon name="dashboard" />
-          </template>
-        </sidenav-collapse>
-      </li>
+
 
       <li v-if="$store.getters.isAdmin" class="nav-item">
         <sidenav-collapse
           navText="City Managers"
           :to="{ name: 'CityManagers' }"
         >
+          <template v-slot:icon>
+            <icon name="dashboard" />
+          </template>
+        </sidenav-collapse>
+      </li>
+            <li class="nav-item">
+        <sidenav-collapse navText="Users" :to="{ name: 'Users' }">
           <template v-slot:icon>
             <icon name="dashboard" />
           </template>

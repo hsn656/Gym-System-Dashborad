@@ -8,7 +8,6 @@ import Rtl from "@/views/Rtl.vue";
 import SignIn from "@/views/SignIn.vue";
 import SignUp from "@/views/SignUp.vue";
 import UsersTable from "../views/components/users/UsersTable.vue";
-import UsersTable2 from "../views/components/users/UsersTable2.vue";
 import AddUser from "../views/components/users/AddUserForm.vue";
 import editUser from "../views/components/users/EditUserForm .vue";
 import Packages from "../views/components/training-packages/Packages.vue";
@@ -26,7 +25,10 @@ import AddCityForm from "../views/components/Cities/AddCityForm";
 import EditCityForm from "../views/components/Cities/EditCityForm";
 import AttendanceTable from "../views/components/Attendance/AttendanceTable";
 import BranchesTable from "../views/components/branches/BranchesTable";
-import OldSessionTableContainer from "../views/components/oldSessions/OldSessionTableContainer"
+import OldSessionTableContainer from "../views/components/oldSessions/OldSessionTableContainer";
+import AddBranch from "../views/components/branches/AddBranchForm.vue";
+import EditBranch from "../views/components/branches/EditBranchForm .vue";
+
 const routes = [
   {
     path: "/",
@@ -43,11 +45,6 @@ const routes = [
     path: "/users",
     name: "Users",
     component: UsersTable,
-  },
-  {
-    path: "/users2",
-    name: "Users2",
-    component: UsersTable2,
   },
   {
     path: "/users/add",
@@ -100,6 +97,21 @@ const routes = [
     name: "Branches",
     component: BranchesTable,
   },
+  {
+    path: "/branches/add",
+    name: "add Branch",
+    component: AddBranch,
+  },
+  {
+    path: "/branches/add",
+    name: "add Branch",
+    component: AddBranch,
+  },
+  {
+    path: "/branches/edit/:id",
+    name: "Edit Branch",
+    component: EditBranch,
+  },
   //#endregion
   // #region Attendance routes
   {
@@ -150,16 +162,6 @@ const routes = [
     name: "Training Packages",
     component: Packages,
   },
-  // {
-  //   path: "/users/add",
-  //   name: "addUser",
-  //   component: AddUser,
-  // },
-  // {
-  //   path: "/users/edit/:id",
-  //   name: "editUser",
-  //   component: editUser,
-  // },
   //#endregion
   //#region Sessions routes
   {

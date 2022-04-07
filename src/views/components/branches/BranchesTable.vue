@@ -21,6 +21,7 @@
     <div class="d-flex justify-content-between">
       <div v-if="$store.getters.isAdmin" class="w-25 mt-4 mx-3 d-inline">
         <select @change="getBranches" v-model="city_id" class="form-select">
+          <option value="all">all cities</option>
           <option v-for="city in cities" :key="city.id" :value="city.id">
             {{ city.name }}
           </option>
@@ -28,8 +29,8 @@
       </div>
 
       <div class="card-header pb-0">
-        <router-link :to="{ name: 'addUser' }"
-          ><a class="btn btn-success">add user</a></router-link
+        <router-link :to="{ name: 'add Branch' }"
+          ><a class="btn btn-success">Add Branch</a></router-link
         >
       </div>
     </div>
@@ -112,7 +113,7 @@
                 }}</span>
               </td>
               <td class="align-middle">
-                <router-link :to="'/users/edit/' + branch.id">
+                <router-link :to="'/branches/edit/' + branch.id">
                   <a
                     class="text-secondary font-weight-bold text-xs"
                     data-toggle="tooltip"
@@ -123,7 +124,7 @@
                 </router-link>
               </td>
               <td class="align-middle">
-                <span @click="deleteUser(branch.id)">
+                <span @click="deleteBranch(branch.id)">
                   <a
                     style="cursor: pointer"
                     class="text-danger font-weight-bold text-xs"
@@ -165,7 +166,7 @@ export default {
       search: "",
       sortField: "created_at",
       sortDirection: "asc",
-      city_id: "",
+      city_id: "all",
       cities: [],
     };
   },
@@ -180,6 +181,7 @@ export default {
   },
   methods: {
     getBranches() {
+      console.log(this.city_id);
       BranchService.getSomeByCityId(this.city_id)
         .then((response) => {
           this.rerenderTableBody(response);
@@ -209,11 +211,11 @@ export default {
           console.log(e);
         });
     },
-    deleteUser(id) {
+    deleteBranch(id) {
       if (!confirm("are you sure?")) return;
       BranchService.delete(id)
         .then(() => {
-          this.getBranches();
+          this.branches=this.branches.filter(b=>b.id!=id);
         })
         .catch((err) => {
           console.log(err);
@@ -223,7 +225,8 @@ export default {
       if (this.sortField == e.target.dataset.field)
         this.sortDirection = this.sortDirection == "asc" ? "desc" : "asc";
       this.sortField = e.target.dataset.field;
-      BranchService.getSome(
+      BranchService.getSomeByCityId(
+        this.city_id,
         null,
         this.search,
         this.sortField,
@@ -243,7 +246,7 @@ export default {
     getCities() {
       CityService.getAll().then((res) => {
         this.cities = res.data;
-        this.city_id = this.cities[0]?.id;
+        // this.city_id = this.cities[0]?.id;
       });
     },
   },

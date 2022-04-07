@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid">
+  <div class="container-fluid bg-white h-100 py-4">
     <div class="row justify-content-center">
       <div class="col-10 col-md-8 col-lg-6">
         <Form @submit="onSubmit">
@@ -53,6 +53,12 @@
           <ErrorMessage class="text-danger small" name="password" />
           <button class="my-2 btn btn-primary w-100">Add user</button>
         </Form>
+        <button
+          @click="this.$router.push('/users')"
+          class="my-2 btn btn-secondary w-100"
+        >
+          Back to branches
+        </button>
       </div>
       <div v-if="isAdded">
         <p class="text-primary my-2 text-center">added successfully</p>
@@ -117,9 +123,11 @@ export default {
           console.log(res);
           if (res.data.isSuccess) this.isAdded = true;
           else {
-            let error= Object.values(res.data.errors).reduce((p,n)=>p+" & "+n);
+            let error = Object.values(res.data.errors).reduce(
+              (p, n) => p + " & " + n
+            );
             Swal.fire({
-              text:  error,
+              text: error,
               icon: "error",
               confirmButtonText: "ok",
             });
