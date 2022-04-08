@@ -123,6 +123,7 @@ export default {
     },
     updateSession(id) {
       let Data = {
+        id: this.$route.params.id,
         name: this.name,
         branch_id: this.branchId,
         start_time: this.startDate + " " + this.startTime,
