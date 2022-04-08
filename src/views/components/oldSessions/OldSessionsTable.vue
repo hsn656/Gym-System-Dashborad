@@ -6,7 +6,7 @@
       </div>
     </div>
     <div class="seletStyle">
-      <div class="m-auto">
+      <div class="m-auto" v-if="$store.getters.isAdmin">
          <label for="city">City</label>
          <select id="city" class="form-select w-25" v-model="city.id" @change="getBranches">
            <option v-for="city in cities" :key="city.id" v-bind:value="city.id">{{ city.name }}</option>
@@ -116,8 +116,10 @@ export default {
   },
 
   async created() {
-    this.getSessions();
     this.getCities();
+    if(this.$store.getters.getPayLoad["role"] == "city manager"){
+      this.city.id = this.$store.getters.getPayLoad["city_id"]
+    }
   },
 
   components: {

@@ -73,34 +73,17 @@
               </p>
             </td>
             <td class="align-middle text-center">
-              <p
-                v-for="coach in session.coaches"
-                :key="coach.id"
-                class="text-xs font-weight-bold mb-0"
-              >
+              <p v-for="coach in session.coaches" :key="coach.id" class="text-xs font-weight-bold mb-0">
                 {{ coach.name }}
               </p>
             </td>
             <td class="align-middle text-center">
               <router-link :to="'/sessions/edit/' + session.id">
-                <a
-                  class="text-secondary font-weight-bold text-xs"
-                  data-toggle="tooltip"
-                  data-original-title="Edit user"
-                >
-                  Edit</a
-                >
+                <a class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">Edit</a>
               </router-link>
             </td>
             <td class="align-middle text-center">
-                <span @click="deleteSession(session.id)"
-                ><a
-                  style="cursor: pointer"
-                  class="text-danger font-weight-bold text-xs"
-                >
-                    delete</a
-                ></span
-                >
+                <span @click="deleteSession(session.id)"><a style="cursor: pointer" class="text-danger font-weight-bold text-xs">delete</a></span>
             </td>
           </tr>
           </tbody>
@@ -134,7 +117,9 @@ export default {
 
   async created() {
     this.getCities();
-    console.log(this.$store.getters.getPayLoad);
+    if(this.$store.getters.getPayLoad["role"] == "city manager"){
+      this.city.id = this.$store.getters.getPayLoad["city_id"]
+    }
   },
 
   components: {

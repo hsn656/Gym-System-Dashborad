@@ -7,7 +7,7 @@
           <ErrorMessage class="text-danger small" name="name" /><br>
           <label>Branch name: </label>
           <select class="form-select" v-model="branchId">
-            <option v-for="branch in branches" :key="branch.id" :value="branch.id">{{branch.name}}</option>
+            <option v-for="branch in branches" :key="branch.id" :value="branch.id">{{ branch.name }}</option>
           </select>
           <label>Start time:</label>
           <div class="row">
@@ -39,8 +39,7 @@
             </div>
           </div>
           <div class="text-center">
-            <input class="btn btn-success" type="submit" value="Add session" />
-            <ErrorMessage>Hamada</ErrorMessage>
+            <Field class="btn btn-success" type="submit" value="Add session" />
           </div>
         </Form>
       </div>
