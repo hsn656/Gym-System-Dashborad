@@ -16,6 +16,8 @@ export default createStore({
     showNavbar: true,
     showFooter: false,
     showMain: true,
+    stripePK:
+      "pk_test_51KhzxNEHwj20Yn6RZTOFDxaHP3m22XbpDuDywMsZthUWTOyKJtEvTpOxcAL7FfeC4uOlucTXQ39azat1SDexH3D200Amtv1A4z",
   },
   mutations: {
     toggleConfigurator(state) {
