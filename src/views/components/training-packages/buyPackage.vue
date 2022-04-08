@@ -175,20 +175,10 @@ export default {
           console.log(err);
         });
 
-      // console.log(
-      //   "branch: " + this.selectedBranch,
-      //   ", package: " + this.selectedPackage,
-      //   ", user name: " + this.selectedUserName,
-      //   ", user id: " + this.userid,
-      //   ", price: " + this.selectedPackagePrice,
-      //   ", sessions: " + this.packageSessions
-      // );
     },
 
     clearForm() {
       this.selectedUserName = "";
-      // document.getElementById("branchSelect").value = "Select Branch";
-      // document.getElementById("packageSelect").value = "Select Package";
       this.selectedBranch = "";
       this.selectedPackage = "";
     },
