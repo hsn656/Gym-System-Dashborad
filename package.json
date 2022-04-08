@@ -27,6 +27,7 @@
     "vuex": "^4.0.2"
   },
   "devDependencies": {
+    "@stripe/stripe-js": "^1.27.0",
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-plugin-eslint": "~4.5.0",
     "@vue/cli-plugin-router": "~4.5.0",

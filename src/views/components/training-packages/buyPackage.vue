@@ -66,6 +66,7 @@
                 </option>
               </select>
             </div>
+            <div id="cardElement"></div>
           </form>
         </div>
         <div class="moda-footer d-flex flex-row-reverse px-3">
@@ -76,6 +77,7 @@
           >
             Cancel
           </button>
+
           <input
             class="btn btn-success"
             data-bs-dismiss="modal"
@@ -83,6 +85,14 @@
             type="submit"
             value="Buy package"
           />
+
+          <button
+            class="btn btn-danger ms-3"
+            data-bs-dismiss="modal"
+            @click="processPayment"
+            :disabled="isPaymentProcessing"
+            v-text="isPaymentProcessing ? 'processing' : 'buy'"
+          ></button>
         </div>
       </div>
     </div>
@@ -93,6 +103,7 @@
 import BranchService from "../../../services/BranchService.js";
 import UserService from "@/services/UserService";
 import BuyPackageService from "@/services/BuyPackageService";
+import { loadStripe } from "@stripe/stripe-js/pure";
 
 export default {
   data() {
@@ -106,6 +117,10 @@ export default {
       selectedUserName: "",
       userid: "",
       search: "",
+      isPaymentProcessing: false,
+      stripe: {},
+      cardElement: {},
+      paymentMethodId:''
       //   branchUsers: "",
     };
   },
@@ -124,12 +139,23 @@ export default {
           console.log(e);
         });
     },
+    async processPayment() {
+      this.isPaymentProcessing = true;
+      const { paymentMethod, error } = await this.stripe.createPaymentMethod({
+        type: "card",
+        card: this.cardElement,
+        billing_details: {
+          name: this.selectedUserName,
+        },
+      });
+      if(error){
+        this.isPaymentProcessing=false;
+        alert(error);
+      }else{
+        this.paymentMethodId=paymentMethod.id;    
+      }
 
-    // getBranchUsers(branch) {
-    //     BranchService.getBranchUsers(branch)
-    //     .then((res))
-    // },
-
+    },
     getSearch() {
       this.search = this.selectedUserName;
       UserService.getSome(null, this.search)
@@ -176,17 +202,25 @@ export default {
         });
 
     },
-
     clearForm() {
       this.selectedUserName = "";
       this.selectedBranch = "";
       this.selectedPackage = "";
     },
   },
+  async mounted() {
+    const key = this.$store.state.stripePK;
+    this.stripe = await loadStripe(key);
+    console.log(this.stripe);
+    const elements = this.stripe.elements();
+    this.cardElement = elements.create("card", {
+      classes: {
+        base: "rounded p-2 border border-secondary",
+      },
+    });
+    this.cardElement.mount("#cardElement");
+  },
 };
 </script>
 
-
-
-<style>
-</style>
+<style></style>
