@@ -155,6 +155,7 @@ import VsudAvatar from "@/components/VsudAvatar.vue";
 import img1 from "./team-2.jpg";
 import BranchService from "../../../services/BranchService.js";
 import CityService from "../../../services/CityService.js";
+import Swal from "sweetalert2";
 
 export default {
   name: "branches-table",
@@ -212,14 +213,26 @@ export default {
         });
     },
     deleteBranch(id) {
-      if (!confirm("are you sure?")) return;
-      BranchService.delete(id)
-        .then(() => {
-          this.branches=this.branches.filter(b=>b.id!=id);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      Swal.fire({
+        title: "Are you sure?",
+        // text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          BranchService.delete(id)
+            .then(() => {
+              this.branches = this.branches.filter((b) => b.id != id);
+              Swal.fire("Deleted!", "", "success");
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        }
+      });
     },
     sort(e) {
       if (this.sortField == e.target.dataset.field)
