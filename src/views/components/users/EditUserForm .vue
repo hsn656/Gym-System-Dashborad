@@ -103,7 +103,6 @@ export default {
     updateUser(id) {
       this.isUpdated = false;
       UserService.update(id, this.user).then((res) => {
-        console.log(res);
         if (res.data.isSuccess) {
           Swal.fire({
             text: "updated successfully",
