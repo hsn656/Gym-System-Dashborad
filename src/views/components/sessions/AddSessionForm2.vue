@@ -39,7 +39,7 @@
             </div>
           </div>
           <div class="text-center">
-            <Field class="btn btn-success" type="submit" value="Add session" />
+            <input class="btn btn-success" type="submit" value="Add session" />
           </div>
         </Form>
       </div>

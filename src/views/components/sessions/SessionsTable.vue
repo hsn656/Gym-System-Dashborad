@@ -98,6 +98,7 @@
 import SessionService from "../../../services/SessionService";
 import CityService from "@/services/CityService";
 import BranchService from "@/services/BranchService";
+import Swal from "sweetalert2";
 
 export default {
   name: "SessionsTable",
@@ -163,19 +164,32 @@ export default {
       return datetime.split(" ")[1];
     },
     deleteSession(id) {
-      if (confirm("are you sure?")) {
-        SessionService.delete(id)
-          .then((res) => {
-            console.log(res);
-            this.sessions = this.sessions.filter(
-              (session) => session.id !== id
-            );
-            this.forceRerender();
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      }
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          SessionService.delete(id)
+            .then((res) => {
+              console.log(res);
+              this.sessions = this.sessions.filter((session) => session.id !== id);
+              this.forceRerender();
+              Swal.fire(
+                'Deleted!',
+                'Session has been deleted.',
+                'success'
+              )
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        }
+      })
     },
     forceRerender() {
       this.componentKey += 1;
