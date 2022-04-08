@@ -25,7 +25,7 @@ class UsersService {
   }
 
   update(id, data) {
-    return http.put(`/users/${id}`, data);
+    return http.post(`/users/${id}`, data);
   }
 
   delete(id) {

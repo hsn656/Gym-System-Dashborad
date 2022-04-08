@@ -57,7 +57,7 @@
           @click="this.$router.push('/users')"
           class="my-2 btn btn-secondary w-100"
         >
-          Back to branches
+          Back to users
         </button>
       </div>
       <div v-if="isAdded">

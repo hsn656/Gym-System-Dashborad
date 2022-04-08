@@ -38,7 +38,6 @@ import CityService from "../../../services/CityService.js";
 import BranchService from "../../../services/BranchService";
 import Swal from "sweetalert2";
 
-
 export default {
   name: "add-user",
   components: {
@@ -67,29 +66,31 @@ export default {
       });
     },
     updateBranch() {
-      BranchService.update(this.branch.id, this.branch).then((res) => {
-        console.log(res);
-        if (res.data.isSuccess) {
-          Swal.fire({
-            text: "updated successfully",
-            icon: "success",
-            confirmButtonText: "ok",
-          }).then(() => {
-            this.$router.push("/branches");
-          });
-        } else {
-          let error = Object.values(res.data.errors).reduce(
-            (p, n) => p + " & " + n
-          );
-          Swal.fire({
-            text: error,
-            icon: "error",
-            confirmButtonText: "ok",
-          });
-        }
-      }).catch(err=>{
-        console.log(err);
-      });
+      BranchService.update(this.branch.id, this.branch)
+        .then((res) => {
+          console.log(res);
+          if (res.data.isSuccess) {
+            Swal.fire({
+              text: "updated successfully",
+              icon: "success",
+              confirmButtonText: "ok",
+            }).then(() => {
+              this.$router.push("/branches");
+            });
+          } else {
+            let error = Object.values(res.data.errors).reduce(
+              (p, n) => p + " & " + n
+            );
+            Swal.fire({
+              text: error,
+              icon: "error",
+              confirmButtonText: "ok",
+            });
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
     getBranch() {
       BranchService.getById(this.branch.id)

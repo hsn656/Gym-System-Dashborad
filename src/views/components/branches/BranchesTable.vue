@@ -195,7 +195,7 @@ export default {
       return datetime.split("").splice(0, 10).join("");
     },
     getSearch() {
-      BranchService.getSomeByCityId(1, 1, this.search)
+      BranchService.getSomeByCityId(this.city_id, 1, this.search)
         .then((response) => {
           this.rerenderTableBody(response);
         })
