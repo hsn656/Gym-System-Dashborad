@@ -120,7 +120,7 @@ export default {
       isPaymentProcessing: false,
       stripe: {},
       cardElement: {},
-      paymentMethodId:''
+      paymentMethodId: "",
       //   branchUsers: "",
     };
   },
@@ -130,10 +130,10 @@ export default {
   },
   methods: {
     getbranches() {
-      BranchService.getSomeByCityId()
+      BranchService.getByCityId(1)
         .then((response) => {
-          this.branches = response.data.data.data;
-          console.log(response.data.data.data);
+          this.branches = response.data.data;
+          console.log(response.data);
         })
         .catch((e) => {
           console.log(e);
@@ -145,16 +145,37 @@ export default {
         type: "card",
         card: this.cardElement,
         billing_details: {
-          name: this.selectedUserName,
+          name: "hsn",
         },
       });
-      if(error){
-        this.isPaymentProcessing=false;
+      if (error) {
+        this.isPaymentProcessing = false;
         alert(error);
-      }else{
-        this.paymentMethodId=paymentMethod.id;    
+      } else {
+        this.paymentMethodId = paymentMethod.id;
+        const data = {
+          package_id: this.selectedPackage,
+          user_id: 3,
+          branch_id: this.selectedBranch,
+          enrollement_price: this.selectedPackagePrice,
+          remianing_sessions: this.packageSessions,
+          paymentMethodId: this.paymentMethodId,
+        };
+        console.log(data);
+        BuyPackageService.create(data)
+          .then((res) => {
+            if (res.data.data.result == "transaction completed successfully") {
+              alert("transaction completed successfully");
+            } else {
+              alert("something went wrong, please try again later");
+            }
+            console.log(res);
+            this.clearForm();
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       }
-
     },
     getSearch() {
       this.search = this.selectedUserName;
@@ -200,7 +221,6 @@ export default {
         .catch((err) => {
           console.log(err);
         });
-
     },
     clearForm() {
       this.selectedUserName = "";
