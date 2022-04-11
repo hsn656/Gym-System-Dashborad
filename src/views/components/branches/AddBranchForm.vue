@@ -21,7 +21,12 @@
           </div>
           <button class="my-2 btn btn-primary w-100">Add Branch</button>
         </Form>
-        <button @click="this.$router.push('/branches')" class="my-2 btn btn-secondary w-100">Back to branches</button>
+        <button
+          @click="this.$router.push('/branches')"
+          class="my-2 btn btn-secondary w-100"
+        >
+          Back to branches
+        </button>
       </div>
     </div>
   </div>
@@ -46,18 +51,19 @@ export default {
         name: "",
         city_id: "",
       },
-      cities:{}
+      cities: {},
     };
   },
-  created(){
-    this.getCities()
+  created() {
+    if (this.$store.getters.isAdmin) this.getCities();
+    else this.branch.city_id = this.$store.getters.getPayLoad.city_id;
   },
   methods: {
-    onSubmit(values) {
-      console.log(values);
+    onSubmit() {
       this.addBranch();
     },
     addBranch() {
+      console.log(this.branch);
       BranchService.create(this.branch)
         .then((res) => {
           console.log(res);
@@ -66,8 +72,8 @@ export default {
               text: "created successfully",
               icon: "success",
               confirmButtonText: "ok",
-            }).then(()=>{
-              this.$router.push('/branches');
+            }).then(() => {
+              this.$router.push("/branches");
             });
           } else {
             let error = Object.values(res.data.errors).reduce(
