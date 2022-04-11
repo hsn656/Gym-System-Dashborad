@@ -25,12 +25,12 @@
               list="users"
               placeholder="Enter user name"
               class="form-control"
-              @keyup="getSearch"
+              @keyup="getUsers"
               v-model="selectedUserName"
             />
             <datalist id="users">
-              <option v-for="user in users" :key="user.id">
-                {{ user.name }}
+              <option v-for="user in Object.keys(users)" :key="user">
+                {{ user }}
               </option>
             </datalist>
             <div class="d-flex justify-content-around my-2">
@@ -140,6 +140,8 @@ export default {
         });
     },
     async processPayment() {
+      if(this.users[this.selectedUserName]===undefined) return;
+
       this.isPaymentProcessing = true;
       const { paymentMethod, error } = await this.stripe.createPaymentMethod({
         type: "card",
@@ -177,12 +179,14 @@ export default {
           });
       }
     },
-    getSearch() {
+    getUsers() {
       this.search = this.selectedUserName;
-      UserService.getSome(null, this.search)
+      
+      UserService.getSomeByEmail(this.search)
         .then((response) => {
           this.users = response.data.data.data;
-          console.log(response.data);
+          this.users=this.convertToKeyValue(this.users, "email", "id");
+          console.log(this.users);
         })
         .catch((e) => {
           console.log(e);
@@ -226,6 +230,13 @@ export default {
       this.selectedUserName = "";
       this.selectedBranch = "";
       this.selectedPackage = "";
+    },
+    convertToKeyValue(array, key, value) {
+      let keyValueObj = {};
+      for (const data of array) {
+        keyValueObj[data[key]] = data[value];
+      }
+      return keyValueObj;
     },
   },
   async mounted() {
