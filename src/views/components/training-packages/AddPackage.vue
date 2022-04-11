@@ -92,6 +92,7 @@
 
 <script>
 import PackageService from "../../../services/PackageService";
+import Swal from "sweetalert2";
 
 export default {
   data() {
@@ -128,7 +129,11 @@ export default {
         this.price == "" ||
         this.number_of_sessions == ""
       ) {
-        alert("all fields are required !");
+        Swal.fire({
+          text: "all fields are reqruired",
+          icon: "error",
+          confirmButtonText: "ok",
+        });
       } else {
         // let data = {
         //   name: this.name,

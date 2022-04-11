@@ -32,14 +32,16 @@
           </template>
         </sidenav-collapse>
       </li> -->
-      <!-- <li class="nav-item">
-        <sidenav-collapse navText="Branch Managers" :to="{ name: 'Branch Managers' }">
+      <li class="nav-item">
+        <sidenav-collapse
+          navText="Branch Managers"
+          :to="{ name: 'Branch Managers' }"
+        >
           <template v-slot:icon>
             <icon name="dashboard" />
           </template>
         </sidenav-collapse>
-      </li> -->
-
+      </li>
 
       <li v-if="$store.getters.isAdmin" class="nav-item">
         <sidenav-collapse
@@ -51,7 +53,7 @@
           </template>
         </sidenav-collapse>
       </li>
-            <li class="nav-item">
+      <li class="nav-item">
         <sidenav-collapse navText="Users" :to="{ name: 'Users' }">
           <template v-slot:icon>
             <icon name="dashboard" />
@@ -59,16 +61,13 @@
         </sidenav-collapse>
       </li>
       <li class="nav-item">
-        <sidenav-collapse
-          navText="Cities"
-          :to="{ name: 'Cities' }"
-        >
+        <sidenav-collapse navText="Cities" :to="{ name: 'Cities' }">
           <template v-slot:icon>
             <icon name="dashboard" />
           </template>
         </sidenav-collapse>
       </li>
-  <li class="nav-item">
+      <li class="nav-item">
         <sidenav-collapse navText="Branches" :to="{ name: 'Branches' }">
           <template v-slot:icon>
             <icon name="dashboard" />
@@ -76,22 +75,12 @@
         </sidenav-collapse>
       </li>
       <li class="nav-item">
-        <sidenav-collapse
-          navText="Attendance"
-          :to="{ name: 'Attendance' }"
-        >
+        <sidenav-collapse navText="Attendance" :to="{ name: 'Attendance' }">
           <template v-slot:icon>
             <icon name="dashboard" />
           </template>
         </sidenav-collapse>
       </li>
-
-
-
-
-
-
-
 
       <li class="nav-item">
         <sidenav-collapse
@@ -111,13 +100,16 @@
         </sidenav-collapse>
       </li>
       <li class="nav-item">
-        <sidenav-collapse navText="Upcoming Sessions" :to="{ name: 'Sessions' }">
+        <sidenav-collapse
+          navText="Upcoming Sessions"
+          :to="{ name: 'Sessions' }"
+        >
           <template v-slot:icon>
             <icon name="dashboard" />
           </template>
         </sidenav-collapse>
       </li>
-       <li class="nav-item">
+      <li class="nav-item">
         <sidenav-collapse navText="Old Sessions" :to="{ name: 'oldSessions' }">
           <template v-slot:icon>
             <icon name="dashboard" />
@@ -231,9 +223,7 @@ export default {
       tokenPayload: {},
     };
   },
-  created() {
-
-  },
+  created() {},
   components: {
     Icon,
     SidenavCollapse,

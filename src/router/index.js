@@ -28,6 +28,9 @@ import BranchesTable from "../views/components/branches/BranchesTable";
 import OldSessionTableContainer from "../views/components/oldSessions/OldSessionTableContainer";
 import AddBranch from "../views/components/branches/AddBranchForm.vue";
 import EditBranch from "../views/components/branches/EditBranchForm .vue";
+import BranchManagersTable from "@/views/components/BranchManagers/BranchManagersTable";
+import AddBranchManager from "../views/components/BranchManagers/AddBranchManagerForm";
+import EditBranchManager from "../views/components/BranchManagers/EditBranchManagerForm";
 
 const routes = [
   {
@@ -201,6 +204,23 @@ const routes = [
     name: "editCoach",
     component: EditCoachForm,
   },
+  // #region branch Managers routes
+  {
+    path: "/branchmanagers",
+    name: "Branch Managers",
+    component: BranchManagersTable,
+  },
+  {
+    path: "/branchmanagers/add",
+    name: "addBranchManager",
+    component: AddBranchManager,
+  },
+  {
+    path: "/branchmanagers/edit/:id",
+    name: "editBranchManager",
+    component: EditBranchManager,
+  },
+  //#endregion
 ];
 
 const router = createRouter({
