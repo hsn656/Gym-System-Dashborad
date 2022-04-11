@@ -16,7 +16,7 @@
     </div>
     <div v-if="city.id">
       <label for="branch">Branch</label>
-      <select id="branch" class="form-select w-25" v-model="branchId" @change="getSessions(branchId)">
+      <select id="branch" class="form-select w-25" v-model="branchId" @change="getSessions">
         <option v-for="branch in branches" :key="branch.id" v-bind:value="branch.id">{{ branch.name }}</option>
       </select>
     </div>
@@ -118,8 +118,14 @@ export default {
 
   async created() {
     this.getCities();
+    console.log(this.$store.getters.getPayLoad["role"]);
     if(this.$store.getters.getPayLoad["role"] == "city manager"){
       this.city.id = this.$store.getters.getPayLoad["city_id"]
+      this.getBranches();
+    }
+    if(this.$store.getters.getPayLoad["role"] == "branch manager"){
+      this.branchId = this.$store.getters.getPayLoad['branch_id'];
+      this.getSessions();
     }
   },
 
@@ -140,6 +146,7 @@ export default {
     getBranches() {
       BranchService.getByCityId(this.city.id)
         .then(response => {
+          console.log(this.city.id);
           this.branches = response.data.data;
           this.branchId = ""
         })
@@ -147,8 +154,8 @@ export default {
           console.log(e);
         });
     },
-    getSessions(id) {
-      SessionService.getSessionsByBranch(id)
+    getSessions() {
+      SessionService.getSessionsByBranch(this.branchId)
         .then((response) => {
           console.log(response);
           this.sessions = response.data.data;

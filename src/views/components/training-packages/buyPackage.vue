@@ -25,12 +25,12 @@
               list="users"
               placeholder="Enter user name"
               class="form-control"
-              @keyup="getSearch"
+              @keyup="getUsers"
               v-model="selectedUserName"
             />
             <datalist id="users">
-              <option v-for="user in users" :key="user.id">
-                {{ user.name }}
+              <option v-for="user in Object.keys(users)" :key="user">
+                {{ user }}
               </option>
             </datalist>
             <div class="d-flex justify-content-around my-2">
@@ -78,20 +78,11 @@
             Cancel
           </button>
 
-          <input
-            class="btn btn-success"
-            data-bs-dismiss="modal"
-            @click="buyPackage(selectedUserName)"
-            type="submit"
-            value="Buy package"
-          />
-
           <button
-            class="btn btn-danger ms-3"
-            data-bs-dismiss="modal"
+            class="btn btn-success ms-3"
             @click="processPayment"
             :disabled="isPaymentProcessing"
-            v-text="isPaymentProcessing ? 'processing' : 'buy'"
+            v-text="isPaymentProcessing ? 'processing' : 'buy package'"
           ></button>
         </div>
       </div>
@@ -104,6 +95,7 @@ import BranchService from "../../../services/BranchService.js";
 import UserService from "@/services/UserService";
 import BuyPackageService from "@/services/BuyPackageService";
 import { loadStripe } from "@stripe/stripe-js/pure";
+import Swal from "sweetalert2";
 
 export default {
   data() {
@@ -121,7 +113,6 @@ export default {
       stripe: {},
       cardElement: {},
       paymentMethodId: "",
-      //   branchUsers: "",
     };
   },
   props: ["packages"],
@@ -140,12 +131,14 @@ export default {
         });
     },
     async processPayment() {
+      if (this.users[this.selectedUserName] === undefined) return;
+
       this.isPaymentProcessing = true;
       const { paymentMethod, error } = await this.stripe.createPaymentMethod({
         type: "card",
         card: this.cardElement,
         billing_details: {
-          name: "hsn",
+          email: this.selectedUserName,
         },
       });
       if (error) {
@@ -165,24 +158,35 @@ export default {
         BuyPackageService.create(data)
           .then((res) => {
             if (res.data.data.result == "transaction completed successfully") {
-              alert("transaction completed successfully");
+              Swal.fire({
+                text: "transaction completed successfully",
+                icon: "success",
+                confirmButtonText: "ok",
+              });
+              this.clearForm();
             } else {
-              alert("something went wrong, please try again later");
+              Swal.fire({
+                text: "something went wrong, please try again",
+                icon: "error",
+                confirmButtonText: "ok",
+              });
             }
             console.log(res);
-            this.clearForm();
+            this.isPaymentProcessing = false;
           })
           .catch((err) => {
             console.log(err);
           });
       }
     },
-    getSearch() {
+    getUsers() {
       this.search = this.selectedUserName;
-      UserService.getSome(null, this.search)
+
+      UserService.getSomeByEmail(this.search)
         .then((response) => {
-          this.users = response.data.data.data;
-          console.log(response.data);
+          this.users = response.data.data;
+          this.users = this.convertToKeyValue(this.users, "email", "id");
+          console.log(this.users);
         })
         .catch((e) => {
           console.log(e);
@@ -197,48 +201,34 @@ export default {
       ).number_of_sessions;
     },
 
-    buyPackage(userName) {
-      this.userid = this.users.find((u) => u.name == userName).id;
-
-      let data = {
-        package_id: this.selectedPackage,
-        user_id: this.userid,
-        branch_id: this.selectedBranch,
-        enrollement_price: this.selectedPackagePrice,
-        remianing_sessions: this.packageSessions,
-      };
-
-      BuyPackageService.create(data)
-        .then((res) => {
-          if (res.data.data.result == "transaction completed successfully") {
-            alert("transaction completed successfully");
-          } else {
-            alert("something went wrong, please try again later");
-          }
-          console.log(res);
-          this.clearForm();
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    },
     clearForm() {
       this.selectedUserName = "";
       this.selectedBranch = "";
       this.selectedPackage = "";
+      this.renderCardElement();
     },
+    convertToKeyValue(array, key, value) {
+      let keyValueObj = {};
+      for (const data of array) {
+        keyValueObj[data[key]] = data[value];
+      }
+      return keyValueObj;
+    },
+    async renderCardElement(){
+      const key = this.$store.state.stripePK;
+      this.stripe = await loadStripe(key);
+      console.log(this.stripe);
+      const elements = this.stripe.elements();
+      this.cardElement = elements.create("card", {
+        classes: {
+          base: "rounded p-2 border border-secondary",
+        },
+      });
+      this.cardElement.mount("#cardElement");
+      }
   },
   async mounted() {
-    const key = this.$store.state.stripePK;
-    this.stripe = await loadStripe(key);
-    console.log(this.stripe);
-    const elements = this.stripe.elements();
-    this.cardElement = elements.create("card", {
-      classes: {
-        base: "rounded p-2 border border-secondary",
-      },
-    });
-    this.cardElement.mount("#cardElement");
+    await this.renderCardElement();
   },
 };
 </script>

@@ -104,7 +104,8 @@ export default {
     },
   },
   created() {
-    this.getCities();
+    if (this.$store.getters.isAdmin) this.getCities();
+    else this.branch.city_id = this.$store.getters.getPayLoad.city_id;
     this.getBranch();
   },
 };

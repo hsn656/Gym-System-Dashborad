@@ -24,6 +24,10 @@ class UsersService {
     return http.get(`/users/${id}`);
   }
 
+  getSomeByEmail(email) {
+    return http.get(`/users/paginate/email?search=${email}`);
+  }
+
   update(id, data) {
     return http.post(`/users/${id}`, data);
   }
