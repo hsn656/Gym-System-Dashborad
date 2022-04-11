@@ -81,6 +81,7 @@ export default {
       inputCoaches: [],
       cities: [],
       cityId: "",
+
     }
   },
   async created(){
@@ -89,6 +90,9 @@ export default {
     if(this.$store.getters.getPayLoad["role"] == "city manager"){
       this.cityId = this.$store.getters.getPayLoad["city_id"]
       this.getBranches();
+    }
+     if(this.$store.getters.getPayLoad["role"] == "branch manager"){
+      this.branchId = this.$store.getters.getPayLoad["branch_id"]
     }
     },
   methods: {
