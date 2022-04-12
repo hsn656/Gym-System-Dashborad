@@ -99,7 +99,6 @@ export default {
     },
      onFileChange(event) {
       this.branch.file = event.target.files[0];
-      console.log(this.branch.file);
       var fr = new FileReader();
       fr.onload = () => {
         this.imageSrc = fr.result;
