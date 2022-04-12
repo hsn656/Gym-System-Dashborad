@@ -21,7 +21,11 @@ class BranchesService {
   }
 
   create(data) {
-    return http.post("/branches", data);
+    return http.post("/branches", data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
   }
 
   update(id, data) {
