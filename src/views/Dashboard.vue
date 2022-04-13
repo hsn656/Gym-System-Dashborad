@@ -55,7 +55,7 @@
       <div class="col-lg-7">
         <!-- line chart -->
         <div class="card z-index-2">
-          <gradient-line-chart />
+          <revenue-line-chart />
         </div>
       </div>
     </div>
@@ -72,7 +72,7 @@
 <script>
 import Card from "@/examples/Cards/Card.vue";
 import ActiveUsersChart from "@/examples/Charts/ActiveUsersChart.vue";
-import GradientLineChart from "@/examples/Charts/GradientLineChart.vue";
+import RevenueLineChart from "@/examples/Charts/RevenueLineChart.vue";
 import OrdersCard from "./components/OrdersCard.vue";
 import ProjectsCard from "./components/ProjectsCard.vue";
 import US from "../assets/img/icons/flags/US.png";
@@ -147,7 +147,7 @@ export default {
   components: {
     Card,
     ActiveUsersChart,
-    GradientLineChart,
+    RevenueLineChart,
     ProjectsCard,
     OrdersCard,
   },
