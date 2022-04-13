@@ -34,15 +34,6 @@
           />
           <ErrorMessage class="text-danger small" name="national_id" />
           <Field
-            v-model="user.image_url"
-            name="image_url"
-            placeholder="image url"
-            type="text"
-            rules="required"
-            class="my-2 form-control"
-          />
-          <ErrorMessage class="text-danger small" name="image_url" />
-          <Field
             v-model="user.password"
             name="password"
             placeholder="password"
@@ -51,6 +42,38 @@
             class="my-2 form-control"
           />
           <ErrorMessage class="text-danger small" name="password" />
+          <input
+            type="file"
+            ref="fileInput"
+            name="image"
+            @change="onFileChange"
+            style="display: none"
+          />
+
+          <div class="text-center m-auto">
+            <div>
+              <img
+                :src="getImageSrc"
+                alt=""
+                ref="imagePH"
+                style="
+                  max-height: 120px;
+                  min-height: 120px;
+                  max-width: 120px;
+                  min-width: 120px;
+                "
+                class="formImage"
+              />
+            </div>
+            <div class="mt-2">
+              <input
+                type="button"
+                class="btn btn-secondary"
+                value="Browse..."
+                @click="this.$refs.fileInput.click()"
+              />
+            </div>
+          </div>
           <button class="my-2 btn btn-primary w-100">Add user</button>
         </Form>
         <button
@@ -59,9 +82,6 @@
         >
           Back to users
         </button>
-      </div>
-      <div v-if="isAdded">
-        <p class="text-primary my-2 text-center">added successfully</p>
       </div>
     </div>
   </div>
@@ -85,10 +105,10 @@ export default {
         name: "",
         email: "",
         national_id: "",
-        image_url: "",
         password: "",
+        file: "",
       },
-      isAdded: false,
+      imageSrc: this.$store.state.backEndUrl + "assets/images/noImageYet.jpg",
     };
   },
   methods: {
@@ -96,33 +116,34 @@ export default {
       console.log(values);
       this.addUser();
     },
-    validateEmail(value) {
-      // if the field is empty
-      if (!value) {
-        return "This field is required";
-      }
-      // if the field is not a valid email
-      const regex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
-      if (!regex.test(value)) {
-        return "This field must be a valid email";
-      }
-      // All is good
-      return true;
+    onFileChange(event) {
+      this.user.file = event.target.files[0];
+      var fr = new FileReader();
+      fr.onload = () => {
+        this.imageSrc = fr.result;
+      };
+      fr.readAsDataURL(this.user.file);
     },
     addUser() {
-      let data = {
-        name: this.user.name,
-        email: this.user.email,
-        national_id: this.user.national_id,
-        image_url: this.user.image_url,
-        password: this.user.password,
-      };
-      console.log(data);
-      UserService.create(data)
+
+      const formData = new FormData();
+      formData.append("name", this.user.name);
+      formData.append("email", this.user.email);
+      formData.append("national_id", this.user.national_id);
+      formData.append("password", this.user.password);
+      formData.append("image", this.user.file);
+      UserService.create(formData)
         .then((res) => {
           console.log(res);
-          if (res.data.isSuccess) this.isAdded = true;
-          else {
+          if (res.data.isSuccess) {
+            Swal.fire({
+              text: "created successfully",
+              icon: "success",
+              confirmButtonText: "ok",
+            }).then(() => {
+              this.$router.push("/users");
+            });
+          } else {
             let error = Object.values(res.data.errors).reduce(
               (p, n) => p + " & " + n
             );
@@ -136,6 +157,11 @@ export default {
         .catch((err) => {
           console.log(err);
         });
+    },
+  },
+  computed: {
+    getImageSrc() {
+      return this.imageSrc;
     },
   },
 };
