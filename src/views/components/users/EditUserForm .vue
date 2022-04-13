@@ -12,7 +12,6 @@
             rules="required"
           />
           <ErrorMessage class="text-danger small" name="name" />
-
           <Field
             v-model="user.email"
             name="email"
@@ -32,17 +31,40 @@
             rules="required"
           />
           <ErrorMessage class="text-danger small" name="national_id" />
-          <Field
-            v-model="user.image_url"
-            name="image_url"
-            placeholder="image url"
-            type="email"
-            class="my-2 form-control"
-            rules="required"
+          <input
+            type="file"
+            ref="fileInput"
+            name="image"
+            @change="onFileChange"
+            style="display: none"
           />
-          <ErrorMessage class="text-danger small" name="image_url" />
+          <div class="text-center m-auto">
+            <div>
+              <img
+                :src="getImageSrc"
+                alt=""
+                ref="imagePH"
+                style="
+                  max-height: 120px;
+                  min-height: 120px;
+                  max-width: 120px;
+                  min-width: 120px;
+                "
+                class="formImage"
+              />
+            </div>
+            <div class="mt-2">
+              <input
+                type="button"
+                class="btn btn-secondary"
+                value="Browse..."
+                @click="this.$refs.fileInput.click()"
+              />
+            </div>
+          </div>
           <button
             @click="updateUser(user.id)"
+            :disabled="isBeingUpdated"
             class="my-2 btn btn-primary w-100"
           >
             Edit
@@ -54,9 +76,6 @@
         >
           Back to users
         </button>
-      </div>
-      <div v-if="isUpdated">
-        <p class="text-primary my-2 text-center">updated successfully</p>
       </div>
     </div>
   </div>
@@ -81,12 +100,21 @@ export default {
         name: "",
         email: "",
         national_id: "",
-        image_url: "",
+        file: "",
       },
-      isUpdated: false,
+      imageSrc: "",
+      isBeingUpdated:false
     };
   },
   methods: {
+    onFileChange(event) {
+      this.user.file = event.target.files[0];
+      var fr = new FileReader();
+      fr.onload = () => {
+        this.imageSrc = fr.result;
+      };
+      fr.readAsDataURL(this.user.file);
+    },
     onSubmit() {
       this.updateUser(this.user.id);
     },
@@ -94,15 +122,22 @@ export default {
       UserService.getById(id)
         .then((response) => {
           this.user = response.data.data;
-          console.log(response.data);
+          this.imageSrc =
+            this.$store.state.backEndUrl + response.data.data.image_url;
         })
         .catch((e) => {
           console.log(e);
         });
     },
     updateUser(id) {
-      this.isUpdated = false;
-      UserService.update(id, this.user).then((res) => {
+      this.isBeingUpdated=true;
+      const formData = new FormData();
+      formData.append("id", this.user.id);
+      formData.append("name", this.user.name);
+      formData.append("email", this.user.email);
+      formData.append("national_id", this.user.national_id);
+      formData.append("image", this.user.file);
+      UserService.update(id, formData).then((res) => {
         if (res.data.isSuccess) {
           Swal.fire({
             text: "updated successfully",
@@ -119,11 +154,17 @@ export default {
             confirmButtonText: "ok",
           });
         }
+        this.isBeingUpdated=false;
       });
     },
   },
   created() {
     this.getUser(this.$route.params.id);
+  },
+  computed: {
+    getImageSrc() {
+      return this.imageSrc;
+    },
   },
 };
 </script>

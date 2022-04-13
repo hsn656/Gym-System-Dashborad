@@ -51,7 +51,7 @@
               />
             </div>
           </div>
-          <button class="my-2 btn btn-primary w-100">Update Branch</button>
+          <button :disabled="isBeingUpdated" class="my-2 btn btn-primary w-100">Update Branch</button>
         </Form>
         <button
           @click="this.$router.push('/branches')"
@@ -87,6 +87,7 @@ export default {
       },
       imageSrc: "",
       cities: {},
+      isBeingUpdated:false
     };
   },
   methods: {
@@ -108,6 +109,7 @@ export default {
       });
     },
     updateBranch() {
+      this.isBeingUpdated = true;
       const formData = new FormData();
       formData.append("id", this.branch.id);
       formData.append("name", this.branch.name);
@@ -134,9 +136,11 @@ export default {
               confirmButtonText: "ok",
             });
           }
+          this.isBeingUpdated = false;
         })
         .catch((err) => {
           console.log(err);
+          this.isBeingUpdated = false;
         });
     },
     getBranch() {

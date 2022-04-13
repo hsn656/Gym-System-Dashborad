@@ -142,7 +142,6 @@
 
 <script>
 import VsudAvatar from "@/components/VsudAvatar.vue";
-import img1 from "./team-2.jpg";
 import UserService from "@/services/UserService";
 
 export default {
@@ -150,7 +149,6 @@ export default {
   data() {
     return {
       users: [],
-      img1,
       links: [],
       search: "",
       sortField: "created_at",

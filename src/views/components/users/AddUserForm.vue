@@ -74,7 +74,7 @@
               />
             </div>
           </div>
-          <button class="my-2 btn btn-primary w-100">Add user</button>
+          <button :disabled="isBeingAdded" class="my-2 btn btn-primary w-100">Add user</button>
         </Form>
         <button
           @click="this.$router.push('/users')"
@@ -109,6 +109,7 @@ export default {
         file: "",
       },
       imageSrc: this.$store.state.backEndUrl + "assets/images/noImageYet.jpg",
+      isBeingAdded:false
     };
   },
   methods: {
@@ -125,7 +126,7 @@ export default {
       fr.readAsDataURL(this.user.file);
     },
     addUser() {
-
+      this.isBeingAdded=true;
       const formData = new FormData();
       formData.append("name", this.user.name);
       formData.append("email", this.user.email);
@@ -153,9 +154,11 @@ export default {
               confirmButtonText: "ok",
             });
           }
+          this.isBeingAdded=false;
         })
         .catch((err) => {
           console.log(err);
+          this.isBeingAdded=false;
         });
     },
   },

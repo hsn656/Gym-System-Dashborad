@@ -52,7 +52,7 @@
             </div>
           </div>
 
-          <button class="my-2 btn btn-primary w-100">Add Branch</button>
+          <button :disabled="isBeingAdded" class="my-2 btn btn-primary w-100">Add Branch</button>
         </Form>
         <button
           @click="this.$router.push('/branches')"
@@ -87,6 +87,7 @@ export default {
       },
       cities: {},
       imageSrc: "http://127.0.0.1:8000/assets/images/noImageYet.jpg",
+      isBeingAdded:false
     };
   },
   created() {
@@ -106,7 +107,7 @@ export default {
       fr.readAsDataURL(this.branch.file);
     },
     addBranch() {
-      console.log(this.branch);
+      this.isBeingAdded=true;
       const formData = new FormData();
       formData.append("name",this.branch.name);
       formData.append("city_id",this.branch.city_id);
@@ -132,9 +133,11 @@ export default {
               confirmButtonText: "ok",
             });
           }
+          this.isBeingAdded=false;
         })
         .catch((err) => {
           console.log(err);
+          this.isBeingAdded=false;
         });
     },
     getCities() {
