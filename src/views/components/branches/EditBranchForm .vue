@@ -19,7 +19,39 @@
               </option>
             </select>
           </div>
-          <button class="my-2 btn btn-primary w-100">Update Branch</button>
+          <input
+            type="file"
+            ref="fileInput"
+            name="image"
+            @change="onFileChange"
+            style="display: none"
+          />
+
+          <div class="text-center m-auto mt-2">
+            <div>
+              <img
+                :src="getImageSrc"
+                alt=""
+                ref="imagePH"
+                style="
+                  max-height: 120px;
+                  min-height: 120px;
+                  max-width: 120px;
+                  min-width: 120px;
+                "
+                class="formImage"
+              />
+            </div>
+            <div class="mt-2">
+              <input
+                type="button"
+                class="btn btn-secondary"
+                value="Browse..."
+                @click="this.$refs.fileInput.click()"
+              />
+            </div>
+          </div>
+          <button :disabled="isBeingUpdated" class="my-2 btn btn-primary w-100">Update Branch</button>
         </Form>
         <button
           @click="this.$router.push('/branches')"
@@ -51,11 +83,22 @@ export default {
         id: this.$route.params.id,
         name: "",
         city_id: "",
+        file: "",
       },
+      imageSrc: "",
       cities: {},
+      isBeingUpdated:false
     };
   },
   methods: {
+    onFileChange(event) {
+      this.branch.file = event.target.files[0];
+      var fr = new FileReader();
+      fr.onload = () => {
+        this.imageSrc = fr.result;
+      };
+      fr.readAsDataURL(this.branch.file);
+    },
     onSubmit() {
       this.updateBranch();
     },
@@ -66,7 +109,13 @@ export default {
       });
     },
     updateBranch() {
-      BranchService.update(this.branch.id, this.branch)
+      this.isBeingUpdated = true;
+      const formData = new FormData();
+      formData.append("id", this.branch.id);
+      formData.append("name", this.branch.name);
+      formData.append("city_id", this.branch.city_id);
+      formData.append("image", this.branch.file);
+      BranchService.update(this.branch.id, formData)
         .then((res) => {
           console.log(res);
           if (res.data.isSuccess) {
@@ -87,15 +136,18 @@ export default {
               confirmButtonText: "ok",
             });
           }
+          this.isBeingUpdated = false;
         })
         .catch((err) => {
           console.log(err);
+          this.isBeingUpdated = false;
         });
     },
     getBranch() {
       BranchService.getById(this.branch.id)
         .then((response) => {
           this.branch = response.data.data;
+          this.imageSrc = this.$store.state.backEndUrl + response.data.data.img;
           console.log(response.data);
         })
         .catch((e) => {
@@ -107,6 +159,11 @@ export default {
     if (this.$store.getters.isAdmin) this.getCities();
     else this.branch.city_id = this.$store.getters.getPayLoad.city_id;
     this.getBranch();
+  },
+  computed: {
+    getImageSrc() {
+      return this.imageSrc;
+    },
   },
 };
 </script>

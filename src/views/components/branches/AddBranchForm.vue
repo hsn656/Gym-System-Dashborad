@@ -19,7 +19,40 @@
               </option>
             </select>
           </div>
-          <button class="my-2 btn btn-primary w-100">Add Branch</button>
+          <input
+            type="file"
+            ref="fileInput"
+            name="image"
+            @change="onFileChange"
+            style="display: none"
+          />
+
+          <div class="text-center m-auto">
+            <div >
+              <img
+                :src="getImageSrc"
+                alt=""
+                ref="imagePH"
+                style="
+                  max-height: 120px;
+                  min-height: 120px;
+                  max-width: 120px;
+                  min-width: 120px;
+                "
+                class="formImage"
+              />
+            </div>
+            <div class="mt-2">
+              <input
+                type="button"
+                class="btn btn-secondary"
+                value="Browse..."
+                @click="this.$refs.fileInput.click()"
+              />
+            </div>
+          </div>
+
+          <button :disabled="isBeingAdded" class="my-2 btn btn-primary w-100">Add Branch</button>
         </Form>
         <button
           @click="this.$router.push('/branches')"
@@ -50,8 +83,11 @@ export default {
       branch: {
         name: "",
         city_id: "",
+        file:""
       },
       cities: {},
+      imageSrc: "http://127.0.0.1:8000/assets/images/noImageYet.jpg",
+      isBeingAdded:false
     };
   },
   created() {
@@ -62,9 +98,21 @@ export default {
     onSubmit() {
       this.addBranch();
     },
+     onFileChange(event) {
+      this.branch.file = event.target.files[0];
+      var fr = new FileReader();
+      fr.onload = () => {
+        this.imageSrc = fr.result;
+      };
+      fr.readAsDataURL(this.branch.file);
+    },
     addBranch() {
-      console.log(this.branch);
-      BranchService.create(this.branch)
+      this.isBeingAdded=true;
+      const formData = new FormData();
+      formData.append("name",this.branch.name);
+      formData.append("city_id",this.branch.city_id);
+      formData.append("image",this.branch.file);
+      BranchService.create(formData)
         .then((res) => {
           console.log(res);
           if (res.data.isSuccess) {
@@ -85,9 +133,11 @@ export default {
               confirmButtonText: "ok",
             });
           }
+          this.isBeingAdded=false;
         })
         .catch((err) => {
           console.log(err);
+          this.isBeingAdded=false;
         });
     },
     getCities() {
@@ -96,6 +146,11 @@ export default {
         this.cities = res.data;
         this.branch.city_id = this.cities[0]?.id;
       });
+    },
+  },
+  computed: {
+    getImageSrc() {
+      return this.imageSrc;
     },
   },
 };

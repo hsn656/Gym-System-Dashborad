@@ -82,7 +82,7 @@
                 <div class="d-flex px-2 py-1">
                   <div>
                     <vsud-avatar
-                      :img="img1"
+                      :img="$store.state.backEndUrl+user.image_url"
                       size="sm"
                       border-radius="lg"
                       class="me-3"
@@ -142,7 +142,6 @@
 
 <script>
 import VsudAvatar from "@/components/VsudAvatar.vue";
-import img1 from "./team-2.jpg";
 import UserService from "@/services/UserService";
 
 export default {
@@ -150,7 +149,6 @@ export default {
   data() {
     return {
       users: [],
-      img1,
       links: [],
       search: "",
       sortField: "created_at",
