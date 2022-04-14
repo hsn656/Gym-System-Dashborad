@@ -1,9 +1,12 @@
 import http from "../http-common";
-import axios from "axios";
 
 class CityService {
   getAll() {
     return http.get("/cities");
+  }
+
+  getNewCities() {
+    return http.get("/newcities");
   }
 
   create(data) {
@@ -14,37 +17,9 @@ class CityService {
     return http.get(`/cities/${id}`);
   }
 
-
-
-
-
-
-  // update(id, data) {
-  //   return http.put(`/citymanagers/${id}`, data);
-  // }
-
-
-  // update(id, data) {
-  //   return http.put(`/citymanagers/${id}`, data);
-  // }
-  async update(id, data) {
-     await axios.put(`http://localhost:8000/api/cities/${id}`, { hello: 'world' }, {
-      headers: {
-        'Content-Type':'application/json',
-        'name': `${data.name}`,
-        'managerId': `${data.manager_id}`,
-      }
-    })
-  };
-
-
-
-
-
-
-
-
-
+  update(id, data) {
+    return http.post(`/cities/${id}`, data);
+  }
 
   delete(id) {
     return http.delete(`/cities/${id}`);
@@ -52,3 +27,4 @@ class CityService {
 }
 
 export default new CityService();
+

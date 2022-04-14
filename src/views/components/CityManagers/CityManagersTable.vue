@@ -106,8 +106,7 @@ export default {
     getCityManagers() {
       CityManagerService.getAll()
         .then(response => {
-          this.cityManagers = response.data;
-          console.log(response.data);
+          this.cityManagers = response.data.data;
         })
         .catch(e => {
           console.log(e);
@@ -122,16 +121,12 @@ export default {
       if (!confirm("are you sure?")) return;
 
       CityManagerService.delete(id).then(res=>{
-          console.log(res);
           this.cityManagers=this.cityManagers.filter(cityManager=>cityManager.id!==id);
           // this.forceRerender();
         }).catch(err=>{
           console.log(err);
         });
     },
-    // forceRerender() {
-    //   this.componentKey += 1;
-    // }
   }
 };
 </script>

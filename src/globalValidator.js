@@ -2,7 +2,7 @@ import { defineRule } from "vee-validate";
 export function getFormValidators() {
   defineRule("required", (value) => {
     if (!value || !value.length) {
-      return "This field is required";
+      return "This Field is required";
     }
     return true;
   });
