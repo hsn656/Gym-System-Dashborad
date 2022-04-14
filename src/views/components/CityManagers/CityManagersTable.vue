@@ -120,7 +120,7 @@ export default {
     deleteCityMananger(id){
       if (!confirm("are you sure?")) return;
 
-      CityManagerService.delete(id).then(res=>{
+      CityManagerService.delete(id).then(()=>{
           this.cityManagers=this.cityManagers.filter(cityManager=>cityManager.id!==id);
           // this.forceRerender();
         }).catch(err=>{

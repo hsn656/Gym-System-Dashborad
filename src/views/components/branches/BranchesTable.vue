@@ -256,7 +256,7 @@ export default {
     },
     getCities() {
       CityService.getAll().then((res) => {
-        this.cities = res.data;
+        this.cities = res.data.data;
         // this.city_id = this.cities[0]?.id;
       });
     },
