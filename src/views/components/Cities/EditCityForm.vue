@@ -2,12 +2,10 @@
   <div class="container-fluid">
     <div class="row justify-content-center">
       <div class=" col-10 col-md-8 col-lg-6">
-        <input v-model="city.name" name="name" placeholder="name" type="text" class="my-2 form-control">
-        <select class="form-select" v-model="city.manager_id" name="cityManager">
-          <option v-for="cityManager in cityManagers" :key="cityManager.id" v-bind:value="cityManager.id">
-            {{ cityManager.name }}
-          </option>
-        </select>
+        <Form>
+          <Field v-model="city.name" name="name" placeholder="name" type="text" class="my-2 form-control" />
+          <ErrorMessage class="text-danger small" name="name" />
+        </Form>
         <button @click="updateCity(city.id)" class="my-2 btn btn-primary w-100">Edit</button>
       </div>
       <div v-if="isUpdated">
@@ -20,6 +18,8 @@
 <script>
 import CityService from "../../../services/CityService";
 import CityManagerService from "../../../services/CityManagerService";
+import { ErrorMessage, Field, Form } from "vee-validate";
+import Swal from "sweetalert2";
 
 
 export default {
@@ -27,26 +27,23 @@ export default {
   data() {
     return {
       city: {
-        name: "",
-        manager_id: "",
+        name: ""
       },
-      cityManagers: [],
-      isUpdated: false
+      cityManagers: []
     };
   },
   async created() {
     this.getCity(this.$route.params.id);
     this.getCityManagers();
-    console.log(this.cityManagers)
+    console.log(this.cityManagers);
   },
   methods: {
     getCity(id) {
       CityService.getById(id)
         .then(response => {
-          console.log(response.data);
-          this.city.id = response.data.id;
-          this.city.name = response.data.name;
-          this.city.manager_id = response.data.manager_id;
+          console.log(response.data.data);
+          this.city.id = response.data.data.id;
+          this.city.name = response.data.data.name;
           console.log(this.city);
         })
         .catch(e => {
@@ -55,21 +52,34 @@ export default {
     },
     updateCity(id) {
       this.isUpdated = false;
-      CityService.update(id, this.city).then(() => {
+      CityService.update(id, this.city).then((res) => {
         // console.log(res);
-        this.isUpdated = true;
+        if (res.data.isSuccess) {
+          this.$router.push({ name: "Cities" });
+        } else {
+          let error = Object.values(res.data.errors).reduce((p, n) => p + " & " + n);
+          Swal.fire({
+            text: error,
+            icon: "error",
+            confirmButtonText: "ok"
+          });
+        }
       });
     },
     getCityManagers() {
       CityManagerService.getAll()
         .then(response => {
           this.cityManagers = response.data;
-          // console.log(response.data);
         })
         .catch(e => {
           console.log(e);
         });
     }
+  },
+  components: {
+    Form,
+    Field,
+    ErrorMessage
   }
 
 

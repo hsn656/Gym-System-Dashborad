@@ -9,10 +9,12 @@
     </div>
     <div class="card-body px-0 pt-0 pb-2">
       <div class="table-responsive p-0">
-        <label for="city">City</label>
-        <select id="city" class="form-select w-25" v-model="city.id" @change="getBranches">
-          <option v-for="city in cities" :key="city.id" v-bind:value="city.id">{{ city.name }}</option>
-        </select>
+        <div>
+          <label for="city">City</label>
+          <select id="city" class="form-select w-25" v-model="city.id" @change="getBranches">
+            <option v-for="city in cities" :key="city.id" v-bind:value="city.id">{{ city.name }}</option>
+          </select>
+        </div>
 
         <div v-if="city.id">
           <label for="branch">Branch</label>
@@ -100,7 +102,7 @@ export default {
         id: ""
       },
       branches: [],
-      branchId:''
+      branchId: ""
 
     };
   },
@@ -116,8 +118,7 @@ export default {
     async getAttendance() {
       AttendanceService.getAll(this.branchId)
         .then(response => {
-          this.attendanceSheet = response.data;
-          console.log(response.data);
+          this.attendanceSheet = response.data.data;
         })
         .catch(e => {
           console.log(e);
@@ -133,8 +134,7 @@ export default {
     getCities() {
       CityService.getAll()
         .then(response => {
-          this.cities = response.data;
-          console.log(response.data);
+          this.cities = response.data.data;
         })
         .catch(e => {
           console.log(e);
@@ -144,7 +144,6 @@ export default {
       BranchService.getByCityId(this.city.id)
         .then(response => {
           this.branches = response.data.data;
-          console.log(response.data);
         })
         .catch(e => {
           console.log(e);
