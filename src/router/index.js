@@ -38,6 +38,7 @@ const routes = [
     path: "/",
     name: "/",
     redirect: "/dashboard",
+    meta: { auth: store.getters.atLeastBranchManager },
   },
   {
     path: "/dashboard",
@@ -174,13 +175,11 @@ const routes = [
     path: "/sign-in",
     name: "Sign In",
     component: SignIn,
-    meta: { auth: true },
   },
   {
     path: "/sign-up",
     name: "Sign Up",
     component: SignUp,
-    meta: { auth: store.getters.atLeastBranchManager },
   },
   //#region packages routes
   {
@@ -264,7 +263,10 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  next();
+  if (to.meta.auth !== undefined && !to?.meta?.auth && from.path !== to.path) {
+    return next("/dashboard");
+  }
+  return next();
 });
 
 export default router;
