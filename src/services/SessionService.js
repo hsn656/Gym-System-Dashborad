@@ -5,6 +5,14 @@ class SessionService {
     return http.get("/sessions");
   }
 
+  getSessionsByBranch(id) {
+    return http.get("/sessions?branch_id="+id);
+  }
+
+  getOld() {
+    return http.get("/oldsessions");
+  }
+
   create(data) {
     return http.post("/sessions", data);
   }
@@ -22,11 +30,15 @@ class SessionService {
   }
 
   getbranches() {
-    return http.get(`/citybranches`);
+    return http.get(`/branches`);
   }
 
   getcoaches() {
     return http.get(`/coaches`);
+  }
+
+  getOldSessionsByBranch(id) {
+    return http.get("/oldsessions?branch_id="+id);
   }
 }
 

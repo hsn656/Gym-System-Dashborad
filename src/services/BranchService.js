@@ -1,22 +1,35 @@
 import http from "../http-common";
 
 class BranchesService {
-  getByCityId(cityId = 1) {
+  getByCityId(cityId = null) {
     return http.get(`/branches?city_id=${cityId}`);
   }
 
   getSomeByCityId(
-    cityId = 1,
+    cityId = null,
     page = 1,
     search = "",
     sortField = "created_at",
     sortDirection = "asc"
   ) {
-    if (!cityId) cityId = 1;
+    let url = `/branches/paginate?city_id=${cityId}&page=${page}&search=${search}&sortField=${sortField}&sortDirection=${sortDirection}`;
+    return http.get(url);
+  }
 
-    return http.get(
-      `/branches/paginate?city_id=${cityId}&page=${page}&search=${search}&sortField=${sortField}&sortDirection=${sortDirection}`
-    );
+  getById(id) {
+    return http.get(`/branches/${id}`);
+  }
+
+  create(data) {
+    return http.post("/branches", data);
+  }
+
+  update(id, data) {
+    return http.post(`/branches/${id}`, data);
+  }
+
+  delete(id) {
+    return http.delete(`/branches/${id}`);
   }
 }
 

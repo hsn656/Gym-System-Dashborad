@@ -2,7 +2,8 @@
   <div class="conatiner mx-4">
     <!-- <a class="btn btn-success mb-3 ">Add package</a> -->
     <add-component @add-package="updatePackageArray" />
-    <a class="btn btn-primary mb-3 mx-3">Buy package to user</a>
+    <!-- <a class="btn btn-primary mb-3 mx-3">Buy package to user</a> -->
+    <buy-package :packages="packages" />
     <div class="row d-flex">
       <div
         v-for="traningPackage in packages"
@@ -118,6 +119,8 @@
 <script>
 import PackageService from "../../../services/PackageService";
 import addComponent from "./AddPackage.vue";
+import buyPackage from "./buyPackage.vue";
+
 export default {
   data() {
     return {
@@ -140,6 +143,7 @@ export default {
 
   components: {
     addComponent,
+    buyPackage,
   },
 
   async created() {
@@ -158,6 +162,7 @@ export default {
       }
     },
     getPackages() {
+      console.log("bla bla bla bla");
       PackageService.getAll()
         .then((response) => {
           this.packages = response.data;

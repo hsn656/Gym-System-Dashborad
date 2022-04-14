@@ -5,10 +5,12 @@ class UsersService {
     return http.get("/users");
   }
 
-  getSome(page, search, sortField = "created_at", sortDirection = "asc") {
-    if (!page) page = 1;
-    if (!search) search = "";
-
+  getSome(
+    page = 1,
+    search = "",
+    sortField = "created_at",
+    sortDirection = "asc"
+  ) {
     return http.get(
       `/users/paginate?page=${page}&search=${search}&sortField=${sortField}&sortDirection=${sortDirection}`
     );
@@ -22,12 +24,20 @@ class UsersService {
     return http.get(`/users/${id}`);
   }
 
+  getSomeByEmail(email) {
+    return http.get(`/users/paginate/email?search=${email}`);
+  }
+
   update(id, data) {
-    return http.put(`/users/${id}`, data);
+    return http.post(`/users/${id}`, data);
   }
 
   delete(id) {
     return http.delete(`/users/${id}`);
+  }
+
+  getBranchUsers(id) {
+    return http.get(`/users/branch/${id}`);
   }
 }
 

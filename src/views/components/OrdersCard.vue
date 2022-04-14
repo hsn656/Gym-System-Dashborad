@@ -4,7 +4,7 @@
       <h6>{{ title }}</h6>
       <p class="text-sm">
         <i class="fa fa-arrow-up text-success" aria-hidden="true"></i>
-        <span class="font-weight-bold">24%</span> {{ text }}
+        <span class="font-weight-bold"></span> {{ text }}
       </p>
     </div>
     <div class="card-body p-3">
@@ -96,7 +96,7 @@ export default {
   props: {
     title: {
       type: String,
-      default: "Orders overview",
+      default: "Most popular packages",
     },
     text: {
       type: String,

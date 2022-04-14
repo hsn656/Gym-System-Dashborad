@@ -1,12 +1,10 @@
 <template>
-  <div class="container-fluid bg-white h-100 py-4">
+  <div class="container-fluid h-100 bg-white py-5">
     <div class="row justify-content-center">
       <div class="col-10 col-md-8 col-lg-6">
-
-
         <Form @submit="onSubmit">
           <Field
-            v-model="user.name"
+            v-model="branch.name"
             name="name"
             placeholder="name"
             type="text"
@@ -14,36 +12,13 @@
             class="my-2 form-control"
           />
           <ErrorMessage class="text-danger small" name="name" />
-          <Field
-            v-model="user.email"
-            name="email"
-            placeholder="email"
-            type="email"
-            rules="email|required"
-            class="my-2 form-control"
-          />
-          <ErrorMessage class="text-danger small" name="email" />
-          <!-- <ErrorMessage name="email" v-slot="{ msg='not valid email' }">
-            <p class="text-danger small">{{ msg }}</p>
-          </ErrorMessage> -->
-          <Field
-            v-model="user.national_id"
-            name="national_id"
-            placeholder="national id"
-            type="email"
-            rules="required"
-            class="my-2 form-control"
-          />
-          <ErrorMessage class="text-danger small" name="national_id" />
-          <Field
-            v-model="user.password"
-            name="password"
-            placeholder="password"
-            type="password"
-            rules="required"
-            class="my-2 form-control"
-          />
-          <ErrorMessage class="text-danger small" name="password" />
+          <div v-if="$store.getters.isAdmin" class="w-25 mt-4 mx-3 d-inline">
+            <select v-model="branch.city_id" class="form-select">
+              <option v-for="city in cities" :key="city.id" :value="city.id">
+                {{ city.name }}
+              </option>
+            </select>
+          </div>
           <input
             type="file"
             ref="fileInput"
@@ -53,7 +28,7 @@
           />
 
           <div class="text-center m-auto">
-            <div>
+            <div >
               <img
                 :src="getImageSrc"
                 alt=""
@@ -76,13 +51,14 @@
               />
             </div>
           </div>
-          <button :disabled="isBeingAdded" class="my-2 btn btn-primary w-100">Add user</button>
+
+          <button :disabled="isBeingAdded" class="my-2 btn btn-primary w-100">Add Branch</button>
         </Form>
         <button
-          @click="this.$router.push('/users')"
+          @click="this.$router.push('/branches')"
           class="my-2 btn btn-secondary w-100"
         >
-          Back to users
+          Back to branches
         </button>
       </div>
     </div>
@@ -90,7 +66,8 @@
 </template>
 
 <script>
-import UserService from "../../../services/UserService";
+import BranchService from "../../../services/BranchService.js";
+import CityService from "../../../services/CityService.js";
 import { Form, Field, ErrorMessage } from "vee-validate";
 import Swal from "sweetalert2";
 
@@ -103,39 +80,39 @@ export default {
   },
   data() {
     return {
-      user: {
+      branch: {
         name: "",
-        email: "",
-        national_id: "",
-        password: "",
-        file: "",
+        city_id: "",
+        file:""
       },
-      imageSrc: this.$store.state.backEndUrl + "assets/images/noImageYet.jpg",
+      cities: {},
+      imageSrc: "http://127.0.0.1:8000/assets/images/noImageYet.jpg",
       isBeingAdded:false
     };
   },
+  created() {
+    if (this.$store.getters.isAdmin) this.getCities();
+    else this.branch.city_id = this.$store.getters.getPayLoad.city_id;
+  },
   methods: {
-    onSubmit(values) {
-      console.log(values);
-      this.addUser();
+    onSubmit() {
+      this.addBranch();
     },
-    onFileChange(event) {
-      this.user.file = event.target.files[0];
+     onFileChange(event) {
+      this.branch.file = event.target.files[0];
       var fr = new FileReader();
       fr.onload = () => {
         this.imageSrc = fr.result;
       };
-      fr.readAsDataURL(this.user.file);
+      fr.readAsDataURL(this.branch.file);
     },
-    addUser() {
+    addBranch() {
       this.isBeingAdded=true;
       const formData = new FormData();
-      formData.append("name", this.user.name);
-      formData.append("email", this.user.email);
-      formData.append("national_id", this.user.national_id);
-      formData.append("password", this.user.password);
-      formData.append("image", this.user.file);
-      UserService.create(formData)
+      formData.append("name",this.branch.name);
+      formData.append("city_id",this.branch.city_id);
+      formData.append("image",this.branch.file);
+      BranchService.create(formData)
         .then((res) => {
           console.log(res);
           if (res.data.isSuccess) {
@@ -144,7 +121,7 @@ export default {
               icon: "success",
               confirmButtonText: "ok",
             }).then(() => {
-              this.$router.push("/users");
+              this.$router.push("/branches");
             });
           } else {
             let error = Object.values(res.data.errors).reduce(
@@ -162,6 +139,13 @@ export default {
           console.log(err);
           this.isBeingAdded=false;
         });
+    },
+    getCities() {
+      CityService.getAll().then((res) => {
+        console.log(res);
+        this.cities = res.data;
+        this.branch.city_id = this.cities[0]?.id;
+      });
     },
   },
   computed: {

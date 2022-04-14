@@ -32,29 +32,18 @@
           </template>
         </sidenav-collapse>
       </li> -->
-      <!-- <li class="nav-item">
-        <sidenav-collapse navText="Branch Managers" :to="{ name: 'Branch Managers' }">
-          <template v-slot:icon>
-            <icon name="dashboard" />
-          </template>
-        </sidenav-collapse>
-      </li> -->
       <li class="nav-item">
-        <sidenav-collapse navText="Users" :to="{ name: 'Users' }">
-          <template v-slot:icon>
-            <icon name="dashboard" />
-          </template>
-        </sidenav-collapse>
-      </li>
-      <li class="nav-item">
-        <sidenav-collapse navText="Users2" :to="{ name: 'Users2' }">
+        <sidenav-collapse
+          navText="Branch Managers"
+          :to="{ name: 'Branch Managers' }"
+        >
           <template v-slot:icon>
             <icon name="dashboard" />
           </template>
         </sidenav-collapse>
       </li>
 
-      <li class="nav-item">
+      <li v-if="$store.getters.isAdmin" class="nav-item">
         <sidenav-collapse
           navText="City Managers"
           :to="{ name: 'CityManagers' }"
@@ -65,16 +54,20 @@
         </sidenav-collapse>
       </li>
       <li class="nav-item">
-        <sidenav-collapse
-          navText="Cities"
-          :to="{ name: 'Cities' }"
-        >
+        <sidenav-collapse navText="Users" :to="{ name: 'Users' }">
           <template v-slot:icon>
             <icon name="dashboard" />
           </template>
         </sidenav-collapse>
       </li>
-  <li class="nav-item">
+      <li class="nav-item">
+        <sidenav-collapse navText="Cities" :to="{ name: 'Cities' }">
+          <template v-slot:icon>
+            <icon name="dashboard" />
+          </template>
+        </sidenav-collapse>
+      </li>
+      <li class="nav-item">
         <sidenav-collapse navText="Branches" :to="{ name: 'Branches' }">
           <template v-slot:icon>
             <icon name="dashboard" />
@@ -82,22 +75,12 @@
         </sidenav-collapse>
       </li>
       <li class="nav-item">
-        <sidenav-collapse
-          navText="Attendance"
-          :to="{ name: 'Attendance' }"
-        >
+        <sidenav-collapse navText="Attendance" :to="{ name: 'Attendance' }">
           <template v-slot:icon>
             <icon name="dashboard" />
           </template>
         </sidenav-collapse>
       </li>
-
-
-
-
-
-
-
 
       <li class="nav-item">
         <sidenav-collapse
@@ -117,7 +100,17 @@
         </sidenav-collapse>
       </li>
       <li class="nav-item">
-        <sidenav-collapse navText="Sessions" :to="{ name: 'Sessions' }">
+        <sidenav-collapse
+          navText="Upcoming Sessions"
+          :to="{ name: 'Sessions' }"
+        >
+          <template v-slot:icon>
+            <icon name="dashboard" />
+          </template>
+        </sidenav-collapse>
+      </li>
+      <li class="nav-item">
+        <sidenav-collapse navText="Old Sessions" :to="{ name: 'oldSessions' }">
           <template v-slot:icon>
             <icon name="dashboard" />
           </template>
@@ -214,7 +207,6 @@
 import Icon from "@/components/Icon.vue";
 import SidenavCollapse from "./SidenavCollapse.vue";
 import SidenavCard from "./SidenavCard.vue";
-import jwtDecode from "../../jwtdecode";
 // import jwt_decode from 'jwt-decode';
 // import jwt_decode from '../../../node_modules/jwt-decode';
 
@@ -231,14 +223,7 @@ export default {
       tokenPayload: {},
     };
   },
-  created() {
-    var token = localStorage.getItem("gstoken");
-
-    if (token) {
-      this.tokenPayload = jwtDecode(token);
-      console.log(this.tokenPayload);
-    }
-  },
+  created() {},
   components: {
     Icon,
     SidenavCollapse,

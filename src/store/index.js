@@ -1,4 +1,5 @@
 import { createStore } from "vuex";
+import { getpayload } from "@/jwtdecode";
 
 export default createStore({
   state: {
@@ -15,6 +16,9 @@ export default createStore({
     showNavbar: true,
     showFooter: false,
     showMain: true,
+    stripePK:
+      "pk_test_51KhzxNEHwj20Yn6RZTOFDxaHP3m22XbpDuDywMsZthUWTOyKJtEvTpOxcAL7FfeC4uOlucTXQ39azat1SDexH3D200Amtv1A4z",
+    backEndUrl: "http://localhost:8000/",
   },
   mutations: {
     toggleConfigurator(state) {
@@ -54,5 +58,21 @@ export default createStore({
       commit("sidebarType", payload);
     },
   },
-  getters: {},
+  getters: {
+    isAdmin() {
+      return getpayload().role == "admin";
+    },
+    isCityManager() {
+      return getpayload().role == "city manager";
+    },
+    isBranchManager() {
+      return getpayload().role == "branch manager";
+    },
+    isUser() {
+      return getpayload().role == "user";
+    },
+    getPayLoad() {
+      return getpayload();
+    },
+  },
 });
