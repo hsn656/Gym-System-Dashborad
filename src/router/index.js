@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
+import Swal from "sweetalert2";
 import Dashboard from "@/views/Dashboard.vue";
 import Tables from "@/views/Tables.vue";
 import Billing from "@/views/Billing.vue";
@@ -264,6 +265,11 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   if (to.meta.auth !== undefined && !to?.meta?.auth && from.path !== to.path) {
+    Swal.fire({
+      text: "You are not Authorized",
+      icon: "warning",
+      confirmButtonText: "ok",
+    });
     return next("/dashboard");
   }
   return next();

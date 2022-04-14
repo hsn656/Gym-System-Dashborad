@@ -75,7 +75,7 @@ export default createStore({
       return getpayload();
     },
     atLeastAdmin() {
-      return getpayload().role == "admin";
+      return getpayload().role ==  "admin";
     },
     atLeastCityManager() {
       return (
@@ -86,6 +86,9 @@ export default createStore({
       return (
         getpayload().role == "admin" || getpayload().role == "city manager"
       );
+    },
+    isLoggedIn() {
+      return !!localStorage.gstoken;
     },
   },
 });
