@@ -74,5 +74,18 @@ export default createStore({
     getPayLoad() {
       return getpayload();
     },
+    atLeastAdmin() {
+      return getpayload().role == "admin";
+    },
+    atLeastCityManager() {
+      return (
+        getpayload().role == "admin" || getpayload().role == "city manager"
+      );
+    },
+    atLeastBranchManager() {
+      return (
+        getpayload().role == "admin" || getpayload().role == "city manager"
+      );
+    },
   },
 });
