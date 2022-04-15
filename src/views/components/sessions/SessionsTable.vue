@@ -136,8 +136,7 @@ export default {
     getCities() {
       CityService.getAll()
         .then(response => {
-          this.cities = response.data;
-          console.log(response.data);
+          this.cities = response.data.data;
         })
         .catch(e => {
           console.log(e);

@@ -12,26 +12,18 @@
               {{ branch.name }}
             </option>
           </select>
-          <label>Start time:</label>
+          <label>Date:</label>
           <div class="row">
-            <div class="col-6">
+            <div class="col-12">
               <Field name="start_date" placeholder="name" type="date" class="my-2 form-control"
                      v-model="startDate" rules="required" />
               <ErrorMessage class="text-danger small" name="start_date" /><br>
             </div>
-            <div class="col-6">
-              <Field name="start_time" placeholder="name" type="time" class="my-2 form-control col-4"
-                     v-model="startTime" />
-            </div>
           </div>
-          <label class="form-label" style="color: green">Time must be of HOUR:MINUTE:AM/PM
-            pattern</label><br />
-          <label>End time:</label>
+          <label>Time:</label>
           <div class="row">
             <div class="col-6">
-              <Field name="end_date" type="date" class="my-2 form-control" v-model="endDate"
-                     rules="required" />
-              <ErrorMessage class="text-danger small" name="end_date" /><br>
+              <Field name="start_time" type="time" class="my-2 form-control col-4" v-model="startTime" />
             </div>
             <div class="col-6">
               <Field name="end_time" type="time" class="my-2 form-control" v-model="endTime" />
@@ -72,7 +64,6 @@ export default {
       branchId: "",
       startDate: "",
       startTime: "",
-      endDate: "",
       endTime: "",
       inputCoaches: [],
     };
@@ -101,7 +92,6 @@ export default {
           let dummy = actualData.start_time.split(" ")[1].split(":");
           dummy = dummy[0] + ":" + dummy[1];
           this.startTime = dummy;
-          this.endDate = actualData.end_time.split(" ")[0];
           let seconddummy = actualData.end_time.split(" ")[1].split(":");
           seconddummy = seconddummy[0] + ":" + seconddummy[1];
           this.endTime = seconddummy;
@@ -127,7 +117,7 @@ export default {
         name: this.name,
         branch_id: this.branchId,
         start_time: this.startDate + " " + this.startTime,
-        end_time: this.endDate + " " + this.endTime,
+        end_time: this.startDate + " " + this.endTime,
         coaches: this.inputCoaches.toString().split(","),
       };
       console.log(Data);
