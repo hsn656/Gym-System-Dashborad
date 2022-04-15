@@ -100,6 +100,7 @@ import AppFooter from "@/examples/PageLayout/Footer.vue";
 import VsudSwitch from "@/components/VsudSwitch.vue";
 import VsudButton from "@/components/VsudButton.vue";
 import AuthService from "../services/AuthService";
+import Swal from "sweetalert2";
 
 const body = document.getElementsByTagName("body")[0];
 
@@ -121,10 +122,16 @@ export default {
     login() {
       AuthService.login(this.email, this.password)
         .then((res) => {
-          localStorage.setItem("gstoken", res.data.access_token);
-        })
-        .then(() => {
-          this.$router.push("/dashboard");
+          if (res.data.isSuccess) {
+            localStorage.setItem("gstoken", res.data.data.access_token);
+            this.$router.push("/dashboard");
+          } else {
+            Swal.fire({
+              text: "Email or password is incorrect, Try again",
+              icon: "error",
+              confirmButtonText: "ok",
+            });
+          }
         })
         .catch((err) => {
           console.log(err);
