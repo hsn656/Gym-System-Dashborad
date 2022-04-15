@@ -24,28 +24,40 @@
                   <p class="mb-0">Enter your email and password to sign in</p>
                 </div>
                 <div class="card-body">
-                    <div class="mb-3">
-                      <label for="inputEmail" class="form-label">Email</label>
-                      <input v-model="email" type="email" class="form-control" id="inputEmail">
-                    </div>
-                    <div class="mb-3">
-                      <label for="inputPassword" class="form-label">Password</label>
-                      <input v-model="password" type="password" class="form-control" id="inputPassword">
-                    </div>
+                  <div class="mb-3">
+                    <label for="inputEmail" class="form-label">Email</label>
+                    <input
+                      v-model="email"
+                      type="email"
+                      class="form-control"
+                      id="inputEmail"
+                    />
+                  </div>
+                  <div class="mb-3">
+                    <label for="inputPassword" class="form-label"
+                      >Password</label
+                    >
+                    <input
+                      v-model="password"
+                      type="password"
+                      class="form-control"
+                      id="inputPassword"
+                    />
+                  </div>
 
-                    <vsud-switch id="rememberMe" checked>
-                      Remember me
-                    </vsud-switch>
-                    <div class="text-center">
-                      <vsud-button
-                        class="my-4 mb-2"
-                        variant="gradient"
-                        color="info"
-                        fullWidth
-                        @click="login()"
-                        >Sign in
-                      </vsud-button>
-                    </div>
+                  <vsud-switch id="rememberMe" checked>
+                    Remember me
+                  </vsud-switch>
+                  <div class="text-center">
+                    <vsud-button
+                      class="my-4 mb-2"
+                      variant="gradient"
+                      color="info"
+                      fullWidth
+                      @click="login()"
+                      >Sign in
+                    </vsud-button>
+                  </div>
                 </div>
                 <div class="px-1 pt-0 text-center card-footer px-lg-2">
                   <p class="mx-auto mb-4 text-sm">
@@ -89,8 +101,6 @@ import VsudSwitch from "@/components/VsudSwitch.vue";
 import VsudButton from "@/components/VsudButton.vue";
 import AuthService from "../services/AuthService";
 
-
-
 const body = document.getElementsByTagName("body")[0];
 
 export default {
@@ -102,22 +112,25 @@ export default {
     VsudButton,
   },
   data() {
-      return {
-        email:"",
-        password:""
-      }
+    return {
+      email: "",
+      password: "",
+    };
   },
-  methods:{
-    login(){
-      AuthService.login(this.email,this.password).then((res)=>{
-        localStorage.setItem("gstoken",res.data.access_token);
-        this.$router.push("/dashboard");
-      }).catch(
-        err=>{console.log(err)}
-      );
-    }
-  }
-  ,
+  methods: {
+    login() {
+      AuthService.login(this.email, this.password)
+        .then((res) => {
+          localStorage.setItem("gstoken", res.data.access_token);
+        })
+        .then(() => {
+          this.$router.push("/dashboard");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+  },
   beforeMount() {
     if (localStorage.getItem("gstoken")) {
       this.$router.push("/dashboard");

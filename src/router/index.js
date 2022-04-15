@@ -265,12 +265,15 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   if (to.meta.auth !== undefined && !to?.meta?.auth && from.path !== to.path) {
-    Swal.fire({
-      text: "You are not Authorized",
-      icon: "warning",
-      confirmButtonText: "ok",
-    });
-    return next("/dashboard");
+    if (to.path !== "/dashboard") {
+      Swal.fire({
+        text: "You are not Authorized",
+        icon: "warning",
+        confirmButtonText: "ok",
+      });
+
+      return;
+    }
   }
   return next();
 });
