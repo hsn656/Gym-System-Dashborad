@@ -162,7 +162,6 @@ export default {
       }
     },
     getPackages() {
-      console.log("bla bla bla bla");
       PackageService.getAll()
         .then((response) => {
           this.packages = response.data;

@@ -23,7 +23,7 @@
             <input
               type="text"
               list="users"
-              placeholder="Enter user name"
+              placeholder="Enter user email"
               class="form-control"
               @keyup="getUsers"
               v-model="selectedUserName"
@@ -35,38 +35,48 @@
             </datalist>
             <div class="d-flex justify-content-around my-2">
               <select
+                v-if="$store.getters.isAdmin"
+                class="form-select"
+                v-model="selectedCity"
+                @change="getbranches"
+              >
+                <option selected disabled value="">Select City</option>
+                <option v-for="city in cities" :key="city.id" :value="city.id">
+                  {{ city.name }}
+                </option>
+              </select>
+              <select
                 id="branchSelect"
                 class="form-select"
                 v-model="selectedBranch"
+                v-if="$store.getters.atLeastCityManager"
               >
                 <option selected disabled value="">Select Branch</option>
                 <option
                   v-for="branch in branches"
                   :key="branch.id"
                   :value="branch.id"
-                  @change="this.selectedBranch = branch.id"
                 >
                   {{ branch.name }}
                 </option>
               </select>
-
-              <select
-                class="form-select"
-                v-model="selectedPackage"
-                @change="packageData"
-                id="packageSelect"
-              >
-                <option selected disabled value="">Select Package</option>
-                <option
-                  v-for="traningPackage in packages"
-                  :key="traningPackage.id"
-                  :value="traningPackage.id"
-                >
-                  {{ traningPackage.name }}
-                </option>
-              </select>
             </div>
-            <div id="cardElement"></div>
+            <select
+              class="form-select"
+              v-model="selectedPackage"
+              @change="packageData"
+              id="packageSelect"
+            >
+              <option selected disabled value="">Select Package</option>
+              <option
+                v-for="traningPackage in packages"
+                :key="traningPackage.id"
+                :value="traningPackage.id"
+              >
+                {{ traningPackage.name }}
+              </option>
+            </select>
+            <div class="my-3" id="cardElement"></div>
           </form>
         </div>
         <div class="moda-footer d-flex flex-row-reverse px-3">
@@ -94,6 +104,7 @@
 import BranchService from "../../../services/BranchService.js";
 import UserService from "@/services/UserService";
 import BuyPackageService from "@/services/BuyPackageService";
+import CityService from "../../../services/CityService";
 import { loadStripe } from "@stripe/stripe-js/pure";
 import Swal from "sweetalert2";
 
@@ -101,7 +112,9 @@ export default {
   data() {
     return {
       branches: [],
+      cities: [],
       users: [],
+      selectedCity: "",
       selectedBranch: "",
       selectedPackage: "",
       selectedPackagePrice: "",
@@ -117,11 +130,22 @@ export default {
   },
   props: ["packages"],
   async created() {
-    this.getbranches();
+    if (this.$store.getters.isAdmin) this.getCities();
+    else if (this.$store.getters.isCityManager) {
+      this.selectedCity = this.$store.getters.getPayLoad.city_id;
+      this.getbranches();
+    } else this.selectedBranch = this.$store.getters.getPayLoad.branch_id;
+    await this.renderCardElement();
   },
   methods: {
+    getCities() {
+      CityService.getAll().then((res) => {
+        this.cities = res.data.data;
+      });
+    },
     getbranches() {
-      BranchService.getByCityId(1)
+      console.log(this.selectedCity);
+      BranchService.getByCityId(this.selectedCity)
         .then((response) => {
           this.branches = response.data.data;
           console.log(response.data);
@@ -143,12 +167,16 @@ export default {
       });
       if (error) {
         this.isPaymentProcessing = false;
-        alert(error);
+        Swal.fire({
+          text: error.message,
+          icon: "error",
+          confirmButtonText: "ok",
+        });
       } else {
         this.paymentMethodId = paymentMethod.id;
         const data = {
           package_id: this.selectedPackage,
-          user_id: 3,
+          user_id: this.users[this.selectedUserName],
           branch_id: this.selectedBranch,
           enrollement_price: this.selectedPackagePrice,
           remianing_sessions: this.packageSessions,
@@ -181,12 +209,10 @@ export default {
     },
     getUsers() {
       this.search = this.selectedUserName;
-
       UserService.getSomeByEmail(this.search)
         .then((response) => {
           this.users = response.data.data;
           this.users = this.convertToKeyValue(this.users, "email", "id");
-          console.log(this.users);
         })
         .catch((e) => {
           console.log(e);
@@ -203,9 +229,10 @@ export default {
 
     clearForm() {
       this.selectedUserName = "";
-      this.selectedBranch = "";
       this.selectedPackage = "";
       this.renderCardElement();
+      if (this.$store.getters.isAdmin) this.selectedCity = "";
+      if (this.$store.getters.atLeastCityManager) this.selectedBranch = "";
     },
     convertToKeyValue(array, key, value) {
       let keyValueObj = {};
@@ -214,7 +241,8 @@ export default {
       }
       return keyValueObj;
     },
-    async renderCardElement(){
+
+    async renderCardElement() {
       const key = this.$store.state.stripePK;
       this.stripe = await loadStripe(key);
       console.log(this.stripe);
@@ -225,10 +253,7 @@ export default {
         },
       });
       this.cardElement.mount("#cardElement");
-      }
-  },
-  async mounted() {
-    await this.renderCardElement();
+    },
   },
 };
 </script>

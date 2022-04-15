@@ -75,16 +75,18 @@ export default createStore({
       return getpayload();
     },
     atLeastAdmin() {
-      return getpayload().role ==  "admin";
+      return getpayload().role == "admin";
     },
     atLeastCityManager() {
       return (
-        getpayload().role == "admin" || getpayload().role == "city manager"
+        getpayload().role == "city manager" || getpayload().role == "admin"
       );
     },
     atLeastBranchManager() {
       return (
-        getpayload().role == "admin" || getpayload().role == "city manager"
+        getpayload().role == "branch manager" ||
+        getpayload().role == "city manager" ||
+        getpayload().role == "admin"
       );
     },
     isLoggedIn() {

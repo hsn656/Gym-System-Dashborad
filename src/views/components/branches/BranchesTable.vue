@@ -87,7 +87,7 @@
                 <div class="d-flex px-2 py-1">
                   <div>
                     <vsud-avatar
-                      :img="$store.state.backEndUrl+branch.image_url"
+                      :img="$store.state.backEndUrl + branch.image_url"
                       size="sm"
                       border-radius="lg"
                       class="me-3"
@@ -171,7 +171,8 @@ export default {
   },
 
   async created() {
-    this.getCities();
+    if (this.$store.getters.isAdmin) this.getCities();
+    else this.city_id = this.$store.getters.getPayLoad.city_id;
     this.getBranches();
   },
 
