@@ -9,18 +9,20 @@
     </div>
     <div class="card-body px-0 pt-0 pb-2">
       <div class="table-responsive p-0">
-        <div>
-          <label for="city">City</label>
-          <select id="city" class="form-select w-25" v-model="city.id" @change="getBranches">
-            <option v-for="city in cities" :key="city.id" v-bind:value="city.id">{{ city.name }}</option>
-          </select>
-        </div>
+        <div v-if="userRole == 'admin'">
+          <div>
+            <label for="city">City</label>
+            <select id="city" class="form-select w-25" v-model="city.id" @change="getBranches">
+              <option v-for="city in cities" :key="city.id" v-bind:value="city.id">{{ city.name }}</option>
+            </select>
+          </div>
 
-        <div v-if="city.id">
-          <label for="branch">Branch</label>
-          <select id="branch" class="form-select w-25" v-model="branchId" @change="getAttendance">
-            <option v-for="branch in branches" :key="branch.id" v-bind:value="branch.id">{{ branch.name }}</option>
-          </select>
+          <div v-if="city.id">
+            <label for="branch">Branch</label>
+            <select id="branch" class="form-select w-25" v-model="branchId" @change="getAttendance">
+              <option v-for="branch in branches" :key="branch.id" v-bind:value="branch.id">{{ branch.name }}</option>
+            </select>
+          </div>
         </div>
 
         <table v-if="branchId" class="table align-items-center mb-0">
@@ -102,13 +104,14 @@ export default {
         id: ""
       },
       branches: [],
-      branchId: ""
+      branchId: "",
+      userRole: "admin"
 
     };
   },
 
   async created() {
-    this.getCities();
+    this.getUserInfo();
   },
 
   components: {
@@ -135,6 +138,7 @@ export default {
       CityService.getAll()
         .then(response => {
           this.cities = response.data.data;
+          console.log(this.$store.getters.getPayLoad);
         })
         .catch(e => {
           console.log(e);
@@ -148,6 +152,20 @@ export default {
         .catch(e => {
           console.log(e);
         });
+    },
+    getUserInfo() {
+      if (this.$store.getters.getPayLoad.role === "user") {
+        this.userRole = "user";
+        this.getUserAttendance();
+      } else {
+        this.getCities();
+      }
+    },
+    getUserAttendance() {
+      AttendanceService.getForUser(this.$store.getters.getPayLoad.sub).then((res) => {
+        console.log(res);
+      });
+      ;
     }
 
   }

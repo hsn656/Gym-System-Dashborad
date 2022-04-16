@@ -138,7 +138,7 @@ const routes = [
     path: "/attendance",
     name: "Attendance",
     component: AttendanceTable,
-    meta: { auth: store.getters.atLeastBranchManager },
+    // meta: { auth: store.getters.atLeastBranchManager },
   },
 
   //#endregion
