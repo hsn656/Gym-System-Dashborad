@@ -48,7 +48,7 @@
         <div class="card z-index-2">
           <div class="p-3 card-body">
             <!-- chart -->
-            <active-users-chart />
+            <top-users-chart />
           </div>
         </div>
       </div>
@@ -71,7 +71,7 @@
 </template>
 <script>
 import Card from "@/examples/Cards/Card.vue";
-import ActiveUsersChart from "@/examples/Charts/ActiveUsersChart.vue";
+import TopUsersChart from "@/examples/Charts/TopUsersChart.vue";
 import RevenueLineChart from "@/examples/Charts/RevenueLineChart.vue";
 import OrdersCard from "./components/OrdersCard.vue";
 import ProjectsCard from "./components/ProjectsCard.vue";
@@ -146,7 +146,7 @@ export default {
   },
   components: {
     Card,
-    ActiveUsersChart,
+    TopUsersChart,
     RevenueLineChart,
     ProjectsCard,
     OrdersCard,
