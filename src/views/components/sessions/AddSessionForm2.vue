@@ -75,6 +75,7 @@ export default {
       inputCoaches: [],
       cities: [],
       cityId: "",
+     
 
     }
   },

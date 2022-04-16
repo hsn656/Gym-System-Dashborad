@@ -40,6 +40,18 @@ class SessionService {
   getOldSessionsByBranch(id) {
     return http.get("/oldsessions?branch_id="+id);
   }
+  getSome(
+    id=1,
+    page = 1,
+    search = "",
+    sortField = "start_time",
+    sortDirection = "asc",
+    
+  ) {
+    return http.get(
+      `/sessions/paginate?branch_id=${id}&page=${page}&search=${search}&sortField=${sortField}&sortDirection=${sortDirection}`
+    );
+  }
 }
 
 export default new SessionService();
