@@ -8,12 +8,21 @@
         <router-link :to="{ name: 'AddSessionForm2' }"><a class="btn btn-success">Add session</a></router-link>
       </div>
     </div>
-    <div v-if="$store.getters.isAdmin">
-      <label for="city">City</label>
-      <select id="city" class="form-select w-25" v-model="city.id" @change="getBranches">
-        <option v-for="city in cities" :key="city.id" v-bind:value="city.id">{{ city.name }}</option>
-      </select>
+    <div class="row">
+      <div class="col-6">
+        <div v-if="$store.getters.isAdmin">
+          <label for="city">City</label>
+          <select id="city" class="form-select w-50" v-model="city.id" @change="getBranches">
+            <option v-for="city in cities" :key="city.id" v-bind:value="city.id">{{ city.name }}</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-5">
+        <label for="Search">Search:</label>
+        <input class="form-control me-2 w-50" type="search" aria-label="Search" id="Search" name="Search" v-model="search" @keyup="SearchSome">
+      </div>
     </div>
+
     <div v-if="city.id">
       <label for="branch">Branch</label>
       <select id="branch" class="form-select w-25" v-model="branchId" @change="getSome">
@@ -25,7 +34,7 @@
         <table class="table align-items-center mb-0" v-if="branchId">
           <thead>
           <tr>
-            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Name
+            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" @click="sort('name')">Name
               <i
                   v-if="sortField == 'name' && sortDirection == 'asc'"
                   class="fas fa-arrow-up text-dark"
@@ -39,8 +48,16 @@
               Branch Name
 
             </th>
-            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" @click="sort('start_time')">
               Starts at
+              <i
+                v-if="sortField == 'start_time' && sortDirection == 'asc'"
+                class="fas fa-arrow-up text-dark"
+              ></i>
+              <i
+                v-if="sortField == 'start_time' && sortDirection == 'desc'"
+                class="fas fa-arrow-down text-dark"
+              ></i>
             </th>
             <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
               Ends at
@@ -100,9 +117,7 @@
           <tfoot>
              <tr>
                <td colspan="7" class="text-center">
-                
                 <input  class=" paginatebtn" type="button" v-for="link in links" :key="link.label" :value="link.label" @click="page=link.label;getSome()"/>
-                
                </td>
              </tr>
           </tfoot>
@@ -160,15 +175,20 @@ export default {
 
   },
   methods: {
-   getSome(){
-     SessionService.getSome(this.branchId,this.page)
-     .then(response=>{
-       console.log(response)
-       this.sessions=response.data.data.data;
-      //  this.links=response.data.data.links.slice(1, -1);
-
-     })
-    
+   getSome(field){
+     if(field){
+       SessionService.getSome(this.branchId,this.page,"", field, this.sortDirection)
+         .then(response=>{
+           this.sessions=response.data.data.data;
+           this.links=response.data.data.meta.links.slice(1, -1);
+         })
+     }else{
+       SessionService.getSome(this.branchId,this.page)
+         .then(response=>{
+           this.sessions=response.data.data.data;
+           this.links=response.data.data.meta.links.slice(1, -1);
+         })
+     }
    }
     ,getCities() {
       CityService.getAll()
@@ -189,6 +209,19 @@ export default {
         .catch(e => {
           console.log(e);
         });
+    },
+    sort(field){
+     this.sortField = field;
+     this.sortDirection = this.sortDirection == "asc" ? "desc" : "asc";
+      this.getSome(field)
+    },
+
+    SearchSome(){
+      SessionService.getSome(this.branchId,this.page, this.search)
+        .then(response=>{
+          this.sessions=response.data.data.data;
+          this.links=response.data.data.meta.links.slice(1, -1);
+        })
     },
     // getSessions() {
     //   SessionService.getSessionsByBranch(this.branchId)
