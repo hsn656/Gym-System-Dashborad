@@ -20,7 +20,6 @@ class CoachService {
   delete(id) {
     return http.delete(`/coaches/${id}`);
   }
-
 }
 
 export default new CoachService();

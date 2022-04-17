@@ -4,8 +4,46 @@
       <div class="col-10 col-md-8 col-lg-6">
         <Form @submit="addCoach">
           <Field
-            v-model="name" name="name" placeholder="name" type="text" class="my-2 form-control" rules="required"
+            v-model="name"
+            name="name"
+            placeholder="name"
+            type="text"
+            class="my-2 form-control"
+            rules="required"
           />
+          <ErrorMessage class="text-danger small" name="name" />
+          <input
+            type="file"
+            ref="fileInput"
+            name="image"
+            @change="onFileChange"
+            style="display: none"
+          />
+
+          <div class="text-center m-auto">
+            <div>
+              <img
+                :src="getImageSrc"
+                alt=""
+                ref="imagePH"
+                style="
+                  max-height: 120px;
+                  min-height: 120px;
+                  max-width: 120px;
+                  min-width: 120px;
+                "
+                class="formImage"
+              />
+            </div>
+            <div class="mt-2">
+              <input
+                type="button"
+                class="btn btn-secondary"
+                value="Browse..."
+                @click="this.$refs.fileInput.click()"
+              />
+            </div>
+          </div>
           <ErrorMessage class="text-danger small" name="name" /><br />
           <div class="text-center mt-5">
             <input class="btn btn-success" type="submit" value="Add coach" />
@@ -30,25 +68,34 @@ export default {
   data() {
     return {
       name: "",
+      file: "",
+      imageSrc: this.$store.state.backEndUrl + "assets/images/noImageYet.jpg",
     };
   },
+  computed: {
+    getImageSrc() {
+      return this.imageSrc;
+    },
+  },
   methods: {
+    onFileChange(event) {
+      this.file = event.target.files[0];
+      var fr = new FileReader();
+      fr.onload = () => {
+        this.imageSrc = fr.result;
+      };
+      fr.readAsDataURL(this.file);
+    },
     addCoach() {
-      // if (this.name) {
-        let Data = {
-          name: this.name,
-        };
-        CoachService.create(Data).then((res) => {
-          Swal.fire(
-                  'Added!',
-                  'A coach has been added.',
-                  'success'
-                ).then(()=>{
-                 this.$router.push("/coaches");
-                })
-          console.log(res);
-         
+      const formData = new FormData();
+      formData.append("name", this.name);
+      formData.append("image", this.file);
+      CoachService.create(formData).then((res) => {
+        Swal.fire("Added!", "A coach has been added.", "success").then(() => {
+          this.$router.push("/coaches");
         });
+        console.log(res);
+      });
       // }
     },
   },
