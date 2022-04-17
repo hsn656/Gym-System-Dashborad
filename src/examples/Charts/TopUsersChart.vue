@@ -9,6 +9,7 @@
         @change="getbranches"
       >
         <option selected disabled value="">Select City</option>
+        <option :value="all">all</option>
         <option v-for="city in cities" :key="city.id" :value="city.id">
           {{ city.name }}
         </option>
@@ -19,8 +20,10 @@
         class="form-select"
         v-model="selectedBranch"
         v-if="$store.getters.atLeastCityManager"
+        @change="getUpdatedData"
       >
         <option selected disabled value="">Select Branch</option>
+        <option :value="all">all</option>
         <option v-for="branch in branches" :key="branch.id" :value="branch.id">
           {{ branch.name }}
         </option>
@@ -323,6 +326,8 @@ export default {
       data: new Array(10).fill(0),
       users_number: 0,
       labels: new Array(10).fill(0),
+      grapharea: "",
+      myChart: "",
     };
   },
   async created() {
@@ -348,6 +353,30 @@ export default {
           console.log(e);
         });
       this.selectedBranch = "";
+      this.myChart.destroy();
+      StatisticsService.getTopUsers(this.selectedCity, this.selectedBranch)
+        .then((result) => {
+          let topUsers = result.data.data;
+          this.fillChartData(topUsers);
+          // console.log(topUsers);
+          this.renderChart();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    getUpdatedData() {
+      this.myChart.destroy();
+      StatisticsService.getTopUsers(this.selectedCity, this.selectedBranch)
+        .then((result) => {
+          let topUsers = result.data.data;
+          this.fillChartData(topUsers);
+          // console.log(topUsers);
+          this.renderChart();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
     fillChartData(users) {
       users.forEach((user, i) => {
@@ -357,8 +386,8 @@ export default {
       });
       this.data.length = this.users_number;
       this.labels.length = this.users_number;
-      console.log(this.data);
-      console.log(this.labels);
+      // console.log(this.data);
+      // console.log(this.labels);
     },
     renderChart() {
       //setup block
@@ -418,7 +447,9 @@ export default {
       };
 
       //render block
-      new Chart(document.getElementById("myChart").getContext("2d"), config);
+      this.grapharea = document.getElementById("myChart").getContext("2d");
+      const chart = new Chart(this.grapharea, config);
+      this.myChart = chart;
     },
   },
   mounted() {

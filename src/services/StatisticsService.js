@@ -7,7 +7,7 @@ class StatisticsService {
 
   getTopUsers(city_id = "all", branch_id = "all") {
     return http.get(
-      `/statistics/top-users?city=${city_id}&branch=${branch_id}`
+      `/statistics/top-users?city_id=${city_id}&branch_id=${branch_id}`
     );
   }
 }
