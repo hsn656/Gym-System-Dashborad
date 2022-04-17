@@ -14,7 +14,7 @@ class CoachService {
   }
 
   update(data, id) {
-    return http.put(`/coaches/${id}`, data);
+    return http.post(`/coaches/${id}`, data);
   }
 
   delete(id) {

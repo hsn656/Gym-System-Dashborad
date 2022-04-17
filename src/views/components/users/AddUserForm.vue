@@ -70,7 +70,7 @@
             <div class="mt-2">
               <input
                 type="button"
-                class="btn btn-secondary"
+                class="btn btn-primary"
                 value="Browse..."
                 @click="this.$refs.fileInput.click()"
               />
