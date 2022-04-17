@@ -16,11 +16,7 @@
           <thead>
             <tr>
               <th
-                class="
-                  text-uppercase text-secondary text-xxs
-                  font-weight-bolder
-                  opacity-7
-                "
+                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
               >
                 Name
               </th>
@@ -32,7 +28,14 @@
             <tr v-for="coach in coaches" :key="coach.id">
               <td>
                 <div class="d-flex px-2 py-1">
-                
+                   <div>
+                    <vsud-avatar
+                      :img="$store.state.backEndUrl+coach.image_url"
+                      size="sm"
+                      border-radius="lg"
+                      class="me-3"
+                    />
+                  </div>
                   <div class="d-flex flex-column justify-content-center">
                     <h6 class="mb-0 text-sm">{{ coach.name }}</h6>
                   </div>
@@ -67,6 +70,7 @@
 </template>
 
 <script>
+import VsudAvatar from "@/components/VsudAvatar.vue";
 import CoachService from "../../../services/CoachService";
 import Swal from "sweetalert2";
 export default {
@@ -77,13 +81,13 @@ export default {
       componentKey: 0,
     };
   },
-
+  components: {
+    VsudAvatar,
+  },
   async created() {
     this.getCoaches();
   },
 
-  components: {
-  },
   methods: {
     getCoaches() {
       CoachService.getAll()
@@ -96,13 +100,13 @@ export default {
     },
     deleteCoach(id) {
       Swal.fire({
-        title: 'Are you sure?',
+        title: "Are you sure?",
         text: "You won't be able to revert this!",
-        icon: 'warning',
+        icon: "warning",
         showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete it!'
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
       }).then((result) => {
         if (result.isConfirmed) {
           CoachService.delete(id)
@@ -110,19 +114,14 @@ export default {
               console.log(res);
               this.coaches = this.coaches.filter((coach) => coach.id !== id);
               this.forceRerender();
-              Swal.fire(
-                'Deleted!',
-                'Session has been deleted.',
-                'success'
-              )
+              Swal.fire("Deleted!", "Session has been deleted.", "success");
             })
             .catch((err) => {
               console.log(err);
             });
         }
-      })
-    }
-,
+      });
+    },
     forceRerender() {
       this.componentKey += 1;
     },

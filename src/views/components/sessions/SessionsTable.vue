@@ -16,7 +16,7 @@
     </div>
     <div v-if="city.id">
       <label for="branch">Branch</label>
-      <select id="branch" class="form-select w-25" v-model="branchId" @change="getSessions">
+      <select id="branch" class="form-select w-25" v-model="branchId" @change="getSome">
         <option v-for="branch in branches" :key="branch.id" v-bind:value="branch.id">{{ branch.name }}</option>
       </select>
     </div>
@@ -25,9 +25,19 @@
         <table class="table align-items-center mb-0" v-if="branchId">
           <thead>
           <tr>
-            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Name</th>
+            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Name
+              <i
+                  v-if="sortField == 'name' && sortDirection == 'asc'"
+                  class="fas fa-arrow-up text-dark"
+                ></i>
+                <i
+                  v-if="sortField == 'name' && sortDirection == 'desc'"
+                  class="fas fa-arrow-down text-dark"
+                ></i>
+            </th>
             <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
               Branch Name
+
             </th>
             <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
               Starts at
@@ -87,6 +97,15 @@
             </td>
           </tr>
           </tbody>
+          <tfoot>
+             <tr>
+               <td colspan="7" class="text-center">
+                
+                <input  class=" paginatebtn" type="button" v-for="link in links" :key="link.label" :value="link.label" @click="page=link.label;getSome()"/>
+                
+               </td>
+             </tr>
+          </tfoot>
         </table>
       </div>
     </div>
@@ -112,7 +131,14 @@ export default {
         "id":""
       },
       branches: [],
-      branchId:''
+      branchId:'',
+       links: [],
+      search: "",
+      sortField: "start_time",
+      sortDirection: "asc",
+      page:1,
+    
+
     };
   },
 
@@ -125,7 +151,8 @@ export default {
     }
     if(this.$store.getters.getPayLoad["role"] == "branch manager"){
       this.branchId = this.$store.getters.getPayLoad['branch_id'];
-      this.getSessions();
+      this.getSome();
+
     }
   },
 
@@ -133,7 +160,17 @@ export default {
 
   },
   methods: {
-    getCities() {
+   getSome(){
+     SessionService.getSome(this.branchId,this.page)
+     .then(response=>{
+       console.log(response)
+       this.sessions=response.data.data.data;
+      //  this.links=response.data.data.links.slice(1, -1);
+
+     })
+    
+   }
+    ,getCities() {
       CityService.getAll()
         .then(response => {
           this.cities = response.data.data;
@@ -153,16 +190,17 @@ export default {
           console.log(e);
         });
     },
-    getSessions() {
-      SessionService.getSessionsByBranch(this.branchId)
-        .then((response) => {
-          console.log(response);
-          this.sessions = response.data.data;
-        })
-        .catch((e) => {
-          console.log(e);
-        });
-    },
+    // getSessions() {
+    //   SessionService.getSessionsByBranch(this.branchId)
+    //     .then((response) => {
+    //       console.log(response);
+    //       this.sessions = response.data.data;
+    //       this.getSome(this.branchId);
+    //     })
+    //     .catch((e) => {
+    //       console.log(e);
+    //     });
+    // },
     convertToDate(datetime) {
       return datetime.split(" ")[0];
     },
@@ -203,3 +241,12 @@ export default {
   },
 };
 </script>
+<style scoped>
+.paginatebtn{
+  border-radius: 20%;
+  margin:5px;
+  padding:5px 15px;
+  border:none;
+  background-color: #82d616;
+}
+</style>
