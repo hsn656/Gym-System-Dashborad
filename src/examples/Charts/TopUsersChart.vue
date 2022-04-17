@@ -310,7 +310,7 @@
 import Chart from "chart.js/auto";
 import CityService from "../../services/CityService";
 import BranchService from "../../services/BranchService.js";
-// import StatisticsService from "../../services/StatisticsService";
+import StatisticsService from "../../services/StatisticsService";
 
 export default {
   name: "top-users-chart",
@@ -321,6 +321,8 @@ export default {
       selectedCity: "",
       selectedBranch: "",
       data: new Array(10).fill(0),
+      users_number: 0,
+      labels: new Array(10).fill(0),
     };
   },
   async created() {
@@ -347,89 +349,89 @@ export default {
         });
       this.selectedBranch = "";
     },
-  },
-  mounted() {
-    // StatisticsService.getTopUsers(this.selectedCity, this.selectedBranch)
-    //   .then((result) => {
-    //     // console.log(this.data);
-    //     // this.fillChartData(res.data);
-    //     // this.renderChart();
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
+    fillChartData(users) {
+      users.forEach((user, i) => {
+        this.data[i] = user.totoal_sessions;
+        this.users_number = i + 1;
+        this.labels[i] = user.name;
+      });
+      this.data.length = this.users_number;
+      this.labels.length = this.users_number;
+      console.log(this.data);
+      console.log(this.labels);
+    },
+    renderChart() {
+      //setup block
+      const data = {
+        labels: this.labels,
+        datasets: [
+          {
+            label: "# of Votes",
+            data: this.data,
+            backgroundColor: [
+              "rgba(255, 99, 132, 0.2)",
+              "rgba(54, 162, 235, 0.2)",
+              "rgba(255, 206, 86, 0.2)",
+              "rgba(75, 192, 192, 0.2)",
+              "rgba(153, 102, 255, 0.2)",
 
-    //setup block
-    const data = {
-      labels: [
-        "user1 name",
-        "user2 name",
-        "user3 name",
-        "user4 name",
-        "user5 name",
-        "user6 name",
-        "user7 name",
-        "user8 name",
-        "user9 name",
-        "user10 name",
-      ],
-      datasets: [
-        {
-          label: "# of Votes",
-          data: [12, 19, 3, 5, 2, 3, 8, 6, 10, 6],
-          backgroundColor: [
-            "rgba(255, 99, 132, 0.2)",
-            "rgba(54, 162, 235, 0.2)",
-            "rgba(255, 206, 86, 0.2)",
-            "rgba(75, 192, 192, 0.2)",
-            "rgba(153, 102, 255, 0.2)",
+              "rgba(255, 159, 64, 0.2)",
+              "rgba(80, 100, 64, 0.2)",
+              "rgba(255, 60, 64, 0.2)",
+              "rgba(30, 54, 64, 0.2)",
+              "rgba(25, 90, 64, 0.2)",
+            ],
+            borderColor: [
+              "rgba(255, 99, 132, 1)",
+              "rgba(54, 162, 235, 1)",
+              "rgba(255, 206, 86, 1)",
+              "rgba(75, 192, 192, 1)",
+              "rgba(153, 102, 255, 1)",
 
-            "rgba(255, 159, 64, 0.2)",
-            "rgba(80, 100, 64, 0.2)",
-            "rgba(255, 60, 64, 0.2)",
-            "rgba(30, 54, 64, 0.2)",
-            "rgba(25, 90, 64, 0.2)",
-          ],
-          borderColor: [
-            "rgba(255, 99, 132, 1)",
-            "rgba(54, 162, 235, 1)",
-            "rgba(255, 206, 86, 1)",
-            "rgba(75, 192, 192, 1)",
-            "rgba(153, 102, 255, 1)",
+              "rgba(255, 159, 64, 1)",
+              "rgba(80, 100, 64, 1)",
+              "rgba(255, 60, 64, 1)",
+              "rgba(30, 54, 64, 1)",
+              "rgba(25, 90, 64, 1)",
+            ],
+            borderWidth: 1,
+          },
+        ],
+      };
 
-            "rgba(255, 159, 64, 1)",
-            "rgba(80, 100, 64, 1)",
-            "rgba(255, 60, 64, 1)",
-            "rgba(30, 54, 64, 1)",
-            "rgba(25, 90, 64, 1)",
-          ],
-          borderWidth: 1,
-        },
-      ],
-    };
-
-    //option block
-    const options = {
-      plugins: {
-        legend: {
-          labels: {
-            color: "#fff",
+      //option block
+      const options = {
+        plugins: {
+          legend: {
+            labels: {
+              color: "#fff",
+            },
           },
         },
-      },
-    };
+      };
 
-    //config block
-    const config = {
-      type: "pie",
-      data,
-      options,
-    };
+      //config block
+      const config = {
+        type: "pie",
+        data,
+        options,
+      };
 
-    //render block
-    new Chart(document.getElementById("myChart").getContext("2d"), config);
-    // var ctx = document.getElementById("myChart").getContext("2d");
-    // new Chart(ctx, {});
+      //render block
+      new Chart(document.getElementById("myChart").getContext("2d"), config);
+    },
+  },
+  mounted() {
+    StatisticsService.getTopUsers(this.selectedCity, this.selectedBranch)
+      .then((result) => {
+        let topUsers = result.data.data;
+        this.fillChartData(topUsers);
+        // console.log(topUsers);
+        this.renderChart();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   },
 };
 </script>
