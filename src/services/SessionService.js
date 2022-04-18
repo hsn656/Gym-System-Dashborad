@@ -52,6 +52,18 @@ class SessionService {
       `/sessions/paginate?branch_id=${id}&page=${page}&search=${search}&sortField=${sortField}&sortDirection=${sortDirection}`
     );
   }
+  getSomeOld(
+    id=1,
+    page = 1,
+    search = "",
+    sortField = "start_time",
+    sortDirection = "asc",
+    
+  ) {
+    return http.get(
+      `/oldsessions/paginate?branch_id=${id}&page=${page}&search=${search}&sortField=${sortField}&sortDirection=${sortDirection}`
+    );
+  }
 }
 
 export default new SessionService();

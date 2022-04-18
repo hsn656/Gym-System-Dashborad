@@ -5,17 +5,23 @@
         <h6>old Sessions table</h6>
       </div>
     </div>
-    <div class="seletStyle">
-      <div class="m-auto" v-if="$store.getters.isAdmin">
-         <label for="city">City</label>
-         <select id="city" class="form-select w-25" v-model="city.id" @change="getBranches">
-           <option v-for="city in cities" :key="city.id" v-bind:value="city.id">{{ city.name }}</option>
-       </select>
-       </div>
+      <div class="row">
+      <div class="col-6">
+        <div v-if="$store.getters.isAdmin">
+          <label for="city">City</label>
+          <select id="city" class="form-select w-50" v-model="city.id" @change="getBranches">
+            <option v-for="city in cities" :key="city.id" v-bind:value="city.id">{{ city.name }}</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-5">
+        <label for="Search">Search:</label>
+        <input class="form-control me-2 w-50" type="search" aria-label="Search" id="Search" name="Search" v-model="search" @keyup="getSomeOld">
+      </div>
     </div>
     <div v-if="city.id" class="seletStyle">
       <label for="branch">Branch</label>
-      <select id="branch" class="form-select w-25" v-model="branchId" @change="getSessions">
+      <select id="branch" class="form-select w-25" v-model="branchId" @change="getSomeOld">
         <option v-for="branch in branches" :key="branch.id" v-bind:value="branch.id">{{ branch.name }}</option>
       </select>
     </div>
@@ -24,9 +30,16 @@
         <table class="table align-items-center mb-0" v-if="branchId">
           <thead>
             <tr>
-              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                Name
-              </th>
+              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" @click="sort('name')">Name
+              <i
+                  v-if="sortField == 'name' && sortDirection == 'asc'"
+                  class="fas fa-arrow-up text-dark"
+                ></i>
+                <i
+                  v-if="sortField == 'name' && sortDirection == 'desc'"
+                  class="fas fa-arrow-down text-dark"
+                ></i>
+            </th>
               <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
                 Branch Name
               </th>
@@ -87,6 +100,13 @@
               </td>
             </tr>
           </tbody>
+             <tfoot>
+             <tr>
+               <td colspan="7" class="text-center">
+                <input  class=" paginatebtn" type="button" v-for="link in links" :key="link.label" :value="link.label" @click="page=link.label;getSomeOld()"/>
+               </td>
+             </tr>
+          </tfoot>
         </table>
       </div>
     </div>
@@ -112,7 +132,12 @@ export default {
         "id":""
       },
       branches: [],
-      branchId:''
+      branchId:'',
+      links: [],
+      search: "",
+      sortField: "start_time",
+      sortDirection: "asc",
+      page:1,
     };
   },
 
@@ -124,7 +149,7 @@ export default {
     }
      if(this.$store.getters.getPayLoad["role"] == "branch manager"){
       this.branchId = this.$store.getters.getPayLoad["branch_id"]
-      this.getSessions()
+      this.getSomeOld()
     }
   },
 
@@ -132,7 +157,15 @@ export default {
    
   },
   methods: {
-    getCities() {
+    getSomeOld(){
+       SessionService.getSomeOld(this.branchId,this.page,this.search,this.sortField,this.sortDirection)
+        .then(response=>{
+           this.sessions=response.data.data.data;
+           this.links=response.data.data.meta.links.slice(1, -1);
+         })
+    
+   }
+    ,getCities() {
       CityService.getAll()
         .then(response => {
           this.cities = response.data.data;
@@ -151,16 +184,24 @@ export default {
           console.log(e);
         });
     }
-    ,getSessions() {
-      SessionService.getOldSessionsByBranch(this.branchId)
-        .then((response) => {
-          console.log(response);
-          this.sessions = response.data.data;
-        })
-        .catch((e) => {
-          console.log(e);
-        });
+    // ,getSessions() {
+    //   SessionService.getOldSessionsByBranch(this.branchId)
+    //     .then((response) => {
+    //       console.log(response);
+    //       this.sessions = response.data.data;
+    //     })
+    //     .catch((e) => {
+    //       console.log(e);
+    //     });
+    // }
+    ,
+    sort(field){
+     this.sortField = field;
+     this.sortDirection = this.sortDirection == "asc" ? "desc" : "asc";
+      this.getSomeOld()
     },
+
+   
     convertToDate(datetime) {
       return datetime.split(" ")[0];
     },
@@ -201,3 +242,12 @@ export default {
   },
 };
 </script>
+<style scoped>
+.paginatebtn{
+  border-radius: 20%;
+  margin:5px;
+  padding:5px 15px;
+  border:none;
+  background-color: #82d616;
+}
+</style>
