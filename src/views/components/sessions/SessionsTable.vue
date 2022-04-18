@@ -254,13 +254,20 @@ export default {
           SessionService.delete(id)
             .then((res) => {
               console.log(res);
-              this.sessions = this.sessions.filter((session) => session.id !== id);
-              this.forceRerender();
-              Swal.fire(
-                'Deleted!',
-                'Session has been deleted.',
-                'success'
-              )
+              if(res.data.isSuccess){
+                this.sessions = this.sessions.filter((session) => session.id !== id);
+                this.forceRerender();
+                Swal.fire(
+                  'Deleted!',
+                  'Session has been deleted.',
+                  'success'
+                )}else{
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Oops...',
+                  text: res.data.errors,
+                })
+              }
             })
             .catch((err) => {
               console.log(err);
