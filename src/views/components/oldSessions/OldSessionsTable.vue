@@ -1,5 +1,5 @@
 <template>
-  <div class="card mb-4">
+  <div class="card mb-4 p-4">
     <div class="d-flex justify-content-between">
       <div class="card-header pb-0">
         <h6>old Sessions table</h6>
@@ -43,8 +43,16 @@
               <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
                 Branch Name
               </th>
-              <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                Starts at
+              <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" @click="sort('start_time')">
+               Starts at
+              <i
+                v-if="sortField == 'start_time' && sortDirection == 'asc'"
+                class="fas fa-arrow-up text-dark"
+              ></i>
+              <i
+                v-if="sortField == 'start_time' && sortDirection == 'desc'"
+                class="fas fa-arrow-down text-dark"
+              ></i>
               </th>
               <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                 Ends at
@@ -136,7 +144,7 @@ export default {
       links: [],
       search: "",
       sortField: "start_time",
-      sortDirection: "asc",
+      sortDirection: "desc",
       page:1,
     };
   },
@@ -222,13 +230,20 @@ export default {
           SessionService.delete(id)
             .then((res) => {
               console.log(res);
-              this.sessions = this.sessions.filter((session) => session.id !== id);
-              this.forceRerender();
-              Swal.fire(
-                'Deleted!',
-                'Session has been deleted.',
-                'success'
-              )
+              if(res.data.isSuccess){
+                this.sessions = this.sessions.filter((session) => session.id !== id);
+                this.forceRerender();
+                Swal.fire(
+                  'Deleted!',
+                  'Session has been deleted.',
+                  'success'
+                )}else{
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Oops...',
+                  text: res.data.errors,
+                })
+              }
             })
             .catch((err) => {
               console.log(err);
