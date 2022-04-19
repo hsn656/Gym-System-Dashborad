@@ -52,7 +52,7 @@
             </div>
           </div>
 
-          <button :disabled="isBeingAdded" class="my-2 btn btn-primary w-100">Add Branch</button>
+          <button :disabled="isBeingAdded" class="my-2 btn btn-success w-100">Add Branch</button>
         </Form>
         <button
           @click="this.$router.push('/branches')"

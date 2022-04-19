@@ -65,7 +65,7 @@
           <button
             @click="updateUser(user.id)"
             :disabled="isBeingUpdated"
-            class="my-2 btn btn-primary w-100"
+            class="my-2 btn btn-success w-100"
           >
             Edit
           </button>

@@ -76,7 +76,7 @@
               />
             </div>
           </div>
-          <button :disabled="isBeingAdded" class="my-2 btn btn-primary w-100">Add user</button>
+          <button :disabled="isBeingAdded" class="my-2 btn btn-success w-100">Add user</button>
         </Form>
         <button
           @click="this.$router.push('/users')"

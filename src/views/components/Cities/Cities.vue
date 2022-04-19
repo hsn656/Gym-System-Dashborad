@@ -32,7 +32,7 @@
               <td>
                 <div class="d-flex px-2 py-1">
                   <div>
-                    <vsud-avatar :img="img1" size="sm" border-radius="lg" class="me-3" alt="cityManager1" />
+                    <vsud-avatar :img="$store.state.backEndUrl+city.image_url" size="sm" border-radius="lg" class="me-3" alt="cityManager1" />
                   </div>
                   <div class="d-flex flex-column justify-content-center">
                     <h6 class="mb-0 text-sm">{{city.name}}</h6>
@@ -42,7 +42,7 @@
 
 
               <td>
-                <p class="text-xs font-weight-bold mb-0">{{city.UserName}}</p>
+                <p class="text-xs font-weight-bold mb-0">{{city.UserName ?? 'no manager yet'}}</p>
               </td>
               <td class="align-middle text-center">
                 <span class="text-secondary text-xs font-weight-bold">{{convertToDate(city.created_at)}}</span>

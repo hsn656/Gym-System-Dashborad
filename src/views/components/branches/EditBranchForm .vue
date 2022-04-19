@@ -51,7 +51,7 @@
               />
             </div>
           </div>
-          <button :disabled="isBeingUpdated" class="my-2 btn btn-primary w-100">Update Branch</button>
+          <button :disabled="isBeingUpdated" class="my-2 btn btn-success w-100">Update Branch</button>
         </Form>
         <button
           @click="this.$router.push('/branches')"
