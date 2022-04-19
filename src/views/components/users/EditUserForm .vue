@@ -103,7 +103,7 @@ export default {
         file: "",
       },
       imageSrc: "",
-      isBeingUpdated:false
+      isBeingUpdated: false,
     };
   },
   methods: {
@@ -130,7 +130,7 @@ export default {
         });
     },
     updateUser(id) {
-      this.isBeingUpdated=true;
+      this.isBeingUpdated = true;
       const formData = new FormData();
       formData.append("id", this.user.id);
       formData.append("name", this.user.name);
@@ -154,7 +154,7 @@ export default {
             confirmButtonText: "ok",
           });
         }
-        this.isBeingUpdated=false;
+        this.isBeingUpdated = false;
       });
     },
   },
