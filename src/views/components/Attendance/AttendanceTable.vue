@@ -1,6 +1,5 @@
 <template>
-
-  <div class="card mb-4">
+  <div class="card mb-4 p-2">
     <div class="d-flex justify-content-between">
       <div class="card-header pb-0">
         <h6>Attendance table</h6>
@@ -10,14 +9,14 @@
     <div class="card-body px-0 pt-0 pb-2">
       <div class="table-responsive p-0">
         <div v-if="userRole == 'admin'">
-          <div>
+          <div class="ms-4">
             <label for="city">City</label>
             <select id="city" class="form-select w-25" v-model="city.id" @change="getBranches">
               <option v-for="city in cities" :key="city.id" v-bind:value="city.id">{{ city.name }}</option>
             </select>
           </div>
 
-          <div v-if="city.id">
+          <div class="ms-4 mt-3" v-if="city.id">
             <label for="branch">Branch</label>
             <select id="branch" class="form-select w-25" v-model="branchId" @change="getAttendance">
               <option v-for="branch in branches" :key="branch.id" v-bind:value="branch.id">{{ branch.name }}</option>

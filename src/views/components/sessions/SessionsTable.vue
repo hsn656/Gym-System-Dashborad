@@ -1,14 +1,17 @@
 <template>
-  <div class="card mb-4">
-    <div class="d-flex justify-content-between">
+  <div class="card mb-4 p-3">
+    <div class="d-flex justify-content-between align-items-baseline">
       <div class="card-header pb-0">
         <h6>Upcoming Sessions table</h6>
+      </div>
+      <div class="col-5">
+        <input placeholder="type here" class="form-control me-2 w-50" type="search" aria-label="Search" id="Search" name="Search" v-model="search" @keyup="SearchSome">
       </div>
       <div class="card-header pb-0">
         <router-link :to="{ name: 'AddSessionForm2' }"><a class="btn btn-success">Add session</a></router-link>
       </div>
     </div>
-    <div class="row">
+    <div class="row ms-2">
       <div class="col-6">
         <div v-if="$store.getters.isAdmin">
           <label for="city">City</label>
@@ -17,13 +20,10 @@
           </select>
         </div>
       </div>
-      <div class="col-5">
-        <label for="Search">Search:</label>
-        <input class="form-control me-2 w-50" type="search" aria-label="Search" id="Search" name="Search" v-model="search" @keyup="SearchSome">
-      </div>
+      
     </div>
 
-    <div v-if="city.id">
+    <div  v-if="city.id">
       <label for="branch">Branch</label>
       <select id="branch" class="form-select w-25" v-model="branchId" @change="getSome">
         <option v-for="branch in branches" :key="branch.id" v-bind:value="branch.id">{{ branch.name }}</option>

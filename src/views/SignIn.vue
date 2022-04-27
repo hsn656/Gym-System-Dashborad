@@ -3,6 +3,7 @@
     <div class="row">
       <div class="col-12">
         <navbar
+          v-if="false"
           isBlur="blur blur-rounded my-3 py-2 start-0 end-0 mx-4 shadow"
           btnBackground="bg-gradient-success"
           v-bind:darkMode="true"
@@ -45,7 +46,7 @@
                     />
                   </div>
 
-                  <vsud-switch id="rememberMe" checked>
+                  <vsud-switch v-if="false" id="rememberMe" checked>
                     Remember me
                   </vsud-switch>
                   <div class="text-center">
@@ -58,16 +59,6 @@
                       >Sign in
                     </vsud-button>
                   </div>
-                </div>
-                <div class="px-1 pt-0 text-center card-footer px-lg-2">
-                  <p class="mx-auto mb-4 text-sm">
-                    Don't have an account?
-                    <a
-                      href="javascript:;"
-                      class="text-info text-gradient font-weight-bold"
-                      >Sign up</a
-                    >
-                  </p>
                 </div>
               </div>
             </div>
@@ -91,7 +82,7 @@
       </div>
     </section>
   </main>
-  <app-footer />
+  <app-footer v-if="false" />
 </template>
 
 <script>
@@ -124,7 +115,14 @@ export default {
         .then((res) => {
           if (res.data.isSuccess) {
             localStorage.setItem("gstoken", res.data.data.access_token);
-            this.$router.push("/dashboard");
+            if (!this.$store.getters.atLeastBranchManager) {
+              Swal.fire({
+                text: "not allowed to normal user",
+                icon: "error",
+                confirmButtonText: "ok",
+              });
+              localStorage.removeItem("gstoken");
+            } else this.$router.push("/dashboard");
           } else {
             Swal.fire({
               text: "Email or password is incorrect, Try again",

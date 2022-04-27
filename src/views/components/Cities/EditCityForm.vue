@@ -47,7 +47,7 @@
           Edit
         </button>
         <button
-          @click="this.$router.push('/cities')"
+          @click="this.$router.push('/citiesP')"
           class="my-2 btn btn-secondary w-100"
         >
           Back to cities

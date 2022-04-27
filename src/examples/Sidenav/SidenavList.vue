@@ -11,28 +11,7 @@
           </template>
         </sidenav-collapse>
       </li>
-      <!-- <li class="nav-item">
-        <sidenav-collapse navText="Cities" :to="{ name: 'Cities' }">
-          <template v-slot:icon>
-            <icon name="dashboard" />
-          </template>
-        </sidenav-collapse>
-      </li> -->
-      <!-- <li class="nav-item">
-        <sidenav-collapse navText="City Managers" :to="{ name: 'City Managers' }">
-          <template v-slot:icon>
-            <icon name="dashboard" />
-          </template>
-        </sidenav-collapse>
-      </li> -->
-      <!-- <li class="nav-item">
-        <sidenav-collapse navText="Branches" :to="{ name: 'Branches' }">
-          <template v-slot:icon>
-            <icon name="dashboard" />
-          </template>
-        </sidenav-collapse>
-      </li> -->
-      <li class="nav-item">
+      <li v-if="$store.getters.atLeastCityManager" class="nav-item">
         <sidenav-collapse
           navText="Branch Managers"
           :to="{ name: 'Branch Managers' }"
@@ -42,7 +21,6 @@
           </template>
         </sidenav-collapse>
       </li>
-
       <li v-if="$store.getters.isAdmin" class="nav-item">
         <sidenav-collapse
           navText="City Managers"
@@ -60,14 +38,14 @@
           </template>
         </sidenav-collapse>
       </li>
-      <li class="nav-item">
+      <li v-if="$store.getters.isAdmin" class="nav-item">
         <sidenav-collapse navText="Cities" :to="{ name: 'Cities' }">
           <template v-slot:icon>
             <icon name="dashboard" />
           </template>
         </sidenav-collapse>
       </li>
-      <li class="nav-item">
+      <li v-if="$store.getters.atLeastCityManager" class="nav-item">
         <sidenav-collapse navText="Branches" :to="{ name: 'Branches' }">
           <template v-slot:icon>
             <icon name="dashboard" />
@@ -116,77 +94,9 @@
           </template>
         </sidenav-collapse>
       </li>
-      <!-- <li class="nav-item">
-        <sidenav-collapse navText="Coaches" :to="{ name: 'Coaches' }">
-          <template v-slot:icon>
-            <icon name="dashboard" />
-          </template>
-        </sidenav-collapse>
-      </li> -->
-      <li class="nav-item">
-        <sidenav-collapse navText="Tables" :to="{ name: 'Tables' }">
-          <template v-slot:icon>
-            <icon name="tables" />
-          </template>
-        </sidenav-collapse>
-      </li>
-      <li class="nav-item">
-        <sidenav-collapse navText="Billing" :to="{ name: 'Billing' }">
-          <template v-slot:icon>
-            <icon name="billing" />
-          </template>
-        </sidenav-collapse>
-      </li>
-
-      <li class="nav-item">
-        <sidenav-collapse
-          navText="Virtual Reality"
-          :to="{ name: 'Virtual Reality' }"
-        >
-          <template v-slot:icon>
-            <icon name="virtual-reality" />
-          </template>
-        </sidenav-collapse>
-      </li>
-      <li class="nav-item">
-        <sidenav-collapse navText="RTL" :to="{ name: 'Rtl' }">
-          <template v-slot:icon>
-            <icon name="rtl-page" />
-          </template>
-        </sidenav-collapse>
-      </li>
-      <li class="mt-3 nav-item">
-        <h6
-          class="text-xs ps-4 text-uppercase font-weight-bolder opacity-6"
-          :class="this.$store.state.isRTL ? 'me-4' : 'ms-2'"
-        >
-          PAGES
-        </h6>
-      </li>
-      <li class="nav-item">
-        <sidenav-collapse navText="Profile" :to="{ name: 'Profile' }">
-          <template v-slot:icon>
-            <icon name="customer-support" />
-          </template>
-        </sidenav-collapse>
-      </li>
-      <li class="nav-item">
-        <sidenav-collapse navText="Sign In" :to="{ name: 'Sign In' }">
-          <template v-slot:icon>
-            <icon name="sign-in" />
-          </template>
-        </sidenav-collapse>
-      </li>
-      <li class="nav-item">
-        <sidenav-collapse navText="Sign Up" :to="{ name: 'Sign Up' }">
-          <template v-slot:icon>
-            <icon name="sign-up" />
-          </template>
-        </sidenav-collapse>
-      </li>
     </ul>
   </div>
-  <div class="pt-3 mx-3 mt-3 sidenav-footer">
+  <div v-if="false" class="pt-3 mx-3 mt-3 sidenav-footer">
     <sidenav-card
       :class="cardBg"
       textPrimary="Need Help?"

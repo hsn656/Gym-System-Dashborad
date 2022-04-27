@@ -104,7 +104,8 @@
           />
         </div>
         <hr class="horizontal dark my-sm-4" />
-        <a
+        <div v-if="false">
+          <a
           class="btn bg-gradient-info w-100"
           href="https://www.creative-tim.com/product/vue-soft-ui-dashboard-pro"
           >Buy now</a
@@ -119,7 +120,8 @@
           href="https://www.creative-tim.com/learning-lab/vue/overview/soft-ui-dashboard/"
           >View documentation</a
         >
-        <div class="text-center w-100">
+        </div>
+        <div v-if="false" class="text-center w-100">
           <a
             class="github-button"
             href="https://github.com/creativetimofficial/vue-soft-ui-dashboard"
